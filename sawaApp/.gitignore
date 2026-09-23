@@ -1,0 +1,22 @@
+# Secrets — never commit real Supabase config.
+.env
+.env.local
+*.env
+
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+/android/.gradle
+/ios/Pods/
+/ios/Flutter/Flutter.framework
+/ios/Flutter/Flutter.podspec
+*.iml
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
