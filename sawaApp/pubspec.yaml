@@ -46,5 +46,19 @@ flutter:
   assets:
     - assets/data/providers.json
     - assets/data/dev_fixture_providers.json
-    - assets/images/providers/
+    - assets/images/providers/hall_ritaj/
+    - assets/images/providers/hall_rotana_baghdad/
+    - assets/images/providers/hall_malika/
+    - assets/images/providers/hall_weam/
+    - assets/images/providers/hall_asawer/
+    - assets/images/providers/hall_jadriya/
+    - assets/images/providers/photo_tabarek/
+    - assets/images/providers/photo_shot/
+    - assets/images/providers/photo_asmer/
+    - assets/images/providers/photo_mariam/
+    - assets/images/providers/photo_marwa/
+    - assets/images/providers/decor_laflamme/
+    - assets/images/providers/decor_lucci/
+    - assets/images/providers/decor_fayrouz/
+    - assets/images/providers/decor_ward/
     - assets/images/dev_fixtures/
