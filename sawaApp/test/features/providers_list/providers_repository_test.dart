@@ -10,8 +10,7 @@ class _FakeAssetBundle extends AssetBundle {
   final String _contents;
 
   @override
-  Future<String> loadString(String key, {bool cache = true}) async =>
-      _contents;
+  Future<String> loadString(String key, {bool cache = true}) async => _contents;
 
   @override
   Future<ByteData> load(String key) {
@@ -38,7 +37,8 @@ void main() {
     expect(result, hasLength(2));
   });
 
-  test('getAll() returns an empty list for an empty array (real default '
+  test(
+      'getAll() returns an empty list for an empty array (real default '
       'providers.json state)', () async {
     final repo = ProvidersRepository(bundle: _FakeAssetBundle('[]'));
 
@@ -66,8 +66,7 @@ void main() {
     expect(result.single.id, 'ok_1');
   });
 
-  test(
-      'getAll() drops a duplicate id, keeping only the first occurrence',
+  test('getAll() drops a duplicate id, keeping only the first occurrence',
       () async {
     const json = '''
     [

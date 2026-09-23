@@ -5,11 +5,10 @@ import '../data/provider_category.dart';
 import '../data/provider_model.dart';
 import '../data/providers_repository.dart';
 
-/// NOTE: this file currently holds only the Phase 1 data-loading
-/// foundation (a repository provider + category-filtered FutureProviders).
-/// The category free-text search / filter Notifier described in the
-/// Technical Architecture is a Should-Have, deferred to a later phase —
-/// see the Phase 1 report.
+/// NOTE: this file holds Phase 1 data-loading providers plus the
+/// providerByIdProvider used by ProviderDetailsScreen.
+/// The category free-text search / filter Notifier is a Should-Have on
+/// the cut-first list and is not included in the hackathon MVP.
 
 final providersRepositoryProvider = Provider<ProvidersRepository>((ref) {
   return ProvidersRepository(
@@ -25,11 +24,20 @@ final allProvidersProvider = FutureProvider<List<SawaProvider>>((ref) {
   return repository.getAll();
 });
 
-/// Providers filtered to a single category. This is what CategoryScreen
-/// reads — Home shows category tiles, not providers (Skill Module 4:
-/// Home vs. Category component responsibility).
-final providersByCategoryProvider = FutureProvider.family<List<SawaProvider>,
-    ProviderCategory>((ref, category) async {
+/// Providers filtered to a single category. CategoryScreen reads this.
+final providersByCategoryProvider =
+    FutureProvider.family<List<SawaProvider>, ProviderCategory>(
+        (ref, category) async {
   final all = await ref.watch(allProvidersProvider.future);
   return all.where((p) => p.category == category).toList(growable: false);
+});
+
+/// Looks up a single provider by [id]. Returns null when the id is not in
+/// the dataset (unknown route, stale deep link, etc.) so callers can show a
+/// graceful "not found" state instead of throwing.
+final providerByIdProvider =
+    FutureProvider.family<SawaProvider?, String>((ref, id) async {
+  final all = await ref.watch(allProvidersProvider.future);
+  final index = all.indexWhere((p) => p.id == id);
+  return index >= 0 ? all[index] : null;
 });

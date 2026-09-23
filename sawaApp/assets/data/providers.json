@@ -1,1 +1,65 @@
-[]
+[
+  {
+    "id": "hall_001",
+    "name": "قاعة الوركاء",
+    "category": "hall",
+    "images": ["assets/images/dev_fixtures/placeholder_4x3.png"],
+    "priceRangeText": "٥٠٠,٠٠٠ — ١,٢٠٠,٠٠٠ دينار",
+    "shortDescription": "قاعة أفراح في قلب بغداد، سعة ٣٠٠ شخص، تجهيزات وخدمات متكاملة",
+    "instagramUrl": "https://www.instagram.com/",
+    "city": "بغداد",
+    "reviewedBySawa": true
+  },
+  {
+    "id": "hall_002",
+    "name": "قاعة بابل الفضية",
+    "category": "hall",
+    "images": ["assets/images/dev_fixtures/placeholder_4x3.png"],
+    "shortDescription": "قاعة عصرية بتصميم أنيق، مناسبة للأعراس والمناسبات الكبرى",
+    "instagramUrl": "https://www.instagram.com/",
+    "city": "بغداد",
+    "reviewedBySawa": true
+  },
+  {
+    "id": "photo_001",
+    "name": "استديو الضوء العراقي",
+    "category": "photography",
+    "images": ["assets/images/dev_fixtures/placeholder_4x3.png"],
+    "priceRangeText": "٢٥٠,٠٠٠ — ٦٠٠,٠٠٠ دينار",
+    "shortDescription": "تصوير أعراس وخطوبة واحتفالات، خبرة ٨ سنوات في بغداد",
+    "instagramUrl": "https://www.instagram.com/",
+    "city": "بغداد",
+    "reviewedBySawa": true
+  },
+  {
+    "id": "photo_002",
+    "name": "لنز بغداد",
+    "category": "photography",
+    "images": ["assets/images/dev_fixtures/placeholder_4x3.png"],
+    "shortDescription": "تصوير احترافي للمناسبات الخاصة والأعراس",
+    "instagramUrl": "https://www.instagram.com/",
+    "city": "بغداد",
+    "reviewedBySawa": true
+  },
+  {
+    "id": "decor_001",
+    "name": "ديكور النهرين",
+    "category": "decor",
+    "images": ["assets/images/dev_fixtures/placeholder_4x3.png"],
+    "priceRangeText": "٣٠٠,٠٠٠ — ٨٠٠,٠٠٠ دينار",
+    "shortDescription": "تنسيق وتزيين قاعات الأفراح بأسلوب عصري وكلاسيكي",
+    "instagramUrl": "https://www.instagram.com/",
+    "city": "بغداد",
+    "reviewedBySawa": true
+  },
+  {
+    "id": "decor_002",
+    "name": "لمسة فخامة",
+    "category": "decor",
+    "images": ["assets/images/dev_fixtures/placeholder_4x3.png"],
+    "shortDescription": "ديكور وزهور للمناسبات والحفلات",
+    "instagramUrl": "https://www.instagram.com/",
+    "city": "بغداد",
+    "reviewedBySawa": true
+  }
+]

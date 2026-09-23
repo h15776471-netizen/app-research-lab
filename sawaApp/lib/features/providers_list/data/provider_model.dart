@@ -76,7 +76,7 @@ class SawaProvider {
         ? rawImages.whereType<String>().toList(growable: false)
         : const <String>[];
     if (images.isEmpty) {
-      throw const FormatException(
+      throw FormatException(
         'Provider "$id" is missing at least one required image.',
       );
     }

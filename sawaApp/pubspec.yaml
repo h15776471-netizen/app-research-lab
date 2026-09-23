@@ -32,6 +32,9 @@ dependencies:
   # Architecture §13.
   cached_network_image: ^3.3.1
 
+  # Instagram link launcher — ProviderDetailsScreen (Master Spec §36 point 4).
+  url_launcher: ^6.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

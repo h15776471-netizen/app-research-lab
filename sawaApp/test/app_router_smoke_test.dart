@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,7 +10,8 @@ void main() {
     GoogleFonts.config.allowRuntimeFetching = false;
   });
 
-  testWidgets('boots on HomeScreen with the 3 locked categories, and '
+  testWidgets(
+      'boots on HomeScreen with the 3 locked categories, and '
       'navigates to Category on tap', (tester) async {
     await tester.pumpWidget(const ProviderScope(child: SawaApp()));
     await tester.pumpAndSettle();

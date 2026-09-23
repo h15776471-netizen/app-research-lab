@@ -16,12 +16,16 @@ class AppCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final card = Card(child: child);
-    if (onTap == null) return card;
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppRadii.card),
-      child: card,
+    if (onTap == null) {
+      return Card(child: child);
+    }
+    // InkWell lives INSIDE Card so the ripple is clipped by the card's Material.
+    return Card(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppRadii.card),
+        child: child,
+      ),
     );
   }
 }

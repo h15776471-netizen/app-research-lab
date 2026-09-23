@@ -63,7 +63,7 @@ abstract final class AppTheme {
           // favor of withValues(alpha:); kept as withOpacity here for
           // compatibility with the pinned `>=3.22.0` floor. Switch to
           // withValues(alpha:) if/when the SDK floor is raised.
-          disabledBackgroundColor: AppColors.primary.withOpacity(0.4),
+          disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.4),
           textStyle: AppTextStyles.button,
           minimumSize: const Size.fromHeight(48),
           elevation: 0,
