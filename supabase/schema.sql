@@ -87,6 +87,7 @@ alter table public.contact_requests enable row level security;
 -- Anon (Flutter app): INSERT only.
 -- with check (true) means any row the app tries to insert passes the policy
 -- check; the NOT NULL + CHECK constraints above are the real data guards.
+drop policy if exists "anon_insert_only" on public.contact_requests;
 create policy "anon_insert_only"
   on  public.contact_requests
   for insert
@@ -96,6 +97,7 @@ create policy "anon_insert_only"
 -- Authenticated (Supabase dashboard / team): SELECT only.
 -- No insert/update/delete policy for authenticated means those are also
 -- denied for authenticated users via PostgREST (not just anon).
+drop policy if exists "authenticated_read_only" on public.contact_requests;
 create policy "authenticated_read_only"
   on  public.contact_requests
   for select
