@@ -140,3 +140,155 @@ create index if not exists idx_contact_requests_created_at
 --
 -- If step 4 returns actual rows, your RLS policy is misconfigured — do NOT
 -- continue to demo until this is resolved.
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- PHASE 2 TABLES  (sawa platform redesign)
+-- ─────────────────────────────────────────────────────────────────────────────
+
+-- profiles: one row per Supabase Auth user; role = 'customer' | 'provider'
+create table if not exists public.profiles (
+  id           uuid         not null references auth.users(id) on delete cascade primary key,
+  role         text         not null check (role in ('customer', 'provider')),
+  display_name text         not null check (display_name <> ''),
+  created_at   timestamptz  not null default now()
+);
+
+comment on table public.profiles is
+  'One row per Supabase Auth user. Role drives routing (customer vs provider shell).';
+
+alter table public.profiles enable row level security;
+
+-- Each user can only read/write their own profile row.
+drop policy if exists "profiles_own_read"  on public.profiles;
+drop policy if exists "profiles_own_write" on public.profiles;
+
+create policy "profiles_own_read"
+  on  public.profiles for select
+  to  authenticated
+  using (id = auth.uid());
+
+create policy "profiles_own_write"
+  on  public.profiles for insert
+  to  authenticated
+  with check (id = auth.uid());
+
+create policy "profiles_own_update"
+  on  public.profiles for update
+  to  authenticated
+  using (id = auth.uid());
+
+-- ─────────────────────────────────────────────────────────────────────────────
+
+-- provider_profiles: extended info for provider users
+create table if not exists public.provider_profiles (
+  id           uuid         not null references public.profiles(id) on delete cascade primary key,
+  category     text         not null check (category in ('hall', 'photography', 'decor')),
+  bio          text,
+  city         text         not null default 'بغداد',
+  created_at   timestamptz  not null default now()
+);
+
+comment on table public.provider_profiles is
+  'Extended profile for users with role=provider.';
+
+alter table public.provider_profiles enable row level security;
+
+drop policy if exists "provider_profiles_own_read"   on public.provider_profiles;
+drop policy if exists "provider_profiles_own_write"  on public.provider_profiles;
+drop policy if exists "provider_profiles_own_update" on public.provider_profiles;
+
+create policy "provider_profiles_own_read"
+  on  public.provider_profiles for select
+  to  authenticated
+  using (id = auth.uid());
+
+create policy "provider_profiles_own_write"
+  on  public.provider_profiles for insert
+  to  authenticated
+  with check (id = auth.uid());
+
+create policy "provider_profiles_own_update"
+  on  public.provider_profiles for update
+  to  authenticated
+  using (id = auth.uid());
+
+-- ─────────────────────────────────────────────────────────────────────────────
+
+-- services: services offered by a provider
+create table if not exists public.services (
+  id           uuid         not null default gen_random_uuid() primary key,
+  provider_id  uuid         not null references public.profiles(id) on delete cascade,
+  title        text         not null check (title <> ''),
+  description  text         not null check (description <> ''),
+  price_text   text,
+  is_active    boolean      not null default true,
+  created_at   timestamptz  not null default now()
+);
+
+comment on table public.services is
+  'Services listed by a provider. provider_id = profiles.id of the provider user.';
+
+create index if not exists idx_services_provider_id on public.services (provider_id);
+
+alter table public.services enable row level security;
+
+drop policy if exists "services_own_read"   on public.services;
+drop policy if exists "services_own_insert" on public.services;
+drop policy if exists "services_own_delete" on public.services;
+drop policy if exists "services_public_read" on public.services;
+
+-- Providers manage their own services.
+create policy "services_own_read"
+  on  public.services for select
+  to  authenticated
+  using (provider_id = auth.uid());
+
+create policy "services_own_insert"
+  on  public.services for insert
+  to  authenticated
+  with check (provider_id = auth.uid());
+
+create policy "services_own_delete"
+  on  public.services for delete
+  to  authenticated
+  using (provider_id = auth.uid());
+
+-- ─────────────────────────────────────────────────────────────────────────────
+
+-- event_inquiries: customer event planner submissions (for future use)
+create table if not exists public.event_inquiries (
+  id           bigint       generated always as identity primary key,
+  user_id      uuid         references public.profiles(id) on delete set null,
+  event_type   text         not null,
+  services     text[]       not null default '{}',
+  guest_count  int,
+  notes        text,
+  created_at   timestamptz  not null default now()
+);
+
+comment on table public.event_inquiries is
+  'Customer event planner wizard submissions. user_id may be null for guests.';
+
+alter table public.event_inquiries enable row level security;
+
+drop policy if exists "event_inquiries_insert_anon"        on public.event_inquiries;
+drop policy if exists "event_inquiries_insert_auth"        on public.event_inquiries;
+drop policy if exists "event_inquiries_own_read"           on public.event_inquiries;
+
+-- Guests can submit.
+create policy "event_inquiries_insert_anon"
+  on  public.event_inquiries for insert
+  to  anon
+  with check (user_id is null);
+
+-- Authenticated users can submit.
+create policy "event_inquiries_insert_auth"
+  on  public.event_inquiries for insert
+  to  authenticated
+  with check (true);
+
+-- Users can read their own inquiries.
+create policy "event_inquiries_own_read"
+  on  public.event_inquiries for select
+  to  authenticated
+  using (user_id = auth.uid());

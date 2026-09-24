@@ -49,7 +49,7 @@ class ContactSuccessScreen extends StatelessWidget {
                 const SizedBox(height: AppSpacing.xxl),
                 AppPrimaryButton(
                   label: 'العودة للرئيسية',
-                  onPressed: () => context.goNamed(AppRoute.home),
+                  onPressed: () => context.goNamed(AppRoute.customerHome),
                 ),
               ],
             ),

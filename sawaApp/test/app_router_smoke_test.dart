@@ -11,20 +11,22 @@ void main() {
   });
 
   testWidgets(
-      'boots on HomeScreen with the 3 locked categories, and '
-      'navigates to Category on tap', (tester) async {
+      'boots through splash to welcome screen (unauthenticated); '
+      'welcome screen has sign-in, sign-up, and guest-browse actions',
+      (tester) async {
     await tester.pumpWidget(const ProviderScope(child: SawaApp()));
-    await tester.pumpAndSettle();
 
-    expect(find.text('sawa'), findsOneWidget);
-    expect(find.text('قاعات'), findsOneWidget);
-    expect(find.text('مصورين'), findsOneWidget);
-    expect(find.text('ديكور'), findsOneWidget);
+    // Allow auth session restore to complete. Supabase is not initialized in
+    // tests, so AuthNotifier._restoreSession() catches the StateError and sets
+    // isLoading=false. The router redirect then fires: /splash → /welcome.
+    await tester.pumpAndSettle(const Duration(seconds: 2));
 
-    await tester.tap(find.text('قاعات'));
-    await tester.pumpAndSettle();
+    // App branding visible on WelcomeScreen.
+    expect(find.text('sawa'), findsWidgets);
 
-    // AppBar title on CategoryScreen repeats the tapped category's label.
-    expect(find.text('قاعات'), findsWidgets);
+    // All three primary actions on WelcomeScreen are present.
+    expect(find.text('إنشاء حساب'), findsOneWidget);
+    expect(find.text('تسجيل الدخول'), findsOneWidget);
+    expect(find.text('تصفح بدون تسجيل'), findsOneWidget);
   });
 }

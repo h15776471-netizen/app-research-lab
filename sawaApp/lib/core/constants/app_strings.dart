@@ -1,26 +1,47 @@
-/// Locked Arabic copy — never reword, shorten, or "improve" these strings.
-///
-/// Source: sawa-product-specification.md (locked Product Decisions),
-/// SAWA_FINAL_MASTER_SPEC.md §36 (post-audit correction: the success
-/// screen's reassurance line was changed from "...قريباً" to the
-/// time-neutral wording below, per Master Spec Phase 20).
 abstract final class AppStrings {
-  /// Card + Provider Details badge. Literal, per locked Product Decision.
+  // ── Locked product copy (never alter) ──────────────────────────────────
   static const reviewedBadge = 'تمت مراجعته من فريق sawa';
-
-  /// Contact Success primary line. Literal, per locked Product Decision.
   static const contactFollowUp = 'نتابع طلبك ونساعدك بالتواصل مع المزوّد.';
-
-  /// Contact Success secondary reassurance line.
-  /// Corrected wording (Master Spec §36 point 2) — the original
-  /// "فريقنا راح يتواصل وياك قريباً" edged toward an implied speed promise
-  /// the team hasn't validated. Never restore "قريباً" here.
   static const contactReassurance = 'فريقنا بيتواصل وياك.';
-
-  /// Fallback when url_launcher fails to open the provider's Instagram link.
   static const instagramLinkFailed = 'تعذّر فتح الرابط';
-
   static const categoryEmptyState = 'لا يوجد مزودون مطابقون حالياً.';
   static const contactSubmitError = 'ما كدرنا نرسل طلبك، حاول مرة ثانية.';
-  static const homeWelcome = 'أهلاً بيك بـsawa. اختر الفئة التي تدوّر عليها.';
+
+  // ── Auth ───────────────────────────────────────────────────────────────
+  static const welcomeHero = 'خلّي مناسبتك\nتبدأ من هنا.';
+  static const welcomeSub = 'اكتشف أفضل خدمات المناسبات في بغداد';
+  static const loginTitle = 'أهلاً بعودتك';
+  static const signupTitle = 'إنشاء حساب جديد';
+  static const roleCustomerLabel = 'أبحث عن خدمات';
+  static const roleCustomerSub = 'أنظّم مناسبتي وأبحث عن مزودين';
+  static const roleProviderLabel = 'أنا مزود خدمة';
+  static const roleProviderSub = 'أعرض خدماتي وأتابع طلبات العملاء';
+  static const browseWithoutLogin = 'تصفح بدون تسجيل';
+  static const authError = 'حدث خطأ في تسجيل الدخول';
+
+  // ── Customer home ──────────────────────────────────────────────────────
+  static const homeHero = 'خلّي مناسبتك تبدأ من هنا.';
+  static const homeSubtitle = 'اكتشف أفضل خدمات المناسبات في بغداد';
+  static const homePlannerCta = 'خلينا نساعدك ترتب مناسبتك';
+  static const homePlannerSub = 'سؤالين ونوجهك للخيار الأنسب';
+  static const homeCuratedTitle = 'مزودون مختارون من sawa';
+
+  // ── Event Planner ──────────────────────────────────────────────────────
+  static const plannerTitle = 'خطط لمناسبتك';
+  static const plannerResultsTitle = 'الخيارات المناسبة لك';
+
+  // ── Provider dashboard ─────────────────────────────────────────────────
+  static const dashboardTitle = 'لوحة التحكم';
+  static const noDataYet = 'لا توجد بيانات كافية بعد';
+  static const addFirstService = 'أضف أول خدمة لك';
+
+  // ── General ────────────────────────────────────────────────────────────
+  static const retry = 'إعادة المحاولة';
+  static const save = 'حفظ';
+  static const cancel = 'إلغاء';
+  static const next = 'التالي';
+  static const back = 'رجوع';
+  static const done = 'تم';
+  static const loading = 'جاري التحميل…';
+  static const unknownError = 'حدث خطأ غير متوقع.';
 }

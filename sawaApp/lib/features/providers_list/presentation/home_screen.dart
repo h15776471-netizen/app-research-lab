@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_strings.dart';
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_radii.dart';
@@ -30,7 +29,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text(AppStrings.homeWelcome),
+              Text('أهلاً بيك في sawa', style: AppTextStyles.h2),
               const SizedBox(height: AppSpacing.xl),
               Expanded(
                 child: Column(

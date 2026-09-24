@@ -1,35 +1,51 @@
 import 'package:flutter/material.dart';
 
-/// SAWA design tokens — "Organized Notebook" direction.
-///
-/// Source: sawa-design-system-ux-handoff.md §5/§25, cross-checked against
-/// SAWA_FINAL_MASTER_SPEC.md §17. The two agree on every value here except
-/// the badge-icon color, which the Master Spec's Phase 20 audit corrected
-/// (see [reviewedBadgeIcon]).
 abstract final class AppColors {
-  static const primary = Color(0xFFB5654A);
+  // ── Primary — Deep Burgundy ─────────────────────────────────────────────
+  static const primary = Color(0xFF7B1D3E);
+  static const primaryLight = Color(0xFFF5E6ED);
+  static const primaryMid = Color(0xFFC4607F);
+  static const onPrimary = Color(0xFFFFFFFF);
 
-  /// Borders/fills ONLY — never a standalone icon or text color.
-  /// (~2:1 contrast against light surfaces, below the 3:1 minimum for
-  /// meaningful UI graphics — Master Spec Phase 4/20.)
-  static const secondary = Color(0xFFD9A05B);
+  // ── Accent — Champagne Gold ─────────────────────────────────────────────
+  static const accent = Color(0xFFBD9358);
+  static const accentLight = Color(0xFFF5E6C8);
 
-  static const background = Color(0xFFFBF7F2);
+  // ── Backgrounds ─────────────────────────────────────────────────────────
+  static const background = Color(0xFFFAF5F0);
   static const surface = Color(0xFFFFFFFF);
-  static const textPrimary = Color(0xFF2B2320);
-  static const textSecondary = Color(0xFF6B5F58);
-  static const border = Color(0xFFE4D9CF);
-  static const success = Color(0xFF4C7A5E);
-  static const error = Color(0xFFB3442F);
+  static const surfaceWarm = Color(0xFFFDF8F4);
 
-  /// Reserved, unused in this MVP (no warning-state screens exist).
-  static const warning = Color(0xFFC48A3F);
+  // ── Text ────────────────────────────────────────────────────────────────
+  static const textPrimary = Color(0xFF1A0810);
+  static const textSecondary = Color(0xFF7A5268);
+  static const textHint = Color(0xFFBFA8B4);
 
-  /// "تمت مراجعته من فريق sawa" badge icon color.
-  ///
-  /// Master Spec §Phase 20 fix: render this icon in [textSecondary] (or
-  /// [primary]), never in [secondary] — the badge carries the project's
-  /// core trust claim and must not be the least legible element on the
-  /// card.
-  static const reviewedBadgeIcon = textSecondary;
+  // ── Borders ─────────────────────────────────────────────────────────────
+  static const border = Color(0xFFEAD0DC);
+  static const borderLight = Color(0xFFF5E8EF);
+
+  // ── Semantic ────────────────────────────────────────────────────────────
+  static const success = Color(0xFF2D7A52);
+  static const successLight = Color(0xFFE5F4EC);
+  static const error = Color(0xFFB32A2A);
+  static const errorLight = Color(0xFFFDEDED);
+  static const warning = Color(0xFFC5862B);
+  static const warningLight = Color(0xFFFEF0DC);
+
+  // ── Badge ────────────────────────────────────────────────────────────────
+  static const reviewedBadgeIcon = primary;
+
+  // ── Gradients ───────────────────────────────────────────────────────────
+  static const gradientHero = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [Color(0xFF4A0E22), Color(0xFF7B1D3E)],
+  );
+
+  static const gradientCard = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [Colors.transparent, Color(0xCC1A0810)],
+  );
 }
