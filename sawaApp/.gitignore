@@ -9,6 +9,8 @@
 .pub-cache/
 .pub/
 build/
+.flutter-plugins
+.flutter-plugins-dependencies
 /android/.gradle
 /ios/Pods/
 /ios/Flutter/Flutter.framework
