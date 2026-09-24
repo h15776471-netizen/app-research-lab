@@ -1,4 +1,8 @@
 # SAWA — FINAL MASTER SPECIFICATION & SYSTEM AUDIT
+
+> **⚠️ Partially superseded (2026-09-24):** SAWA v2 is a two-sided marketplace with Supabase Auth.
+> Where this document conflicts with [`SAWA_V2_DECISIONS.md`](SAWA_V2_DECISIONS.md) (auth, provider
+> portal, data source, categories), **the v2 decisions win**.
 **Role:** Master Reviewer & System Integrator
 **Status:** Pre-implementation review, complete
 **Scope:** Full review of Research (Claude #1), Product Spec (Claude #2), Technical Architecture (Claude #3), Design System (Claude Design), synthesized into one Source of Truth for the Flutter Developer.
