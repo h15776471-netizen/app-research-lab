@@ -144,10 +144,13 @@ end $$;
 -- ─────────────────────────────────────────────────────────────────────────────
 -- Grants
 -- ─────────────────────────────────────────────────────────────────────────────
-revoke all on function public.submit_contact_request(uuid, text, text, text, bigint, uuid) from public;
-revoke all on function public.create_event_inquiry(text, int, text, text, date, numeric, numeric, text, text[], text, text, text, text) from public;
-revoke all on function public.record_provider_view(uuid) from public;
-revoke all on function public.get_provider_stats(uuid) from public;
+-- Supabase's default privileges grant EXECUTE on new public functions
+-- directly to anon/authenticated, so revoking from PUBLIC alone is not
+-- enough — revoke from the API roles explicitly, then grant exactly.
+revoke all on function public.submit_contact_request(uuid, text, text, text, bigint, uuid) from public, anon, authenticated;
+revoke all on function public.create_event_inquiry(text, int, text, text, date, numeric, numeric, text, text[], text, text, text, text) from public, anon, authenticated;
+revoke all on function public.record_provider_view(uuid) from public, anon, authenticated;
+revoke all on function public.get_provider_stats(uuid) from public, anon, authenticated;
 
 grant execute on function public.submit_contact_request(uuid, text, text, text, bigint, uuid) to anon, authenticated;
 grant execute on function public.create_event_inquiry(text, int, text, text, date, numeric, numeric, text, text[], text, text, text, text) to anon, authenticated;

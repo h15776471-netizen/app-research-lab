@@ -397,5 +397,14 @@ begin
                                where table_schema = 'sawa_private' and table_name = 'contact_requests_backup_v1'),
                        'contact_requests v1 backup exists');
 
+  -- 10. Account deletion cascades cleanly ------------------------------------
+  perform sawa_test.act_as(null, 'operator');
+  delete from auth.users where id = u_ca;             -- has inquiries + requests
+  perform sawa_test.ok(not exists (select 1 from public.profiles where id = u_ca), 'delete account: profile removed');
+  perform sawa_test.ok(not exists (select 1 from public.event_inquiries where id = inq_a), 'delete account: own inquiries removed');
+  perform sawa_test.ok((select customer_id is null from public.contact_requests where id = req_a2), 'delete account: requests kept for SAWA, unlinked');
+  delete from auth.users where id = u_pa;             -- owns a published business
+  perform sawa_test.ok((select user_id is null from public.providers where id = biz_a), 'delete provider account: business kept, ownerless');
+
   raise exception 'ALL_TESTS_PASSED (% checks)', current_setting('sawa_test.n');
 end $$;

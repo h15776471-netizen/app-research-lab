@@ -75,10 +75,16 @@ try {
   await run(client, 'supabase_stub.sql', read(path.join(here, 'supabase_stub.sql')));
   await run(client, 'legacy_v1_state.sql', read(path.join(here, 'legacy_v1_state.sql')));
 
-  for (const pass of [1, 2]) {
-    console.log(`\n[2.${pass}] Migrations (pass ${pass}${pass === 2 ? ' — idempotency' : ''})`);
-    for (const m of migrations) await run(client, path.basename(m), read(m));
-  }
+  console.log('\n[2.1] Migrations (individual files)');
+  for (const m of migrations) await run(client, path.basename(m), read(m));
+
+  console.log('\n[2.2] deploy/apply_all_migrations.sql (idempotency + the exact file used on live)');
+  const bundlePath = path.join(supabaseDir, 'deploy', 'apply_all_migrations.sql');
+  const { buildBundle } = await import(pathToFileURL(path.join(supabaseDir, 'scripts', 'bundle.mjs')).href);
+  const bundleFresh = fs.existsSync(bundlePath) && read(bundlePath).replace(/\r\n/g, '\n') === buildBundle();
+  console.log(`  ${bundleFresh ? '✓' : '✗'} bundle matches supabase/migrations`);
+  if (!bundleFresh) failed = true;
+  await run(client, 'apply_all_migrations.sql', read(bundlePath));
 
   console.log('\n[3] Legacy data preserved');
   const checks = [
@@ -107,6 +113,17 @@ try {
     const ok = Object.values(rows[0])[0] === true;
     if (!ok) failed = true;
     console.log(`  ${ok ? '✓' : '✗'} ${label}`);
+  }
+
+  console.log('\n[3b] Structural verification (supabase/tests/verify_schema.sql)');
+  {
+    const res = await client.query(read(path.join(supabaseDir, 'tests', 'verify_schema.sql')));
+    const rows = (Array.isArray(res) ? res[res.length - 1] : res).rows;
+    const summary = rows.find((x) => x.area === 'SUMMARY');
+    for (const x of rows.filter((x) => x.status === 'FAIL')) console.error(`  ✗ ${x.area}: ${x.check_name} (${x.detail ?? ''})`);
+    const ok = summary?.status === 'PHASE 1 SCHEMA OK';
+    if (!ok) failed = true;
+    console.log(`  ${ok ? '✓' : '✗'} ${summary?.check_name}: ${summary?.status}`);
   }
 
   console.log('\n[4] RLS / security suite (supabase/tests/rls_test.sql)');

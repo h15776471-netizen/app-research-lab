@@ -450,7 +450,7 @@ create index if not exists idx_provider_packages_provider on public.provider_pac
 create table if not exists public.event_inquiries (
   id             bigint        generated always as identity primary key,
   reference_code text          not null,
-  customer_id    uuid          references public.profiles (id) on delete set null,
+  customer_id    uuid          references public.profiles (id) on delete cascade,
   guest_name     text,
   guest_contact  text,
   event_type     text          not null,
@@ -469,6 +469,12 @@ create table if not exists public.event_inquiries (
   created_at     timestamptz   not null default now(),
   updated_at     timestamptz   not null default now()
 );
+
+-- An inquiry belongs to its customer: deleting the account deletes it
+-- (SET NULL would violate event_inquiries_owner_check for non-guest rows).
+alter table public.event_inquiries drop constraint if exists event_inquiries_customer_id_fkey;
+alter table public.event_inquiries add  constraint event_inquiries_customer_id_fkey
+  foreign key (customer_id) references public.profiles (id) on delete cascade;
 
 alter table public.event_inquiries drop constraint if exists event_inquiries_event_type_check;
 alter table public.event_inquiries add  constraint event_inquiries_event_type_check
