@@ -1,0 +1,720 @@
+{
+  "_meta": {
+    "version": 2,
+    "reviewed": "2026-09-25",
+    "method": "Every value was read from the rendered source PDF pages (provider-data/*.pdf). Nothing is guessed. Images are embedded photos extracted from the PDFs; Instagram screenshots, text blocks, broken image slots and duplicates were excluded.",
+    "status_values": {
+      "verified": "Confirmed by a real verification step (none yet — no provider is 'verified').",
+      "source_only": "Stated in the source PDF, not independently confirmed.",
+      "unverified": "Present in the source but ambiguous / not clearly labelled.",
+      "missing": "Not in the source. Shown as 'غير متوفر'."
+    },
+    "price_policy": "providers.price_from/to only when the source states a standing price. Time-bound or day-part offers are packages with is_offer=true, never the base price.",
+    "published": 15,
+    "drafts_not_published": [
+      "hall_almas_001 — no Instagram in source (team decision: excluded until confirmed)",
+      "hall_qasr_rotana_001 — no Instagram in source (team decision: excluded until confirmed)"
+    ],
+    "out_of_scope_not_imported": [
+      "كتالوج ليا سبا LIA SPA.pdf — beauty",
+      "كتالوج مركز باستيل Pastel Nails & Spa.pdf — beauty",
+      "كتالوج_قصر_الجمال_كراند_سمارة_سنتر.pdf — beauty",
+      "كتالوج_كراند_ليان_للتجميل_والعرائس.pdf — beauty, outside Baghdad",
+      "كتالوج_شركة_أُور_لتأجير_السيارات_الكلاسيكية_والمناسبات.pdf — cars",
+      "كتالوج_شركة_تاهو_العراق_لتأجير_السيارات.pdf — cars"
+    ],
+    "corrections_vs_v1": [
+      "decor_fayrouz_001: v1 showed 10,000–65,000 — that is Ward Baghdad's price list; Fayrouz's source has no price → missing.",
+      "decor_ward_001: two handles in source (1ward.baghdad / 2ward.baghdad) → Instagram unverified, not linked.",
+      "photo_tabarek_001: handle 'tabarek.salah5' is not labelled as Instagram in text (it appears in a profile screenshot) → unverified per locked decision.",
+      "hall_ritaj_001 / hall_asawer_001 / hall_malika_001: prices are offers → packages (is_offer), not base price.",
+      "Florists moved from 'decor' to 'flowers'. v1 preview.jpg (PDF page renders) replaced by extracted photos; Ritaj and Rotana have no genuine photo in source → branded placeholder."
+    ]
+  },
+  "providers": [
+    {
+      "legacy_id": "hall_ritaj_001",
+      "status": "published",
+      "category_id": "halls",
+      "business_name": "قاعة الريتاج للمناسبات",
+      "short_description": "قاعة مناسبات في المدينة المائية تقدّم عروضاً شاملة للأعراس والحفلات.",
+      "description": "قاعة للأعراس والحفلات والمناسبات في المدينة المائية مقابل حي الجامع. عرضها الحالي يشمل مصورة محترفة، ملاية/قارئة، موظفات تفتيش وتنظيم، وزفة موسيقى وطلة عروس.",
+      "city": "بغداد",
+      "area": "المدينة المائية",
+      "address": "المدينة المائية — مقابل حي الجامع",
+      "instagram_handle": "ritajhall",
+      "capacity": null,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": ["07724000038", "07824000038"],
+      "whatsapp": null,
+      "source_ref": "قاعة الريتاج للمناسبات.pdf",
+      "services": [
+        {"name": "مصورة محترفة"},
+        {"name": "ملاية / قارئة"},
+        {"name": "موظفات تفتيش وتنظيم"},
+        {"name": "زفة موسيقى وطلة عروس"}
+      ],
+      "packages": [
+        {"title": "العرض الشامل — عرض شهري 9 و10", "price_from": 500000, "is_offer": true,
+         "description": "يشمل: مصورة محترفة، ملاية/قارئة، موظفات تفتيش وتنظيم، زفة موسيقى وطلة عروس.",
+         "conditions": "عرض خاص لشهري 9 و10 كما ورد في المصدر (السنة غير محددة). الحجز بالمراسلة على الخاص أو واتساب."}
+      ],
+      "images": [],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "source_only", "address": "source_only", "instagram_url": "source_only",
+        "phone": "source_only", "capacity": "missing",
+        "price": ["missing", "لا يوجد سعر أساسي في المصدر — السعر المذكور عرض مؤقت"],
+        "services": "source_only", "packages": "source_only",
+        "images": ["missing", "خانة صورة القاعة في المصدر فارغة/معطوبة"]
+      }
+    },
+    {
+      "legacy_id": "hall_rotana_baghdad_001",
+      "status": "published",
+      "category_id": "halls",
+      "business_name": "مطعم وقاعة روتانا بغداد",
+      "short_description": "قاعة أفراح في الوزيرية مع ديجي وتصوير وفرقة وكيكة ضمن الحجز.",
+      "description": "مطعم وقاعة في الوزيرية قرب جامعة بغداد لإقامة الحفلات والمناسبات. تتضمن فقرات مجانية مع الحجز مثل الديجي والتصوير الفوتوغرافي والفيديو وكيكة العرسان وميز عقد المهر والحناء وفرقة بصراوية وكراج مجاني.",
+      "city": "بغداد",
+      "area": "الوزيرية",
+      "address": "الوزيرية — قرب جامعة بغداد",
+      "instagram_handle": "rotana_baghdad_",
+      "capacity": null,
+      "price_from": 750000, "price_to": 1000000,
+      "price_note": "أسعار حجز القاعة حسب المصدر: الأيام العادية 750,000 · نهاية الأسبوع 1,000,000",
+      "phones": ["07700001150"],
+      "whatsapp": null,
+      "source_ref": "عرض حجز قاعة روتانا بغداد.pdf",
+      "services": [
+        {"name": "ديجي (DJ) احترافي"},
+        {"name": "تصوير فوتوغرافي + 30 صورة هدية"},
+        {"name": "تصوير فيديو متكامل"},
+        {"name": "كيكة خاصة للعرسان"},
+        {"name": "ميز عقد مهر فاخر"},
+        {"name": "ميز حناء مجهز"},
+        {"name": "خدمة الماء مفتوح مجاناً"},
+        {"name": "شعلات وإضاءة خاصة"},
+        {"name": "فقاعات ودخان مؤثرات"},
+        {"name": "إضاءات ليزرية حديثة"},
+        {"name": "فرقة بصراوية (نسائي ورجالي)"},
+        {"name": "كراج مجاني للسيارات"},
+        {"name": "وجبات الأطباق", "price_from": 3500, "price_to": 6000, "description": "السعر للطبق الواحد، مع مشروب ببسي مجاني لكل طبق."},
+        {"name": "قطع الكيك", "price_from": 1000, "price_to": 1500, "unit": "piece", "description": "خياران: 1,000 أو 1,500 للقطعة مع مشروب ببسي."}
+      ],
+      "packages": [
+        {"title": "حجز القاعة — الأيام العادية", "price_from": 750000, "is_offer": false, "conditions": "من الأحد إلى الأربعاء."},
+        {"title": "حجز القاعة — نهاية الأسبوع", "price_from": 1000000, "is_offer": false, "conditions": "الخميس، الجمعة، السبت."}
+      ],
+      "images": [],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "source_only", "address": "source_only", "instagram_url": "source_only",
+        "phone": "source_only", "capacity": "missing", "price": "source_only",
+        "services": "source_only", "packages": "source_only",
+        "images": ["missing", "كل خانات الصور في المصدر معطوبة"]
+      }
+    },
+    {
+      "legacy_id": "hall_malika_001",
+      "status": "published",
+      "category_id": "halls",
+      "business_name": "قاعة الملكة للمناسبات",
+      "short_description": "قاعة في زيونة بعرضين نهاري ومسائي وكوشة ملكية وكادر نسائي.",
+      "description": "قاعة مناسبات في زيونة، شارع الربيعي مجاور أمير مول. تقدّم عرضين (فترة نهارية وفترة مسائية)، ومع العرضين خدمات مجانية منها كوشة ملكية فخمة، تصوير فيديو وصور ومونتاج، ليزر وإضاءة حديثة، كادر نسائي متكامل، وكيكة المناسبة 3 طوابق.",
+      "city": "بغداد",
+      "area": "زيونة",
+      "address": "زيونة — شارع الربيعي — مجاور أمير مول",
+      "instagram_handle": "queen__6h",
+      "capacity": null,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": ["07722322317", "07722478968"],
+      "whatsapp": null,
+      "source_ref": "عروض_قاعة_الملكة_للمناسبات_مع_الصور.pdf",
+      "services": [
+        {"name": "كوشة ملكية فخمة"},
+        {"name": "تصوير فيديو + صور + مونتاج"},
+        {"name": "ليزر وإضاءة حديثة"},
+        {"name": "كادر نسائي متكامل"},
+        {"name": "دخولية مميزة وخاصة"},
+        {"name": "جهاز دخان للأجواء"},
+        {"name": "كيكة المناسبة 3 طوابق"},
+        {"name": "بارك خاص للسيارات"},
+        {"name": "ديجي احترافي"},
+        {"name": "جهاز فقاعات للمؤثرات"},
+        {"name": "ميز المهر والحنة"},
+        {"name": "تكييف حديث ومركز"}
+      ],
+      "packages": [
+        {"title": "العرض الأول — الفترة النهارية", "price_from": 750000, "is_offer": true,
+         "description": "من 1:00 ظهراً إلى 5:00 عصراً. يشمل 100 قطعة كيك فاخر ومشروبات ببسي باردة.",
+         "conditions": "سحب التلفون غير مشمول مع العرض."},
+        {"title": "العرض الثاني — الفترة المسائية", "price_from": 1300000, "is_offer": true,
+         "description": "من 6:00 مساءً إلى 10:00 مساءً. يشمل 100 طبق طعام متكامل.",
+         "conditions": "بدون طعام: 1,000,000 دينار. جلب الطعام من الخارج: أجور خدمة 150,000 دينار. سحب التلفون غير مشمول."}
+      ],
+      "images": [
+        {"file": "hall_malika/01.jpg", "kind": "cover", "alt": "تزيين القاعة والديكورات الداخلية"},
+        {"file": "hall_malika/02.jpg", "kind": "gallery", "alt": "الكوشة الملكية الفخمة"}
+      ],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "source_only", "address": "source_only", "instagram_url": "source_only",
+        "phone": "source_only", "capacity": "missing",
+        "price": ["missing", "الأسعار في المصدر عروض (نهاري/مسائي) وليست سعراً أساسياً"],
+        "services": "source_only", "packages": "source_only", "images": "source_only"
+      }
+    },
+    {
+      "legacy_id": "hall_weam_001",
+      "status": "published",
+      "category_id": "halls",
+      "business_name": "سلسلة قاعات الحاج وئام السوداني",
+      "short_description": "سلسلة قاعات ومطاعم للأعراس والمؤتمرات في العامرية والقادسية والمنصور.",
+      "description": "سلسلة قاعات للأعراس والمؤتمرات والاحتفالات. تضم: قاعة ليفانسيا LEVANSIA (العامرية)، قاعة ليفانت وإيليجانت (القادسية)، قاعة وحدائق زيوس الملكية (المنصور)، قاعة أوبال الملكية، ومطعم كرم بغدادي.",
+      "city": "بغداد",
+      "area": "العامرية · القادسية · المنصور",
+      "address": null,
+      "instagram_handle": "weam_alsudany",
+      "capacity": null,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": ["07708950505"],
+      "whatsapp": null,
+      "source_ref": "سلسلة قاعات الحاج وئام السوداني.pdf",
+      "services": [
+        {"name": "قاعة ليفانسيا LEVANSIA", "description": "العامرية"},
+        {"name": "قاعة ليفانت وإيليجانت", "description": "القادسية"},
+        {"name": "قاعة وحدائق زيوس الملكية", "description": "المنصور"},
+        {"name": "قاعة أوبال الملكية", "description": "أرقى تجهيزات المناسبات"},
+        {"name": "مطعم كرم بغدادي", "description": "تجارب ضيافة فاخرة"}
+      ],
+      "packages": [],
+      "images": [
+        {"file": "hall_weam/02.jpg", "kind": "cover", "alt": "التصميم والممر الداخلي — قاعة ليفانسيا"},
+        {"file": "hall_weam/01.jpg", "kind": "gallery", "alt": "الواجهة الخارجية لقاعة ليفانسيا (العامرية)"}
+      ],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "source_only", "address": "missing", "instagram_url": "source_only",
+        "phone": "source_only", "capacity": "missing", "price": "missing",
+        "services": "source_only", "packages": "missing", "images": "source_only"
+      }
+    },
+    {
+      "legacy_id": "hall_asawer_001",
+      "status": "published",
+      "category_id": "halls",
+      "business_name": "قاعة أساور اللؤلؤ الملكية",
+      "short_description": "قاعة للمناسبات والاحتفالات الفاخرة في المنصور مع فرع في الكرادة.",
+      "description": "قاعة للمناسبات والاحتفالات الفاخرة في المنصور، شارع أبو جعفر المنصور (بناية حلويات الحاج مهدي الخاصكي)، وفرع آخر في الكرادة شارع 62. أقسامها: سنتر بيس القاعة والديكورات الحديثة، تجهيز الكوشات والممرات، وقسم الضيافة والحلويات الخاصة.",
+      "city": "بغداد",
+      "area": "المنصور · الكرادة",
+      "address": "المنصور — شارع أبو جعفر المنصور، بناية حلويات الحاج مهدي الخاصكي · فرع الكرادة — شارع 62",
+      "instagram_handle": "asawer_al_loaloa",
+      "capacity": null,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": ["07837222237", "07737222237"],
+      "whatsapp": null,
+      "source_ref": "قاعة أساور اللؤلؤ الملكية.pdf",
+      "services": [
+        {"name": "سنتر بيس القاعة والديكورات الحديثة"},
+        {"name": "تجهيز الكوشات والممرات بأحدث التصاميم"},
+        {"name": "قسم الضيافة والحلويات الخاصة"}
+      ],
+      "packages": [
+        {"title": "عرض بمناسبة العيد", "price_from": 1350000, "is_offer": true,
+         "description": "عرض للحجز فقط.", "conditions": "عرض مؤقت بمناسبة العيد كما ورد في المصدر."}
+      ],
+      "images": [
+        {"file": "hall_asawer/01.jpg", "kind": "cover", "alt": "الكوشة وممر العرسان"},
+        {"file": "hall_asawer/02.jpg", "kind": "gallery", "alt": "صالة الضيوف"},
+        {"file": "hall_asawer/03.jpg", "kind": "gallery", "alt": "المدخل والديكور"}
+      ],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "source_only", "address": "source_only", "instagram_url": "source_only",
+        "phone": "source_only", "capacity": "missing",
+        "price": ["missing", "السعر المذكور عرض عيد مؤقت"],
+        "services": "source_only", "packages": "source_only",
+        "images": ["source_only", "مقصوصة من صور منشورات إنستغرام داخل المصدر (أزيلت واجهة التطبيق)"]
+      }
+    },
+    {
+      "legacy_id": "hall_jadriya_001",
+      "status": "published",
+      "category_id": "halls",
+      "business_name": "مطعم وحدائق الجادرية — قاعة الخاتون",
+      "short_description": "قاعة الخاتون في الجادرية: تتسع لـ200 شخص وحفلة لمدة 5 ساعات.",
+      "description": "قاعة الخاتون ضمن مطعم وحدائق الجادرية، تتسع لـ200 شخص براحة تامة، طابق أرضي مريح بدون أعمدة، وقت الحفلة 5 ساعات، مع كراج سيارات خاص. تتوفر خدمات نسائية متخصصة (كادر خدمة نسائي، دي جي نسائي، تصوير نسائي) وقائمة أطباق طعام بأسعار من 7,000 إلى 18,000 دينار للطبق.",
+      "city": "بغداد",
+      "area": "الجادرية",
+      "address": "بغداد — الجادرية — تقاطع جامعة بغداد",
+      "instagram_handle": "aljadriya_restaurant",
+      "capacity": 200,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": ["07817114400"],
+      "whatsapp": null,
+      "source_ref": "مطعم_وحدائق_الجادرية_قاعة_الخاتون.pdf",
+      "services": [
+        {"name": "كادر خدمة نسائي"},
+        {"name": "دي جي نسائي"},
+        {"name": "تصوير نسائي"},
+        {"name": "سحب موبايل", "price_from": 50000},
+        {"name": "قطع الكيك", "price_from": 1000, "unit": "piece", "description": "اختياري حسب رغبة الزبون (بالتعامل مع حلويات الزيتون)."},
+        {"name": "طبق مشكل (كباب دجاج + شنيتل + صاج + مقبلات)", "price_from": 10000, "image": "hall_jadriya/01.jpg", "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون."},
+        {"name": "طبق مشكل (كباب لحم + شنيتل + صاج)", "price_from": 12000, "image": "hall_jadriya/02.jpg", "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون."},
+        {"name": "طبق فاخر (كباب لحم + كباب دجاج + شنيتل + صاج)", "price_from": 15000, "image": "hall_jadriya/03.jpg", "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون."},
+        {"name": "طبق بيتزا وكبة وسنبوسك وصاج", "price_from": 9000, "image": "hall_jadriya/04.jpg", "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون."},
+        {"name": "طبق كريسبي وشنيتل وكبة وسنبوسك", "price_from": 11000, "image": "hall_jadriya/05.jpg", "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون."},
+        {"name": "طبق مشويات كباب لحم ودجاج مع البطاطا", "price_from": 10000, "image": "hall_jadriya/06.jpg", "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون."},
+        {"name": "طبق شنيتل وجبات صاج متعددة", "price_from": 11000, "image": "hall_jadriya/07.jpg", "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون."},
+        {"name": "طبق كريسبي وصاج وكبة وسنبوسك", "price_from": 10000, "image": "hall_jadriya/08.jpg", "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون."},
+        {"name": "طبق شيش طاووق وكباب لحم ودجاج وصاج", "price_from": 15000, "image": "hall_jadriya/09.jpg", "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون."},
+        {"name": "طبق كباب لحم وشنيتل وصاج", "price_from": 13000, "image": "hall_jadriya/10.jpg", "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون."},
+        {"name": "طبق مقبلات وكريسبي وصاج وكبة", "price_from": 7000, "image": "hall_jadriya/11.jpg", "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون."},
+        {"name": "طبق كريسبي وصاج مشكل مع فنگر", "price_from": 8000, "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون."}
+      ],
+      "packages": [
+        {"title": "العرض الشامل للخدمات والتجهيزات", "price_from": 1500000, "is_offer": false,
+         "description": "أرضية قاعة + كوشة ملكية، تصوير فوتو مع 50 لقطة طبع بألبوم، شاشة عرض داتاشو، خدمة القاعة الكاملة، دي جي + تصوير فيديو طول الحفلة، إنارة ليزرية + فقاعات + دخان، قالب كيك فوم + سنتر بيس طاولات.",
+         "conditions": "الطعام غير مشمول — الأطباق من 7,000 إلى 18,000 دينار للطبق."}
+      ],
+      "images": [
+        {"file": "hall_jadriya/03.jpg", "kind": "gallery", "alt": "طبق فاخر من قائمة المناسبات"},
+        {"file": "hall_jadriya/09.jpg", "kind": "gallery", "alt": "طبق شيش طاووق وكباب"},
+        {"file": "hall_jadriya/01.jpg", "kind": "gallery", "alt": "طبق مشكل"},
+        {"file": "hall_jadriya/04.jpg", "kind": "gallery", "alt": "طبق بيتزا وكبة وسنبوسك"}
+      ],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "source_only", "address": "source_only", "instagram_url": "source_only",
+        "phone": "source_only", "capacity": "source_only",
+        "price": ["missing", "المصدر يذكر سعر عرض شامل (باقة) وليس سعراً أساسياً للقاعة"],
+        "services": "source_only", "packages": "source_only",
+        "images": ["source_only", "صور أطباق الطعام فقط — لا توجد صورة للقاعة في المصدر"]
+      }
+    },
+    {
+      "legacy_id": "photo_tabarek_001",
+      "status": "published",
+      "category_id": "photography",
+      "business_name": "تبارك صلاح",
+      "short_description": "تصوير أعراس ومناسبات وجلسات خارجية وألبومات فاخرة في بغداد.",
+      "description": "Tabarek Salah Photography — توثيق أهم اللحظات: تغطية كاملة وشاملة للأفراح والمناسبات الداخلية، جلسات تصوير خارجية في أجمل الأماكن ببغداد، وتصميم ألبومات فاخرة ومخصصة.",
+      "city": "بغداد",
+      "area": null,
+      "address": null,
+      "instagram_handle": null,
+      "instagram_candidate": "tabarek.salah5",
+      "capacity": null,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": [],
+      "whatsapp": "wa.link/r9nq0h",
+      "source_ref": "كتالوج خدمات التصوير - تبارك صلاح.pdf",
+      "services": [
+        {"name": "أعراس ومناسبات", "description": "تغطية كاملة وشاملة لأفراحكم ومناسباتكم الداخلية بأعلى معايير الجودة الفنية."},
+        {"name": "جلسات خارجية", "description": "تصوير فوتوغرافي في أجمل الأماكن الخارجية الطبيعية والعامة في بغداد."},
+        {"name": "ألبومات مميزة", "description": "تصميم ألبومات فاخرة ومخصصة."}
+      ],
+      "packages": [
+        {"title": "باقة العرسان الأساسية", "is_offer": false,
+         "description": "تغطية مراسم حفل الزفاف داخل القاعة أو المنزل + صور بورتريه للعروسين.", "conditions": "تسليم نسخة رقمية عالية الدقة."},
+        {"title": "باقة الجلسات الخاصة", "is_offer": false,
+         "description": "جلسة تصوير خارجية لمدة ساعتين في موقع اختيار العميل ببغداد.", "conditions": "تشمل تعديل واختيار أفضل الصور."},
+        {"title": "باقة الألبومات الفاخرة", "is_offer": false,
+         "description": "ألبوم كبير مغلف بتصميم عصري راقٍ + بوستر هدية للذكرى.", "conditions": "تنسيق خاص حسب الطلب."}
+      ],
+      "images": [
+        {"file": "photo_tabarek/01.jpg", "kind": "cover", "alt": "جلسة تصوير عرسان"},
+        {"file": "photo_tabarek/02.jpg", "kind": "gallery", "alt": "لحظة قطع الكيك"}
+      ],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "missing", "address": "missing",
+        "instagram_url": ["unverified", "المعرّف tabarek.salah5 غير موسوم كـInstagram في نص المصدر (يظهر في لقطة شاشة لملف شخصي) — يحتاج تأكيد الفريق"],
+        "phone": "source_only", "capacity": "missing", "price": "missing",
+        "services": "source_only", "packages": "source_only", "images": "source_only"
+      }
+    },
+    {
+      "legacy_id": "photo_shot_001",
+      "status": "published",
+      "category_id": "photography",
+      "business_name": "لقطة زفاف — Shot Wedding",
+      "short_description": "تصوير أعراس بلمسات سينمائية كلاسيكية وجلسات خارجية تراثية.",
+      "description": "مصور فوتوغرافي محترف لتغطيات الأعراس بأسلوب فني راقٍ ولمسات سينمائية كلاسيكية، مع تميّز في التصوير الخارجي والتوثيق المعماري ذي الطابع التراثي. مناطق الخدمة حسب المصدر: العراق (بغداد، أربيل، كركوك) وتركيا (إسطنبول).",
+      "city": "بغداد",
+      "area": "بغداد · أربيل · كركوك · إسطنبول",
+      "address": null,
+      "instagram_handle": "shot__wedding",
+      "capacity": null,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": ["07739904901"],
+      "whatsapp": null,
+      "source_ref": "كتالوج خدمات لقطة زفاف - Shot Wedding.pdf",
+      "services": [
+        {"name": "التصوير الخارجي والتوثيق المعماري", "description": "صور ذات طابع تراثي وأماكن خارجية كلاسيكية مع تركيز على الإضاءة والتفاصيل."},
+        {"name": "تصوير فوتوغرافي وفيديو سينمائي"},
+        {"name": "مقاطع Reels قصيرة لمنصات التواصل"}
+      ],
+      "packages": [
+        {"title": "باقة الزفاف الكاملة (Wedding Package)", "is_offer": false,
+         "description": "تغطية شاملة للحفل والجلسة الخارجية وتجهيزات العروسين؛ تصوير فوتوغرافي وفيديو سينمائي بدقة عالية؛ ألبوم حراري كلاسيكي مصمم خصيصاً؛ تعديل ومعالجة ألوان سينمائية لجميع الصور."},
+        {"title": "باقة الحفلات والجلسات (Bridal & Engagement)", "is_offer": false,
+         "description": "تغطية جلسات Bridal Shower وحفلات الحنة؛ تصوير مقاطع Reels قصيرة؛ جلسات خارجية في مواقع مختارة (بغداد / أربيل / إسطنبول)؛ تسليم كادر الصور كاملاً على Drive وبأعلى دقة."}
+      ],
+      "images": [
+        {"file": "photo_shot/01.jpg", "kind": "cover", "alt": "جلسة عرسان خارجية بطابع تراثي"},
+        {"file": "photo_shot/02.jpg", "kind": "gallery", "alt": "جلسة تصوير خارجية"}
+      ],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "source_only", "address": "missing", "instagram_url": "source_only",
+        "phone": "source_only", "capacity": "missing", "price": "missing",
+        "services": "source_only", "packages": "source_only", "images": "source_only"
+      }
+    },
+    {
+      "legacy_id": "photo_asmer_001",
+      "status": "published",
+      "category_id": "photography",
+      "business_name": "اسمر — المصور بغداد",
+      "short_description": "تصوير زفاف وجلسات خارجية وتخرّج وضباط ومناسبات خاصة في بغداد.",
+      "description": "مصور فوتوغرافي في بغداد لحفلات الزفاف والجلسات الخارجية وتفاصيل الذكرى. خدمات أخرى حسب المصدر: تخرّج، ضباط، خطوبة، أعياد ميلاد، جلسات موديل وحفلات خاصة. يعتمد معدات تصوير سينمائية وكاميرات احترافية حديثة، وتعديل ألوان وإضاءة معالج تقنياً.",
+      "city": "بغداد",
+      "area": null,
+      "address": null,
+      "instagram_handle": "photographer__asmer",
+      "capacity": null,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": ["07727604931"],
+      "whatsapp": null,
+      "source_ref": "كتالوج_خدمات_المصور_اسمر_مصور_بغداد.pdf",
+      "services": [
+        {"name": "تصوير حفلات الزفاف"},
+        {"name": "الجلسات الخارجية", "description": "التقاط اللقطات العفوية والاحترافية مع اختيار أفضل الأماكن."},
+        {"name": "لحظات الذاكرة — خواتم الزفاف", "description": "تفاصيل أنيقة لحلقة الزفاف."},
+        {"name": "جلسات تخرّج الطلاب", "description": "تغطية فردية وجماعية."},
+        {"name": "جلسات الضباط والشباب", "description": "تصوير بروتوكولي وحرفي مخصص لدفعات التخرّج العسكرية."},
+        {"name": "خطوبة، أعياد ميلاد، جلسات موديل وحفلات خاصة"}
+      ],
+      "packages": [],
+      "images": [
+        {"file": "photo_asmer/01.jpg", "kind": "cover", "alt": "جلسة عرسان على درج تراثي"},
+        {"file": "photo_asmer/02.jpg", "kind": "gallery", "alt": "لقطة بالأبيض والأسود"},
+        {"file": "photo_asmer/03.jpg", "kind": "gallery", "alt": "خواتم الزفاف"}
+      ],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "missing", "address": "missing", "instagram_url": "source_only",
+        "phone": "source_only", "capacity": "missing", "price": "missing",
+        "services": "source_only", "packages": "missing", "images": "source_only"
+      }
+    },
+    {
+      "legacy_id": "photo_mariam_001",
+      "status": "published",
+      "category_id": "photography",
+      "business_name": "مريم الخفاجي",
+      "short_description": "تصوير زفاف وبورتريه العروس وجلسات عقد المحكمة.",
+      "description": "Maream Alkafaji — تهتم بإبراز أدق تفاصيل الجمال والأناقة في يوم الزفاف: لقطات العروس الخاصة، تفاصيل الفستان، والجلسات الثنائية. الحجز والاستفسار برسالة واتساب.",
+      "city": "بغداد",
+      "area": null,
+      "address": null,
+      "instagram_handle": "maream.alkafaji.ph",
+      "capacity": null,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": [],
+      "whatsapp": "+9647735224026",
+      "source_ref": "كتالوج_خدمات_المصورة_مريم_الخفاجي.pdf",
+      "services": [
+        {"name": "تصوير زفاف وبورتريه العروس"},
+        {"name": "جلسات عقد المحكمة"}
+      ],
+      "packages": [
+        {"title": "جلسات عقد المحكمة", "is_offer": false,
+         "description": "تغطية كاملة لمراسم عقد المحكمة؛ تصوير فيديو احترافي قصير (Reels)؛ تعديل جميع الصور بأعلى جودة؛ تسليم كادر الصور بملف إلكتروني عالي الدقة."},
+        {"title": "باقة الزفاف الملكية", "is_offer": false,
+         "description": "تصوير الجلسة الخارجية واستوديو؛ ألبوم حراري فاخر بطباعة ممتازة؛ لوحة جدارية قياس كبير؛ تغطية تفاصيل العروس (المكياج، الفستان، المجوهرات)."}
+      ],
+      "images": [
+        {"file": "photo_mariam/01.jpg", "kind": "cover", "alt": "عرسان في جلسة داخلية"},
+        {"file": "photo_mariam/02.jpg", "kind": "gallery", "alt": "بورتريه العروس"}
+      ],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "missing", "address": "missing", "instagram_url": "source_only",
+        "phone": "source_only", "capacity": "missing", "price": "missing",
+        "services": "source_only", "packages": "source_only", "images": "source_only"
+      }
+    },
+    {
+      "legacy_id": "photo_marwa_001",
+      "status": "published",
+      "category_id": "photography",
+      "business_name": "ستوديو مروه الطائي",
+      "short_description": "موثّقة السعادة — تصوير الأعراس والمناسبات بمعدات Canon وإضاءة Godox.",
+      "description": "Marwa Altaie — ستوديو لتصوير كافة المناسبات في ساحة الاحتفالات. يستخدم أحدث الكاميرات والإضاءات الاحترافية (Canon R Series & Godox Lighting).",
+      "city": "بغداد",
+      "area": "ساحة الاحتفالات",
+      "address": "ساحة الاحتفالات — ستوديو مروه الطائي",
+      "instagram_handle": "marwa.altaie63",
+      "capacity": null,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": ["07844731377"],
+      "whatsapp": null,
+      "source_ref": "كتالوج_خدمات_ستوديو_مروه_الطائي_موثقة_السعادة.pdf",
+      "services": [
+        {"name": "تصوير الأعراس والزفاف"},
+        {"name": "جلسات خطوبة وعقد محكمة"},
+        {"name": "تصوير حفلات التخرج وأعياد الميلاد"},
+        {"name": "إضاءة استوديو متكاملة في الموقع"}
+      ],
+      "packages": [
+        {"title": "باقة الأعراس والزفاف", "is_offer": false,
+         "description": "تغطية كاملة للحفل والجلسة الخارجية؛ تصوير فيديو سينمائي + مقاطع Reels؛ ألبوم حراري فاخر بطباعة ممتازة؛ معالجة وألوان احترافية لجميع الصور."},
+        {"title": "الحفلات والمناسبات الخاصة", "is_offer": false,
+         "description": "جلسات خطوبة وعقد محكمة؛ تصوير حفلات التخرج وأعياد الميلاد؛ تجهيز إضاءة استوديو متكاملة في الموقع؛ تسليم كادر الصور بملف إلكتروني عالي الدقة."}
+      ],
+      "images": [
+        {"file": "photo_marwa/01.jpg", "kind": "cover", "alt": "بورتريه بإضاءة استوديو"},
+        {"file": "photo_marwa/02.jpg", "kind": "gallery", "alt": "معدات التصوير Canon وGodox"}
+      ],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "source_only", "address": "source_only", "instagram_url": "source_only",
+        "phone": "source_only", "capacity": "missing", "price": "missing",
+        "services": "source_only", "packages": "source_only", "images": "source_only"
+      }
+    },
+    {
+      "legacy_id": "decor_laflamme_001",
+      "status": "published",
+      "category_id": "flowers",
+      "business_name": "زهور وهدايا لافلام — LaFlamme Flowers",
+      "short_description": "ورد طبيعي فاخر وصناعي وبوكسات هدايا في الجادرية.",
+      "description": "زهور وهدايا لافلام في الجادرية داخل مطعم لافلام: ورد طبيعي فاخر، ورد صناعي دائم، بوكسات وهدايا مميزة، وهدايا عيد الحب والمناسبات. طرق الدفع: ماستر كارد وزين كاش.",
+      "city": "بغداد",
+      "area": "الجادرية",
+      "address": "الجادرية — داخل مطعم لافلام",
+      "instagram_handle": "laflamme.flowers",
+      "capacity": null,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": ["07714244730"],
+      "whatsapp": null,
+      "source_ref": "كتالوج خدمات وعروض LaFlamme Flowers.pdf",
+      "services": [
+        {"name": "ورد طبيعي فاخر"},
+        {"name": "ورد صناعي دائم"},
+        {"name": "بوكسات وهدايا مميزة"},
+        {"name": "هدايا عيد الحب والمناسبات"},
+        {"name": "بوكيه الرقة والجمال", "description": "ورد جوري وبيبي روز بتنسيق باستيل وردي وأبيض أنيق.", "image": "flowers_laflamme/01.jpg"},
+        {"name": "باقة بيبي روز لافلام الملكية", "description": "تجمّع كثيف وفاخر من البيبي روز الموشّح بالأحمر والأبيض.", "image": "flowers_laflamme/02.jpg"}
+      ],
+      "packages": [],
+      "images": [
+        {"file": "flowers_laflamme/01.jpg", "kind": "cover", "alt": "بوكيه الرقة والجمال"},
+        {"file": "flowers_laflamme/02.jpg", "kind": "gallery", "alt": "باقة بيبي روز لافلام الملكية"}
+      ],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "source_only", "address": "source_only", "instagram_url": "source_only",
+        "phone": "source_only", "capacity": "missing", "price": "missing",
+        "services": "source_only", "packages": "missing", "images": "source_only"
+      }
+    },
+    {
+      "legacy_id": "decor_lucci_001",
+      "status": "published",
+      "category_id": "flowers",
+      "business_name": "Luccè Flowers",
+      "short_description": "مسكات أعراس فاخرة وبوكيهات ورد طبيعي وصناعي في المنصور.",
+      "description": "Luccè Flowers في المنصور — شارع مول بابيلون باتجاه 14 رمضان: مسكات أعراس فاخرة، مسكات وتنسيقات تخرّج، بوكيهات ورد طبيعي وبوكيهات ورد صناعي. يتوفر دفع إلكتروني.",
+      "city": "بغداد",
+      "area": "المنصور",
+      "address": "المنصور — شارع مول بابيلون، باتجاه 14 رمضان",
+      "instagram_handle": "lucci.flowers2",
+      "capacity": null,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": ["07710620192"],
+      "whatsapp": null,
+      "source_ref": "كتالوج خدمات وعروض Lucce Flowers (1).pdf",
+      "services": [
+        {"name": "مسكات أعراس فاخرة"},
+        {"name": "مسكات وتنسيقات تخرّج"},
+        {"name": "بوكيهات ورد طبيعي"},
+        {"name": "بوكيهات ورد صناعي"},
+        {"name": "بوكيه العشاق الكلاسيكي", "description": "ورد طبيعي أحمر وأبيض مع شريط مخصص للأسماء.", "image": "flowers_lucci/01.jpg"},
+        {"name": "بوكيه الأناقة النقي", "description": "زهور بيضاء وخضراء مع تغليف باستيل تركوازي.", "image": "flowers_lucci/02.jpg"}
+      ],
+      "packages": [],
+      "images": [
+        {"file": "flowers_lucci/01.jpg", "kind": "cover", "alt": "بوكيه العشاق الكلاسيكي"},
+        {"file": "flowers_lucci/02.jpg", "kind": "gallery", "alt": "بوكيه الأناقة النقي"}
+      ],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "source_only", "address": "source_only",
+        "instagram_url": ["source_only", "المصدر يذكر @lucci.flowers2 في خانة التواصل و lucci.flowers في التذييل"],
+        "phone": "source_only", "capacity": "missing", "price": "missing",
+        "services": "source_only", "packages": "missing", "images": "source_only"
+      }
+    },
+    {
+      "legacy_id": "decor_fayrouz_001",
+      "status": "published",
+      "category_id": "flowers",
+      "business_name": "زهور فيروز — Fayrouz Flowers",
+      "short_description": "ورد طبيعي وصناعي وكيك مناسبات وتنسيق هدايا في الكرادة.",
+      "description": "زهور فيروز في الكرادة شارع 52 (مجاور مطعم بافلو): ورد طبيعي، ورد صناعي، كيك مناسبات، وتنسيق هدايا وتنسيقات حسب الطلب. طرق الدفع: ماستر كارد أو زين كاش. الطلب مباشرة عبر إنستغرام أو واتساب.",
+      "city": "بغداد",
+      "area": "الكرادة",
+      "address": "الكرادة — شارع 52 (مجاور مطعم بافلو)",
+      "instagram_handle": "fayrouz_flowers",
+      "capacity": null,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": ["07747911119", "07812220671"],
+      "whatsapp": null,
+      "source_ref": "زهور_فيروز_كتالوج_الباقات_والهدايا.pdf",
+      "services": [
+        {"name": "ورد طبيعي"},
+        {"name": "ورد صناعي"},
+        {"name": "كيك مناسبات"},
+        {"name": "تنسيق هدايا"},
+        {"name": "باقة ورد جوري أحمر طبيعي", "image": "flowers_fayrouz/01.jpg"},
+        {"name": "تنسيق ورد طبيعي مع كادي وزنبق", "image": "flowers_fayrouz/02.jpg"},
+        {"name": "تنسيقات حسب الطلب"}
+      ],
+      "packages": [],
+      "images": [
+        {"file": "flowers_fayrouz/02.jpg", "kind": "cover", "alt": "تنسيق ورد طبيعي مع كادي وزنبق"},
+        {"file": "flowers_fayrouz/01.jpg", "kind": "gallery", "alt": "باقة ورد جوري أحمر"}
+      ],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "source_only", "address": "source_only", "instagram_url": "source_only",
+        "phone": "source_only", "capacity": "missing",
+        "price": ["missing", "لا توجد أسعار في كتالوج فيروز (سعر v1 كان منقولاً خطأً من ورد بغداد)"],
+        "services": "source_only", "packages": "missing", "images": "source_only"
+      }
+    },
+    {
+      "legacy_id": "decor_ward_001",
+      "status": "published",
+      "category_id": "flowers",
+      "business_name": "ورد بغداد للزهور الطبيعية",
+      "short_description": "باقات بيبي روز وورد طبيعي مع توصيل سريع داخل بغداد.",
+      "description": "Ward Baghdad — ورد طبيعي وتنسيقات مميزة مع توصيل سريع داخل بغداد. الطلب والحجز عبر مراسلة الصفحة مباشرة. قائمة أسعار تقديرية لباقات البيبي روز حسب العدد.",
+      "city": "بغداد",
+      "area": "توصيل داخل بغداد",
+      "address": null,
+      "instagram_handle": null,
+      "instagram_candidate": "1ward.baghdad / 2ward.baghdad",
+      "capacity": null,
+      "price_from": 10000, "price_to": 65000,
+      "price_note": "أسعار تقديرية لباقات البيبي روز (15 إلى 150 وردة) حسب المصدر",
+      "phones": [],
+      "whatsapp": null,
+      "source_ref": "كتالوج ورد بغداد للزهور الطبيعية.pdf",
+      "services": [
+        {"name": "ورد طبيعي وتنسيقات مميزة"},
+        {"name": "توصيل سريع داخل بغداد"},
+        {"name": "باقة ألوان الحياة والبهجة", "description": "مزيج من عباد الشمس والبيبي روز بتغليف بنفسجي.", "image": "flowers_ward/01.jpg"},
+        {"name": "باقة الجوري الملكي", "image": "flowers_ward/02.jpg"}
+      ],
+      "packages": [
+        {"title": "15 وردة بيبي روز", "price_from": 10000, "is_offer": false, "description": "شامل التغليف الفاخر والكرت.", "conditions": "سعر تقديري."},
+        {"title": "25 وردة بيبي روز", "price_from": 15000, "is_offer": false, "description": "تنسيق كلاسيكي أنيق.", "conditions": "سعر تقديري."},
+        {"title": "50 وردة بيبي روز", "price_from": 25000, "is_offer": false, "description": "باقة متوسطة مميزة.", "conditions": "سعر تقديري."},
+        {"title": "75 وردة بيبي روز", "price_from": 35000, "is_offer": false, "description": "باقة كبيرة فاخرة.", "conditions": "سعر تقديري."},
+        {"title": "100 وردة بيبي روز", "price_from": 45000, "is_offer": false, "description": "باقة ملكية مميزة جداً.", "conditions": "سعر تقديري."},
+        {"title": "150 وردة بيبي روز", "price_from": 65000, "is_offer": false, "description": "أضخم باقة بيبي روز + إكسسوارات مجاناً.", "conditions": "سعر تقديري."}
+      ],
+      "images": [
+        {"file": "flowers_ward/01.jpg", "kind": "cover", "alt": "باقة ألوان الحياة والبهجة"},
+        {"file": "flowers_ward/02.jpg", "kind": "gallery", "alt": "باقة الجوري الملكي"}
+      ],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "source_only", "address": "missing",
+        "instagram_url": ["unverified", "المصدر يذكر حسابين: 1ward.baghdad و 2ward.baghdad"],
+        "phone": "missing", "capacity": "missing",
+        "price": ["source_only", "المصدر يصفها بـ«السعر المقدر»"],
+        "services": "source_only", "packages": "source_only", "images": "source_only"
+      }
+    },
+    {
+      "legacy_id": "hall_almas_001",
+      "status": "draft",
+      "category_id": "halls",
+      "business_name": "قاعة الماس للمناسبات",
+      "short_description": "قاعة في الأمين تتسع لـ200 شخص بثلاثة عروض للمناسبات والأفراح.",
+      "description": "قاعة الماس للمناسبات في الأمين — مدخل إعدادية الجمهورية — فوق ماركت بسكويته. تتسع لـ200 نفر. كافة العروض تشمل مجاناً: دي جي احترافي، تصوير الحفل باحترافية 4K، 30 لقطة مطبوعة، دخان وليزريات حديثة، كوشة VIP فخمة، دخولية مميزة، فرقة بصراوية رجالية، شاشات عرض داخلية، بارك للسيارات، وخدمات أخرى حسب الطلب.",
+      "city": "بغداد",
+      "area": "الأمين",
+      "address": "الأمين — مدخل إعدادية الجمهورية — فوق ماركت بسكويته",
+      "instagram_handle": null,
+      "capacity": 200,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": ["07724333833"],
+      "whatsapp": null,
+      "source_ref": "عروض قاعة الماس للمناسبات.pdf",
+      "services": [
+        {"name": "دي جي احترافي"}, {"name": "تصوير الحفل باحترافية 4K"}, {"name": "30 لقطة مطبوعة (هدية للعرسان)"},
+        {"name": "دخان + ليزريات حديثة"}, {"name": "كوشة VIP فخمة"}, {"name": "دخولية مميزة"},
+        {"name": "فرقة بصراوية رجالية (هدية)"}, {"name": "شاشات عرض داخلية"}, {"name": "بارك للسيارات (مجاني)"},
+        {"name": "كادر متكامل (رجالي + نسائي)"}, {"name": "بروفا للعرسان قبل الحفل بـ5 أيام"}, {"name": "الماء مفتوح على طول الحفل"},
+        {"name": "تكييف مركزي وأجواء ممتازة"}
+      ],
+      "packages": [
+        {"title": "العرض الأول", "price_from": 990000, "is_offer": true, "description": "100 طبق طعام + 100 علبة ببسي."},
+        {"title": "العرض الثاني", "price_from": 990000, "is_offer": true, "description": "100 سندويج + 100 قطعة كيك + 200 علبة ببسي."},
+        {"title": "العرض الثالث", "price_from": 750000, "is_offer": true, "description": "عرض بدون طعام (يشمل جميع الخدمات العامة)."}
+      ],
+      "images": [],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "source_only", "address": "source_only",
+        "instagram_url": ["missing", "لا يوجد حساب إنستغرام في المصدر — مستبعد من النشر بقرار الفريق"],
+        "phone": "source_only", "capacity": "source_only", "price": "missing",
+        "services": "source_only", "packages": "source_only", "images": "missing"
+      }
+    },
+    {
+      "legacy_id": "hall_qasr_rotana_001",
+      "status": "draft",
+      "category_id": "halls",
+      "business_name": "قاعة قصر روتانا",
+      "short_description": "قاعة داخل منتزه ألف ليلة وليلة في الأعظمية بعرض شامل.",
+      "description": "أول قاعة للمناسبات داخل القصر الرئاسي — منتزه ألف ليلة وليلة، الأعظمية. العرض الأساسي: الأرضية المجهزة بالكامل (عدا يوم الجمعة)، الكوشة الملكية مع تزيين الطاولات، نظام الدي جي والإنارة الاحترافية، عروض الليزريات والمؤثرات الضوئية والدخان، مع تصوير وتغطية سينمائية.",
+      "city": "بغداد",
+      "area": "الأعظمية",
+      "address": "الأعظمية — داخل منتزه ألف ليلة وليلة",
+      "instagram_handle": null,
+      "capacity": null,
+      "price_from": null, "price_to": null, "price_note": null,
+      "phones": ["07860060082", "07760060082"],
+      "whatsapp": null,
+      "source_ref": "عرض قاعة قصر روتانا.pdf",
+      "services": [
+        {"name": "تصوير احترافي شامل مع إخراج موقعي"}, {"name": "كاميرا سلكية وتصوير بـ(Ronin)"},
+        {"name": "كاميرا دولي (Dolly Camera) سينمائية"}, {"name": "جلسة تصوير فوتوغرافي متكاملة"}
+      ],
+      "packages": [
+        {"title": "العرض الشامل", "price_from": 5500000, "is_offer": true,
+         "description": "تفاصيل العرض الأساسي + التصوير والتغطية السينمائية + هدايا مجانية (خدمة سحب الموبايلات، أرضية خاصة بمركز العرسان، ميز مهر، ميز حنة، عروض العصا الضوئية، الثريا الراقصة، شاشة هولوغرام، مسدسات دخان وشعلات، منظمة حفل، بروفات)."}
+      ],
+      "images": [
+        {"file": "hall_qasr_rotana/01.jpg", "kind": "cover", "alt": "فخامة الإضاءة والمسرح الملكي"},
+        {"file": "hall_qasr_rotana/02.jpg", "kind": "gallery", "alt": "تصميم الممر والأرضية المضيئة"}
+      ],
+      "fields": {
+        "business_name": "source_only", "category": "source_only", "description": "source_only",
+        "area": "source_only", "address": "source_only",
+        "instagram_url": ["missing", "لا يوجد حساب إنستغرام في المصدر — مستبعد من النشر بقرار الفريق"],
+        "phone": "source_only", "capacity": "missing", "price": "missing",
+        "services": "source_only", "packages": "source_only", "images": "source_only"
+      }
+    }
+  ]
+}

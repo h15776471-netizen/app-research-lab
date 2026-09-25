@@ -1,0 +1,3435 @@
+{
+ "_generated": "node supabase/scripts/build_catalog.mjs — do not edit; source: provider-data/catalog/providers.v2.json",
+ "categories": [
+  {
+   "id": "halls",
+   "name_ar": "قاعات المناسبات",
+   "name_en": "Wedding & Event Halls",
+   "icon_key": "building",
+   "sort_order": 10,
+   "is_active": true
+  },
+  {
+   "id": "photography",
+   "name_ar": "التصوير",
+   "name_en": "Photography",
+   "icon_key": "camera",
+   "sort_order": 20,
+   "is_active": true
+  },
+  {
+   "id": "flowers",
+   "name_ar": "الورد والزهور",
+   "name_en": "Flowers",
+   "icon_key": "flower",
+   "sort_order": 30,
+   "is_active": true
+  },
+  {
+   "id": "decoration",
+   "name_ar": "الديكور والتنسيق",
+   "name_en": "Decoration",
+   "icon_key": "sparkle",
+   "sort_order": 40,
+   "is_active": true
+  },
+  {
+   "id": "beauty",
+   "name_ar": "التجميل",
+   "name_en": "Beauty",
+   "icon_key": "makeup",
+   "sort_order": 50,
+   "is_active": true
+  },
+  {
+   "id": "catering",
+   "name_ar": "الضيافة والطعام",
+   "name_en": "Catering",
+   "icon_key": "fork_knife",
+   "sort_order": 60,
+   "is_active": true
+  },
+  {
+   "id": "music",
+   "name_ar": "الموسيقى والفرق",
+   "name_en": "Music & Bands",
+   "icon_key": "music",
+   "sort_order": 70,
+   "is_active": true
+  },
+  {
+   "id": "cars",
+   "name_ar": "سيارات المناسبات",
+   "name_en": "Event Cars",
+   "icon_key": "car",
+   "sort_order": 80,
+   "is_active": true
+  },
+  {
+   "id": "invitations",
+   "name_ar": "الدعوات",
+   "name_en": "Invitations",
+   "icon_key": "envelope",
+   "sort_order": 90,
+   "is_active": true
+  },
+  {
+   "id": "other",
+   "name_ar": "خدمات أخرى",
+   "name_en": "Other Event Services",
+   "icon_key": "dots",
+   "sort_order": 100,
+   "is_active": true
+  }
+ ],
+ "providers": [
+  {
+   "id": "a84cb1ac-960d-5ce1-a692-aace78ac81b4",
+   "user_id": null,
+   "category_id": "halls",
+   "legacy_id": "hall_ritaj_001",
+   "business_name": "قاعة الريتاج للمناسبات",
+   "short_description": "قاعة مناسبات في المدينة المائية تقدّم عروضاً شاملة للأعراس والحفلات.",
+   "description": "قاعة للأعراس والحفلات والمناسبات في المدينة المائية مقابل حي الجامع. عرضها الحالي يشمل مصورة محترفة، ملاية/قارئة، موظفات تفتيش وتنظيم، وزفة موسيقى وطلة عروس.",
+   "city": "بغداد",
+   "area": "المدينة المائية",
+   "address": "المدينة المائية — مقابل حي الجامع",
+   "instagram_url": "https://www.instagram.com/ritajhall",
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": null,
+   "capacity": null,
+   "price_from": null,
+   "price_to": null,
+   "currency": "IQD",
+   "price_note": null,
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "قاعة الريتاج للمناسبات.pdf",
+   "images": [],
+   "services": [
+    {
+     "id": "f7fcf126-202f-5c23-a6df-e84b594d979a",
+     "provider_id": "a84cb1ac-960d-5ce1-a692-aace78ac81b4",
+     "name": "مصورة محترفة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "4af53134-c622-50dc-b23e-4e8b7466f329",
+     "provider_id": "a84cb1ac-960d-5ce1-a692-aace78ac81b4",
+     "name": "ملاية / قارئة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "7d945290-669e-5945-bf13-a56d55a40158",
+     "provider_id": "a84cb1ac-960d-5ce1-a692-aace78ac81b4",
+     "name": "موظفات تفتيش وتنظيم",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 2
+    },
+    {
+     "id": "0f7d0a38-265e-5b52-845a-4810e210f937",
+     "provider_id": "a84cb1ac-960d-5ce1-a692-aace78ac81b4",
+     "name": "زفة موسيقى وطلة عروس",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 3
+    }
+   ],
+   "packages": [
+    {
+     "id": "0b8cf414-8f2a-540f-9f27-5515b24b5a9c",
+     "provider_id": "a84cb1ac-960d-5ce1-a692-aace78ac81b4",
+     "title": "العرض الشامل — عرض شهري 9 و10",
+     "description": "يشمل: مصورة محترفة، ملاية/قارئة، موظفات تفتيش وتنظيم، زفة موسيقى وطلة عروس.",
+     "price_from": 500000,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "عرض خاص لشهري 9 و10 كما ورد في المصدر (السنة غير محددة). الحجز بالمراسلة على الخاص أو واتساب.",
+     "is_offer": true,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "قاعة الريتاج للمناسبات.pdf",
+     "is_active": true,
+     "sort_order": 0
+    }
+   ],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "phone",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "missing",
+     "note": "لا يوجد سعر أساسي في المصدر — السعر المذكور عرض مؤقت"
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "missing",
+     "note": "خانة صورة القاعة في المصدر فارغة/معطوبة"
+    }
+   ]
+  },
+  {
+   "id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+   "user_id": null,
+   "category_id": "halls",
+   "legacy_id": "hall_rotana_baghdad_001",
+   "business_name": "مطعم وقاعة روتانا بغداد",
+   "short_description": "قاعة أفراح في الوزيرية مع ديجي وتصوير وفرقة وكيكة ضمن الحجز.",
+   "description": "مطعم وقاعة في الوزيرية قرب جامعة بغداد لإقامة الحفلات والمناسبات. تتضمن فقرات مجانية مع الحجز مثل الديجي والتصوير الفوتوغرافي والفيديو وكيكة العرسان وميز عقد المهر والحناء وفرقة بصراوية وكراج مجاني.",
+   "city": "بغداد",
+   "area": "الوزيرية",
+   "address": "الوزيرية — قرب جامعة بغداد",
+   "instagram_url": "https://www.instagram.com/rotana_baghdad_",
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": null,
+   "capacity": null,
+   "price_from": 750000,
+   "price_to": 1000000,
+   "currency": "IQD",
+   "price_note": "أسعار حجز القاعة حسب المصدر: الأيام العادية 750,000 · نهاية الأسبوع 1,000,000",
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "عرض حجز قاعة روتانا بغداد.pdf",
+   "images": [],
+   "services": [
+    {
+     "id": "2106b82d-bf37-5dfe-84a6-caf5cbb0adad",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "name": "ديجي (DJ) احترافي",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "35272438-6fea-5d0b-b8e4-cb594ed61319",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "name": "تصوير فوتوغرافي + 30 صورة هدية",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "d3ac08b9-8491-51b7-8679-0577fc87cfe7",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "name": "تصوير فيديو متكامل",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 2
+    },
+    {
+     "id": "eba72849-2d7f-548d-973f-8a4f97c2b7a3",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "name": "كيكة خاصة للعرسان",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 3
+    },
+    {
+     "id": "93dd4278-887e-5ace-9d59-a67ca2853773",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "name": "ميز عقد مهر فاخر",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 4
+    },
+    {
+     "id": "6b22e493-b2a9-542a-8e73-7fa7b8b58c34",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "name": "ميز حناء مجهز",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 5
+    },
+    {
+     "id": "d0a3627c-f25d-53c4-872d-47ac3560785b",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "name": "خدمة الماء مفتوح مجاناً",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 6
+    },
+    {
+     "id": "b498ac5d-d63b-5d9d-9e8c-0365765a65a3",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "name": "شعلات وإضاءة خاصة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 7
+    },
+    {
+     "id": "e05283bc-73e3-5bba-af1d-11e59f0fbb27",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "name": "فقاعات ودخان مؤثرات",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 8
+    },
+    {
+     "id": "934d2ff9-ef09-5c7b-822c-f899980dc11e",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "name": "إضاءات ليزرية حديثة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 9
+    },
+    {
+     "id": "0e472518-5c32-5aef-aeb3-65990a118bf7",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "name": "فرقة بصراوية (نسائي ورجالي)",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 10
+    },
+    {
+     "id": "ae8d3ef2-ed41-548e-be08-40baa398dbcf",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "name": "كراج مجاني للسيارات",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 11
+    },
+    {
+     "id": "239f932d-6de0-5c5a-8e71-d87a1e5140bc",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "name": "وجبات الأطباق",
+     "description": "السعر للطبق الواحد، مع مشروب ببسي مجاني لكل طبق.",
+     "price_from": 3500,
+     "price_to": 6000,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 12
+    },
+    {
+     "id": "7ec42c0f-7181-5863-a19e-4a2099d8eecd",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "name": "قطع الكيك",
+     "description": "خياران: 1,000 أو 1,500 للقطعة مع مشروب ببسي.",
+     "price_from": 1000,
+     "price_to": 1500,
+     "currency": "IQD",
+     "unit": "piece",
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 13
+    }
+   ],
+   "packages": [
+    {
+     "id": "4cbb1a3c-d703-5711-b56f-ff7f621aa2fa",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "title": "حجز القاعة — الأيام العادية",
+     "description": null,
+     "price_from": 750000,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "من الأحد إلى الأربعاء.",
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "عرض حجز قاعة روتانا بغداد.pdf",
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "750bf2b3-5d14-5388-9122-c17b8bc4b220",
+     "provider_id": "9c2b77e6-1649-5abd-86ea-9257a6a99e03",
+     "title": "حجز القاعة — نهاية الأسبوع",
+     "description": null,
+     "price_from": 1000000,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "الخميس، الجمعة، السبت.",
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "عرض حجز قاعة روتانا بغداد.pdf",
+     "is_active": true,
+     "sort_order": 1
+    }
+   ],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "phone",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "missing",
+     "note": "كل خانات الصور في المصدر معطوبة"
+    }
+   ]
+  },
+  {
+   "id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+   "user_id": null,
+   "category_id": "halls",
+   "legacy_id": "hall_malika_001",
+   "business_name": "قاعة الملكة للمناسبات",
+   "short_description": "قاعة في زيونة بعرضين نهاري ومسائي وكوشة ملكية وكادر نسائي.",
+   "description": "قاعة مناسبات في زيونة، شارع الربيعي مجاور أمير مول. تقدّم عرضين (فترة نهارية وفترة مسائية)، ومع العرضين خدمات مجانية منها كوشة ملكية فخمة، تصوير فيديو وصور ومونتاج، ليزر وإضاءة حديثة، كادر نسائي متكامل، وكيكة المناسبة 3 طوابق.",
+   "city": "بغداد",
+   "area": "زيونة",
+   "address": "زيونة — شارع الربيعي — مجاور أمير مول",
+   "instagram_url": "https://www.instagram.com/queen__6h",
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": "assets/images/providers/hall_malika/01.jpg",
+   "capacity": null,
+   "price_from": null,
+   "price_to": null,
+   "currency": "IQD",
+   "price_note": null,
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "عروض_قاعة_الملكة_للمناسبات_مع_الصور.pdf",
+   "images": [
+    {
+     "id": "4125722a-47f5-5964-b0d7-a702b1596dda",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "url": "assets/images/providers/hall_malika/01.jpg",
+     "kind": "cover",
+     "sort_order": 0,
+     "alt_text": "تزيين القاعة والديكورات الداخلية",
+     "source": "pdf_extract",
+     "source_ref": "عروض_قاعة_الملكة_للمناسبات_مع_الصور.pdf"
+    },
+    {
+     "id": "3f66d235-8c81-568a-9b0e-481016ad1d0d",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "url": "assets/images/providers/hall_malika/02.jpg",
+     "kind": "gallery",
+     "sort_order": 1,
+     "alt_text": "الكوشة الملكية الفخمة",
+     "source": "pdf_extract",
+     "source_ref": "عروض_قاعة_الملكة_للمناسبات_مع_الصور.pdf"
+    }
+   ],
+   "services": [
+    {
+     "id": "a39d9b97-f551-5347-8452-9473d93ef05f",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "name": "كوشة ملكية فخمة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "d37e3fdf-c433-57a8-b9d4-da5949f52bdb",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "name": "تصوير فيديو + صور + مونتاج",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "5a55a4de-8893-56de-8077-f9178ea466c7",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "name": "ليزر وإضاءة حديثة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 2
+    },
+    {
+     "id": "f5c4d8c7-7a20-5f77-9953-00c2446b0a0f",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "name": "كادر نسائي متكامل",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 3
+    },
+    {
+     "id": "aa0a0acb-f4a5-54e6-a820-9dc1f364f7fd",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "name": "دخولية مميزة وخاصة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 4
+    },
+    {
+     "id": "12c0fbeb-1d05-5594-8902-65e74d8107f9",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "name": "جهاز دخان للأجواء",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 5
+    },
+    {
+     "id": "9df0eb18-f119-5f6f-a811-f51cd06ff71e",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "name": "كيكة المناسبة 3 طوابق",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 6
+    },
+    {
+     "id": "0b53271a-8d24-5d54-8c19-c68c26044613",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "name": "بارك خاص للسيارات",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 7
+    },
+    {
+     "id": "2db4c0be-d467-570b-97aa-eff2f968ce20",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "name": "ديجي احترافي",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 8
+    },
+    {
+     "id": "35d3a0ea-fed5-517f-882d-ba60675a6486",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "name": "جهاز فقاعات للمؤثرات",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 9
+    },
+    {
+     "id": "5ce7966d-fe9c-5e75-a251-4dddff58e366",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "name": "ميز المهر والحنة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 10
+    },
+    {
+     "id": "5ca25f2b-dcab-57aa-abe9-0a1afb9766a0",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "name": "تكييف حديث ومركز",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 11
+    }
+   ],
+   "packages": [
+    {
+     "id": "203d130c-4895-5423-a289-4219444f0756",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "title": "العرض الأول — الفترة النهارية",
+     "description": "من 1:00 ظهراً إلى 5:00 عصراً. يشمل 100 قطعة كيك فاخر ومشروبات ببسي باردة.",
+     "price_from": 750000,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "سحب التلفون غير مشمول مع العرض.",
+     "is_offer": true,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "عروض_قاعة_الملكة_للمناسبات_مع_الصور.pdf",
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "e69acad9-52a6-5e0c-ab5c-9821a7e34f0e",
+     "provider_id": "1b7ea7e7-1973-5710-a9df-ce89163493ee",
+     "title": "العرض الثاني — الفترة المسائية",
+     "description": "من 6:00 مساءً إلى 10:00 مساءً. يشمل 100 طبق طعام متكامل.",
+     "price_from": 1300000,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "بدون طعام: 1,000,000 دينار. جلب الطعام من الخارج: أجور خدمة 150,000 دينار. سحب التلفون غير مشمول.",
+     "is_offer": true,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "عروض_قاعة_الملكة_للمناسبات_مع_الصور.pdf",
+     "is_active": true,
+     "sort_order": 1
+    }
+   ],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "phone",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "missing",
+     "note": "الأسعار في المصدر عروض (نهاري/مسائي) وليست سعراً أساسياً"
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "source_only",
+     "note": null
+    }
+   ]
+  },
+  {
+   "id": "a34038e2-5362-5385-89e8-988510173fa6",
+   "user_id": null,
+   "category_id": "halls",
+   "legacy_id": "hall_weam_001",
+   "business_name": "سلسلة قاعات الحاج وئام السوداني",
+   "short_description": "سلسلة قاعات ومطاعم للأعراس والمؤتمرات في العامرية والقادسية والمنصور.",
+   "description": "سلسلة قاعات للأعراس والمؤتمرات والاحتفالات. تضم: قاعة ليفانسيا LEVANSIA (العامرية)، قاعة ليفانت وإيليجانت (القادسية)، قاعة وحدائق زيوس الملكية (المنصور)، قاعة أوبال الملكية، ومطعم كرم بغدادي.",
+   "city": "بغداد",
+   "area": "العامرية · القادسية · المنصور",
+   "address": null,
+   "instagram_url": "https://www.instagram.com/weam_alsudany",
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": "assets/images/providers/hall_weam/02.jpg",
+   "capacity": null,
+   "price_from": null,
+   "price_to": null,
+   "currency": "IQD",
+   "price_note": null,
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "سلسلة قاعات الحاج وئام السوداني.pdf",
+   "images": [
+    {
+     "id": "b973fa27-a06f-5489-8da7-4cfbb885f576",
+     "provider_id": "a34038e2-5362-5385-89e8-988510173fa6",
+     "url": "assets/images/providers/hall_weam/02.jpg",
+     "kind": "cover",
+     "sort_order": 0,
+     "alt_text": "التصميم والممر الداخلي — قاعة ليفانسيا",
+     "source": "pdf_extract",
+     "source_ref": "سلسلة قاعات الحاج وئام السوداني.pdf"
+    },
+    {
+     "id": "c5060b3d-75ac-560d-bdfc-4113c77c2290",
+     "provider_id": "a34038e2-5362-5385-89e8-988510173fa6",
+     "url": "assets/images/providers/hall_weam/01.jpg",
+     "kind": "gallery",
+     "sort_order": 1,
+     "alt_text": "الواجهة الخارجية لقاعة ليفانسيا (العامرية)",
+     "source": "pdf_extract",
+     "source_ref": "سلسلة قاعات الحاج وئام السوداني.pdf"
+    }
+   ],
+   "services": [
+    {
+     "id": "44ac2ff5-9de7-5e81-b3e9-4b07cdb0ca49",
+     "provider_id": "a34038e2-5362-5385-89e8-988510173fa6",
+     "name": "قاعة ليفانسيا LEVANSIA",
+     "description": "العامرية",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "fe8a45ea-2440-5cbe-ab27-2f218d0cb7fd",
+     "provider_id": "a34038e2-5362-5385-89e8-988510173fa6",
+     "name": "قاعة ليفانت وإيليجانت",
+     "description": "القادسية",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "c027006d-807e-5c1e-bfd0-955143824d2b",
+     "provider_id": "a34038e2-5362-5385-89e8-988510173fa6",
+     "name": "قاعة وحدائق زيوس الملكية",
+     "description": "المنصور",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 2
+    },
+    {
+     "id": "580ed00c-cefd-5bb3-af2a-4946442d0179",
+     "provider_id": "a34038e2-5362-5385-89e8-988510173fa6",
+     "name": "قاعة أوبال الملكية",
+     "description": "أرقى تجهيزات المناسبات",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 3
+    },
+    {
+     "id": "0aa482ac-ce6c-58cc-9a2e-4799b3e453be",
+     "provider_id": "a34038e2-5362-5385-89e8-988510173fa6",
+     "name": "مطعم كرم بغدادي",
+     "description": "تجارب ضيافة فاخرة",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 4
+    }
+   ],
+   "packages": [],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "phone",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "source_only",
+     "note": null
+    }
+   ]
+  },
+  {
+   "id": "d356023e-18eb-5619-be94-e9150e9817b8",
+   "user_id": null,
+   "category_id": "halls",
+   "legacy_id": "hall_asawer_001",
+   "business_name": "قاعة أساور اللؤلؤ الملكية",
+   "short_description": "قاعة للمناسبات والاحتفالات الفاخرة في المنصور مع فرع في الكرادة.",
+   "description": "قاعة للمناسبات والاحتفالات الفاخرة في المنصور، شارع أبو جعفر المنصور (بناية حلويات الحاج مهدي الخاصكي)، وفرع آخر في الكرادة شارع 62. أقسامها: سنتر بيس القاعة والديكورات الحديثة، تجهيز الكوشات والممرات، وقسم الضيافة والحلويات الخاصة.",
+   "city": "بغداد",
+   "area": "المنصور · الكرادة",
+   "address": "المنصور — شارع أبو جعفر المنصور، بناية حلويات الحاج مهدي الخاصكي · فرع الكرادة — شارع 62",
+   "instagram_url": "https://www.instagram.com/asawer_al_loaloa",
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": "assets/images/providers/hall_asawer/01.jpg",
+   "capacity": null,
+   "price_from": null,
+   "price_to": null,
+   "currency": "IQD",
+   "price_note": null,
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "قاعة أساور اللؤلؤ الملكية.pdf",
+   "images": [
+    {
+     "id": "cb004a57-38b9-58e2-98a9-028fbd5cd545",
+     "provider_id": "d356023e-18eb-5619-be94-e9150e9817b8",
+     "url": "assets/images/providers/hall_asawer/01.jpg",
+     "kind": "cover",
+     "sort_order": 0,
+     "alt_text": "الكوشة وممر العرسان",
+     "source": "pdf_extract",
+     "source_ref": "قاعة أساور اللؤلؤ الملكية.pdf"
+    },
+    {
+     "id": "ce29ced2-b892-5924-9606-16d805bca95a",
+     "provider_id": "d356023e-18eb-5619-be94-e9150e9817b8",
+     "url": "assets/images/providers/hall_asawer/02.jpg",
+     "kind": "gallery",
+     "sort_order": 1,
+     "alt_text": "صالة الضيوف",
+     "source": "pdf_extract",
+     "source_ref": "قاعة أساور اللؤلؤ الملكية.pdf"
+    },
+    {
+     "id": "8504a5bd-45b1-5c59-afe5-9e74865a6a81",
+     "provider_id": "d356023e-18eb-5619-be94-e9150e9817b8",
+     "url": "assets/images/providers/hall_asawer/03.jpg",
+     "kind": "gallery",
+     "sort_order": 2,
+     "alt_text": "المدخل والديكور",
+     "source": "pdf_extract",
+     "source_ref": "قاعة أساور اللؤلؤ الملكية.pdf"
+    }
+   ],
+   "services": [
+    {
+     "id": "b5ac8568-a5b0-530d-a5f6-0654a39242a4",
+     "provider_id": "d356023e-18eb-5619-be94-e9150e9817b8",
+     "name": "سنتر بيس القاعة والديكورات الحديثة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "97cc0dbc-1894-52d5-8054-63db65a315d7",
+     "provider_id": "d356023e-18eb-5619-be94-e9150e9817b8",
+     "name": "تجهيز الكوشات والممرات بأحدث التصاميم",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "82971574-ae87-5c03-9dae-71280c50d6d9",
+     "provider_id": "d356023e-18eb-5619-be94-e9150e9817b8",
+     "name": "قسم الضيافة والحلويات الخاصة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 2
+    }
+   ],
+   "packages": [
+    {
+     "id": "e25131fa-31ff-5788-8c55-87fd3a62c938",
+     "provider_id": "d356023e-18eb-5619-be94-e9150e9817b8",
+     "title": "عرض بمناسبة العيد",
+     "description": "عرض للحجز فقط.",
+     "price_from": 1350000,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "عرض مؤقت بمناسبة العيد كما ورد في المصدر.",
+     "is_offer": true,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "قاعة أساور اللؤلؤ الملكية.pdf",
+     "is_active": true,
+     "sort_order": 0
+    }
+   ],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "phone",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "missing",
+     "note": "السعر المذكور عرض عيد مؤقت"
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "source_only",
+     "note": "مقصوصة من صور منشورات إنستغرام داخل المصدر (أزيلت واجهة التطبيق)"
+    }
+   ]
+  },
+  {
+   "id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+   "user_id": null,
+   "category_id": "halls",
+   "legacy_id": "hall_jadriya_001",
+   "business_name": "مطعم وحدائق الجادرية — قاعة الخاتون",
+   "short_description": "قاعة الخاتون في الجادرية: تتسع لـ200 شخص وحفلة لمدة 5 ساعات.",
+   "description": "قاعة الخاتون ضمن مطعم وحدائق الجادرية، تتسع لـ200 شخص براحة تامة، طابق أرضي مريح بدون أعمدة، وقت الحفلة 5 ساعات، مع كراج سيارات خاص. تتوفر خدمات نسائية متخصصة (كادر خدمة نسائي، دي جي نسائي، تصوير نسائي) وقائمة أطباق طعام بأسعار من 7,000 إلى 18,000 دينار للطبق.",
+   "city": "بغداد",
+   "area": "الجادرية",
+   "address": "بغداد — الجادرية — تقاطع جامعة بغداد",
+   "instagram_url": "https://www.instagram.com/aljadriya_restaurant",
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": null,
+   "capacity": 200,
+   "price_from": null,
+   "price_to": null,
+   "currency": "IQD",
+   "price_note": null,
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "مطعم_وحدائق_الجادرية_قاعة_الخاتون.pdf",
+   "images": [
+    {
+     "id": "9588104a-24d6-55fa-b0bf-b4e76a669426",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "url": "assets/images/providers/hall_jadriya/03.jpg",
+     "kind": "gallery",
+     "sort_order": 0,
+     "alt_text": "طبق فاخر من قائمة المناسبات",
+     "source": "pdf_extract",
+     "source_ref": "مطعم_وحدائق_الجادرية_قاعة_الخاتون.pdf"
+    },
+    {
+     "id": "62db7974-15fe-5527-9aa4-dff543941dec",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "url": "assets/images/providers/hall_jadriya/09.jpg",
+     "kind": "gallery",
+     "sort_order": 1,
+     "alt_text": "طبق شيش طاووق وكباب",
+     "source": "pdf_extract",
+     "source_ref": "مطعم_وحدائق_الجادرية_قاعة_الخاتون.pdf"
+    },
+    {
+     "id": "f4e1105e-e056-55ec-951f-5d733ad4f8fd",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "url": "assets/images/providers/hall_jadriya/01.jpg",
+     "kind": "gallery",
+     "sort_order": 2,
+     "alt_text": "طبق مشكل",
+     "source": "pdf_extract",
+     "source_ref": "مطعم_وحدائق_الجادرية_قاعة_الخاتون.pdf"
+    },
+    {
+     "id": "a37f946b-22a7-5725-ab33-056e90eab354",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "url": "assets/images/providers/hall_jadriya/04.jpg",
+     "kind": "gallery",
+     "sort_order": 3,
+     "alt_text": "طبق بيتزا وكبة وسنبوسك",
+     "source": "pdf_extract",
+     "source_ref": "مطعم_وحدائق_الجادرية_قاعة_الخاتون.pdf"
+    }
+   ],
+   "services": [
+    {
+     "id": "d95be19a-652b-57e4-91dd-5f9bcde48a67",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "كادر خدمة نسائي",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "f4eb908b-2060-51d9-95ec-a86b167c744d",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "دي جي نسائي",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "827064ab-c29b-5349-aa81-dc3d6a09e21d",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "تصوير نسائي",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 2
+    },
+    {
+     "id": "97bffd9b-7b1d-5ef9-a8a2-471bf83ddf96",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "سحب موبايل",
+     "description": null,
+     "price_from": 50000,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 3
+    },
+    {
+     "id": "d41fa272-a304-54e5-b6a9-bf0531158f36",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "قطع الكيك",
+     "description": "اختياري حسب رغبة الزبون (بالتعامل مع حلويات الزيتون).",
+     "price_from": 1000,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": "piece",
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 4
+    },
+    {
+     "id": "8f495703-5613-5eba-8bba-78c66dc51c5a",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "طبق مشكل (كباب دجاج + شنيتل + صاج + مقبلات)",
+     "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون.",
+     "price_from": 10000,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/hall_jadriya/01.jpg",
+     "is_active": true,
+     "sort_order": 5
+    },
+    {
+     "id": "7dc53027-5db6-500f-99ff-9d82f68f4d03",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "طبق مشكل (كباب لحم + شنيتل + صاج)",
+     "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون.",
+     "price_from": 12000,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/hall_jadriya/02.jpg",
+     "is_active": true,
+     "sort_order": 6
+    },
+    {
+     "id": "7a96b03d-a188-54a2-b496-435d3f77da26",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "طبق فاخر (كباب لحم + كباب دجاج + شنيتل + صاج)",
+     "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون.",
+     "price_from": 15000,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/hall_jadriya/03.jpg",
+     "is_active": true,
+     "sort_order": 7
+    },
+    {
+     "id": "8e402226-6549-5ac8-87f1-36eba3d590b4",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "طبق بيتزا وكبة وسنبوسك وصاج",
+     "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون.",
+     "price_from": 9000,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/hall_jadriya/04.jpg",
+     "is_active": true,
+     "sort_order": 8
+    },
+    {
+     "id": "5a7e809b-43ba-5898-9e55-adf04f5a39e8",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "طبق كريسبي وشنيتل وكبة وسنبوسك",
+     "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون.",
+     "price_from": 11000,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/hall_jadriya/05.jpg",
+     "is_active": true,
+     "sort_order": 9
+    },
+    {
+     "id": "66da520e-c38f-5cf0-a696-51ebe6f8061b",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "طبق مشويات كباب لحم ودجاج مع البطاطا",
+     "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون.",
+     "price_from": 10000,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/hall_jadriya/06.jpg",
+     "is_active": true,
+     "sort_order": 10
+    },
+    {
+     "id": "87eb32a5-4aad-5925-9851-c92aec06b027",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "طبق شنيتل وجبات صاج متعددة",
+     "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون.",
+     "price_from": 11000,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/hall_jadriya/07.jpg",
+     "is_active": true,
+     "sort_order": 11
+    },
+    {
+     "id": "b8692cdd-7056-5b45-b2ad-c66111a0e041",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "طبق كريسبي وصاج وكبة وسنبوسك",
+     "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون.",
+     "price_from": 10000,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/hall_jadriya/08.jpg",
+     "is_active": true,
+     "sort_order": 12
+    },
+    {
+     "id": "76a80b58-014d-51f8-9258-61bce8040105",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "طبق شيش طاووق وكباب لحم ودجاج وصاج",
+     "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون.",
+     "price_from": 15000,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/hall_jadriya/09.jpg",
+     "is_active": true,
+     "sort_order": 13
+    },
+    {
+     "id": "ac627727-9270-5744-9bc6-e6ffab248a20",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "طبق كباب لحم وشنيتل وصاج",
+     "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون.",
+     "price_from": 13000,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/hall_jadriya/10.jpg",
+     "is_active": true,
+     "sort_order": 14
+    },
+    {
+     "id": "b5924f63-81c8-5689-8d7b-ddf06ad180cf",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "طبق مقبلات وكريسبي وصاج وكبة",
+     "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون.",
+     "price_from": 7000,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/hall_jadriya/11.jpg",
+     "is_active": true,
+     "sort_order": 15
+    },
+    {
+     "id": "8ddd18a1-b20d-56b9-9566-08f67b533765",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "name": "طبق كريسبي وصاج مشكل مع فنگر",
+     "description": "للطبق الواحد، مع 2 ببسي + ماء + صمون.",
+     "price_from": 8000,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 16
+    }
+   ],
+   "packages": [
+    {
+     "id": "0025ff0a-857f-559c-a0c8-66e75284c39b",
+     "provider_id": "bbd09e25-fba8-587b-9dce-8eed35e93e60",
+     "title": "العرض الشامل للخدمات والتجهيزات",
+     "description": "أرضية قاعة + كوشة ملكية، تصوير فوتو مع 50 لقطة طبع بألبوم، شاشة عرض داتاشو، خدمة القاعة الكاملة، دي جي + تصوير فيديو طول الحفلة، إنارة ليزرية + فقاعات + دخان، قالب كيك فوم + سنتر بيس طاولات.",
+     "price_from": 1500000,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "الطعام غير مشمول — الأطباق من 7,000 إلى 18,000 دينار للطبق.",
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "مطعم_وحدائق_الجادرية_قاعة_الخاتون.pdf",
+     "is_active": true,
+     "sort_order": 0
+    }
+   ],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "phone",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "missing",
+     "note": "المصدر يذكر سعر عرض شامل (باقة) وليس سعراً أساسياً للقاعة"
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "source_only",
+     "note": "صور أطباق الطعام فقط — لا توجد صورة للقاعة في المصدر"
+    }
+   ]
+  },
+  {
+   "id": "2f70d4c9-71c2-5e7c-b62e-41df7316dda9",
+   "user_id": null,
+   "category_id": "photography",
+   "legacy_id": "photo_tabarek_001",
+   "business_name": "تبارك صلاح",
+   "short_description": "تصوير أعراس ومناسبات وجلسات خارجية وألبومات فاخرة في بغداد.",
+   "description": "Tabarek Salah Photography — توثيق أهم اللحظات: تغطية كاملة وشاملة للأفراح والمناسبات الداخلية، جلسات تصوير خارجية في أجمل الأماكن ببغداد، وتصميم ألبومات فاخرة ومخصصة.",
+   "city": "بغداد",
+   "area": null,
+   "address": null,
+   "instagram_url": null,
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": "assets/images/providers/photo_tabarek/01.jpg",
+   "capacity": null,
+   "price_from": null,
+   "price_to": null,
+   "currency": "IQD",
+   "price_note": null,
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "كتالوج خدمات التصوير - تبارك صلاح.pdf",
+   "images": [
+    {
+     "id": "f5360934-65bb-5a29-a9e5-95eb693b55cc",
+     "provider_id": "2f70d4c9-71c2-5e7c-b62e-41df7316dda9",
+     "url": "assets/images/providers/photo_tabarek/01.jpg",
+     "kind": "cover",
+     "sort_order": 0,
+     "alt_text": "جلسة تصوير عرسان",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج خدمات التصوير - تبارك صلاح.pdf"
+    },
+    {
+     "id": "2c909d91-aae7-52bb-b3e7-03d3c38d4d89",
+     "provider_id": "2f70d4c9-71c2-5e7c-b62e-41df7316dda9",
+     "url": "assets/images/providers/photo_tabarek/02.jpg",
+     "kind": "gallery",
+     "sort_order": 1,
+     "alt_text": "لحظة قطع الكيك",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج خدمات التصوير - تبارك صلاح.pdf"
+    }
+   ],
+   "services": [
+    {
+     "id": "cfeb9cf1-c4c2-5a20-94e4-d9bd2837be1f",
+     "provider_id": "2f70d4c9-71c2-5e7c-b62e-41df7316dda9",
+     "name": "أعراس ومناسبات",
+     "description": "تغطية كاملة وشاملة لأفراحكم ومناسباتكم الداخلية بأعلى معايير الجودة الفنية.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "04a6f0d4-d378-5a13-932e-32d5dbefb5ce",
+     "provider_id": "2f70d4c9-71c2-5e7c-b62e-41df7316dda9",
+     "name": "جلسات خارجية",
+     "description": "تصوير فوتوغرافي في أجمل الأماكن الخارجية الطبيعية والعامة في بغداد.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "7be5e095-e26d-578a-998f-cc83c425db2d",
+     "provider_id": "2f70d4c9-71c2-5e7c-b62e-41df7316dda9",
+     "name": "ألبومات مميزة",
+     "description": "تصميم ألبومات فاخرة ومخصصة.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 2
+    }
+   ],
+   "packages": [
+    {
+     "id": "d4719252-4f6d-5227-992f-a3aebc46d008",
+     "provider_id": "2f70d4c9-71c2-5e7c-b62e-41df7316dda9",
+     "title": "باقة العرسان الأساسية",
+     "description": "تغطية مراسم حفل الزفاف داخل القاعة أو المنزل + صور بورتريه للعروسين.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "تسليم نسخة رقمية عالية الدقة.",
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج خدمات التصوير - تبارك صلاح.pdf",
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "cadf8e25-612e-53b4-b498-2b6b154cd7d5",
+     "provider_id": "2f70d4c9-71c2-5e7c-b62e-41df7316dda9",
+     "title": "باقة الجلسات الخاصة",
+     "description": "جلسة تصوير خارجية لمدة ساعتين في موقع اختيار العميل ببغداد.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "تشمل تعديل واختيار أفضل الصور.",
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج خدمات التصوير - تبارك صلاح.pdf",
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "a128d84c-33cf-5f53-8ba2-2c2bba1160fd",
+     "provider_id": "2f70d4c9-71c2-5e7c-b62e-41df7316dda9",
+     "title": "باقة الألبومات الفاخرة",
+     "description": "ألبوم كبير مغلف بتصميم عصري راقٍ + بوستر هدية للذكرى.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "تنسيق خاص حسب الطلب.",
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج خدمات التصوير - تبارك صلاح.pdf",
+     "is_active": true,
+     "sort_order": 2
+    }
+   ],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "unverified",
+     "note": "المعرّف tabarek.salah5 غير موسوم كـInstagram في نص المصدر (يظهر في لقطة شاشة لملف شخصي) — يحتاج تأكيد الفريق"
+    },
+    {
+     "field": "phone",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "source_only",
+     "note": null
+    }
+   ]
+  },
+  {
+   "id": "1ce420d8-9cb7-502a-a3cb-b116a8b9ae69",
+   "user_id": null,
+   "category_id": "photography",
+   "legacy_id": "photo_shot_001",
+   "business_name": "لقطة زفاف — Shot Wedding",
+   "short_description": "تصوير أعراس بلمسات سينمائية كلاسيكية وجلسات خارجية تراثية.",
+   "description": "مصور فوتوغرافي محترف لتغطيات الأعراس بأسلوب فني راقٍ ولمسات سينمائية كلاسيكية، مع تميّز في التصوير الخارجي والتوثيق المعماري ذي الطابع التراثي. مناطق الخدمة حسب المصدر: العراق (بغداد، أربيل، كركوك) وتركيا (إسطنبول).",
+   "city": "بغداد",
+   "area": "بغداد · أربيل · كركوك · إسطنبول",
+   "address": null,
+   "instagram_url": "https://www.instagram.com/shot__wedding",
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": "assets/images/providers/photo_shot/01.jpg",
+   "capacity": null,
+   "price_from": null,
+   "price_to": null,
+   "currency": "IQD",
+   "price_note": null,
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "كتالوج خدمات لقطة زفاف - Shot Wedding.pdf",
+   "images": [
+    {
+     "id": "5fcddbf6-4861-5b4d-a70c-9ea505be224a",
+     "provider_id": "1ce420d8-9cb7-502a-a3cb-b116a8b9ae69",
+     "url": "assets/images/providers/photo_shot/01.jpg",
+     "kind": "cover",
+     "sort_order": 0,
+     "alt_text": "جلسة عرسان خارجية بطابع تراثي",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج خدمات لقطة زفاف - Shot Wedding.pdf"
+    },
+    {
+     "id": "38cfe09d-d8cd-50f6-8a4c-0e307a3e49c4",
+     "provider_id": "1ce420d8-9cb7-502a-a3cb-b116a8b9ae69",
+     "url": "assets/images/providers/photo_shot/02.jpg",
+     "kind": "gallery",
+     "sort_order": 1,
+     "alt_text": "جلسة تصوير خارجية",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج خدمات لقطة زفاف - Shot Wedding.pdf"
+    }
+   ],
+   "services": [
+    {
+     "id": "deb9c2ea-050d-5bf7-bf5e-a231ff8e7a5a",
+     "provider_id": "1ce420d8-9cb7-502a-a3cb-b116a8b9ae69",
+     "name": "التصوير الخارجي والتوثيق المعماري",
+     "description": "صور ذات طابع تراثي وأماكن خارجية كلاسيكية مع تركيز على الإضاءة والتفاصيل.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "21e7e402-2b47-54bc-a3d7-0506a7fcfb83",
+     "provider_id": "1ce420d8-9cb7-502a-a3cb-b116a8b9ae69",
+     "name": "تصوير فوتوغرافي وفيديو سينمائي",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "28e1720a-4dc0-5c07-a98f-5f9bc2c70a5e",
+     "provider_id": "1ce420d8-9cb7-502a-a3cb-b116a8b9ae69",
+     "name": "مقاطع Reels قصيرة لمنصات التواصل",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 2
+    }
+   ],
+   "packages": [
+    {
+     "id": "368be2b8-2115-5f1e-a76c-460db0d5bf0d",
+     "provider_id": "1ce420d8-9cb7-502a-a3cb-b116a8b9ae69",
+     "title": "باقة الزفاف الكاملة (Wedding Package)",
+     "description": "تغطية شاملة للحفل والجلسة الخارجية وتجهيزات العروسين؛ تصوير فوتوغرافي وفيديو سينمائي بدقة عالية؛ ألبوم حراري كلاسيكي مصمم خصيصاً؛ تعديل ومعالجة ألوان سينمائية لجميع الصور.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": null,
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج خدمات لقطة زفاف - Shot Wedding.pdf",
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "2794778e-992a-5a6a-94b3-70a808c4c7a1",
+     "provider_id": "1ce420d8-9cb7-502a-a3cb-b116a8b9ae69",
+     "title": "باقة الحفلات والجلسات (Bridal & Engagement)",
+     "description": "تغطية جلسات Bridal Shower وحفلات الحنة؛ تصوير مقاطع Reels قصيرة؛ جلسات خارجية في مواقع مختارة (بغداد / أربيل / إسطنبول)؛ تسليم كادر الصور كاملاً على Drive وبأعلى دقة.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": null,
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج خدمات لقطة زفاف - Shot Wedding.pdf",
+     "is_active": true,
+     "sort_order": 1
+    }
+   ],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "phone",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "source_only",
+     "note": null
+    }
+   ]
+  },
+  {
+   "id": "fa730b45-0f59-5cf9-abae-310e5c6f2cf9",
+   "user_id": null,
+   "category_id": "photography",
+   "legacy_id": "photo_asmer_001",
+   "business_name": "اسمر — المصور بغداد",
+   "short_description": "تصوير زفاف وجلسات خارجية وتخرّج وضباط ومناسبات خاصة في بغداد.",
+   "description": "مصور فوتوغرافي في بغداد لحفلات الزفاف والجلسات الخارجية وتفاصيل الذكرى. خدمات أخرى حسب المصدر: تخرّج، ضباط، خطوبة، أعياد ميلاد، جلسات موديل وحفلات خاصة. يعتمد معدات تصوير سينمائية وكاميرات احترافية حديثة، وتعديل ألوان وإضاءة معالج تقنياً.",
+   "city": "بغداد",
+   "area": null,
+   "address": null,
+   "instagram_url": "https://www.instagram.com/photographer__asmer",
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": "assets/images/providers/photo_asmer/01.jpg",
+   "capacity": null,
+   "price_from": null,
+   "price_to": null,
+   "currency": "IQD",
+   "price_note": null,
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "كتالوج_خدمات_المصور_اسمر_مصور_بغداد.pdf",
+   "images": [
+    {
+     "id": "807ae24e-4285-5693-8b03-f5f8741d6531",
+     "provider_id": "fa730b45-0f59-5cf9-abae-310e5c6f2cf9",
+     "url": "assets/images/providers/photo_asmer/01.jpg",
+     "kind": "cover",
+     "sort_order": 0,
+     "alt_text": "جلسة عرسان على درج تراثي",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج_خدمات_المصور_اسمر_مصور_بغداد.pdf"
+    },
+    {
+     "id": "45b7eec7-2c97-53c3-948d-6624a50a3cfe",
+     "provider_id": "fa730b45-0f59-5cf9-abae-310e5c6f2cf9",
+     "url": "assets/images/providers/photo_asmer/02.jpg",
+     "kind": "gallery",
+     "sort_order": 1,
+     "alt_text": "لقطة بالأبيض والأسود",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج_خدمات_المصور_اسمر_مصور_بغداد.pdf"
+    },
+    {
+     "id": "7be9e288-dfb3-5fbb-b6e4-b26112c653c3",
+     "provider_id": "fa730b45-0f59-5cf9-abae-310e5c6f2cf9",
+     "url": "assets/images/providers/photo_asmer/03.jpg",
+     "kind": "gallery",
+     "sort_order": 2,
+     "alt_text": "خواتم الزفاف",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج_خدمات_المصور_اسمر_مصور_بغداد.pdf"
+    }
+   ],
+   "services": [
+    {
+     "id": "f33c77e8-8269-5d8b-a48a-4b7705ee90fc",
+     "provider_id": "fa730b45-0f59-5cf9-abae-310e5c6f2cf9",
+     "name": "تصوير حفلات الزفاف",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "807a4e69-dab6-5adc-93a8-4638c8fea0ae",
+     "provider_id": "fa730b45-0f59-5cf9-abae-310e5c6f2cf9",
+     "name": "الجلسات الخارجية",
+     "description": "التقاط اللقطات العفوية والاحترافية مع اختيار أفضل الأماكن.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "894c9c47-c638-5ccf-ad7d-321877afc9fe",
+     "provider_id": "fa730b45-0f59-5cf9-abae-310e5c6f2cf9",
+     "name": "لحظات الذاكرة — خواتم الزفاف",
+     "description": "تفاصيل أنيقة لحلقة الزفاف.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 2
+    },
+    {
+     "id": "5416b1b4-9654-51e8-ab51-f211990a6153",
+     "provider_id": "fa730b45-0f59-5cf9-abae-310e5c6f2cf9",
+     "name": "جلسات تخرّج الطلاب",
+     "description": "تغطية فردية وجماعية.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 3
+    },
+    {
+     "id": "bb24d19c-c8e0-51e2-badc-04a1e35caf26",
+     "provider_id": "fa730b45-0f59-5cf9-abae-310e5c6f2cf9",
+     "name": "جلسات الضباط والشباب",
+     "description": "تصوير بروتوكولي وحرفي مخصص لدفعات التخرّج العسكرية.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 4
+    },
+    {
+     "id": "b5a922fd-20d7-5ead-ac7d-971f72eac4af",
+     "provider_id": "fa730b45-0f59-5cf9-abae-310e5c6f2cf9",
+     "name": "خطوبة، أعياد ميلاد، جلسات موديل وحفلات خاصة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 5
+    }
+   ],
+   "packages": [],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "phone",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "source_only",
+     "note": null
+    }
+   ]
+  },
+  {
+   "id": "15e9f4f7-b324-54f6-ba37-3c9cb17a4f20",
+   "user_id": null,
+   "category_id": "photography",
+   "legacy_id": "photo_mariam_001",
+   "business_name": "مريم الخفاجي",
+   "short_description": "تصوير زفاف وبورتريه العروس وجلسات عقد المحكمة.",
+   "description": "Maream Alkafaji — تهتم بإبراز أدق تفاصيل الجمال والأناقة في يوم الزفاف: لقطات العروس الخاصة، تفاصيل الفستان، والجلسات الثنائية. الحجز والاستفسار برسالة واتساب.",
+   "city": "بغداد",
+   "area": null,
+   "address": null,
+   "instagram_url": "https://www.instagram.com/maream.alkafaji.ph",
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": "assets/images/providers/photo_mariam/01.jpg",
+   "capacity": null,
+   "price_from": null,
+   "price_to": null,
+   "currency": "IQD",
+   "price_note": null,
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "كتالوج_خدمات_المصورة_مريم_الخفاجي.pdf",
+   "images": [
+    {
+     "id": "f8ef241c-9d59-51da-a7df-c6362861f7f6",
+     "provider_id": "15e9f4f7-b324-54f6-ba37-3c9cb17a4f20",
+     "url": "assets/images/providers/photo_mariam/01.jpg",
+     "kind": "cover",
+     "sort_order": 0,
+     "alt_text": "عرسان في جلسة داخلية",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج_خدمات_المصورة_مريم_الخفاجي.pdf"
+    },
+    {
+     "id": "1d069032-3b36-52fb-acc9-c65137c22e6c",
+     "provider_id": "15e9f4f7-b324-54f6-ba37-3c9cb17a4f20",
+     "url": "assets/images/providers/photo_mariam/02.jpg",
+     "kind": "gallery",
+     "sort_order": 1,
+     "alt_text": "بورتريه العروس",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج_خدمات_المصورة_مريم_الخفاجي.pdf"
+    }
+   ],
+   "services": [
+    {
+     "id": "a765e5f9-1781-5d3b-a9e1-d6cd1147c849",
+     "provider_id": "15e9f4f7-b324-54f6-ba37-3c9cb17a4f20",
+     "name": "تصوير زفاف وبورتريه العروس",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "9739f340-9620-59b0-8f3f-3375ff1f5966",
+     "provider_id": "15e9f4f7-b324-54f6-ba37-3c9cb17a4f20",
+     "name": "جلسات عقد المحكمة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    }
+   ],
+   "packages": [
+    {
+     "id": "d72e292e-529b-59ff-9f3c-8b6b488ac6b7",
+     "provider_id": "15e9f4f7-b324-54f6-ba37-3c9cb17a4f20",
+     "title": "جلسات عقد المحكمة",
+     "description": "تغطية كاملة لمراسم عقد المحكمة؛ تصوير فيديو احترافي قصير (Reels)؛ تعديل جميع الصور بأعلى جودة؛ تسليم كادر الصور بملف إلكتروني عالي الدقة.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": null,
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج_خدمات_المصورة_مريم_الخفاجي.pdf",
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "e7e88a52-268b-50f0-962d-8ce7e34da307",
+     "provider_id": "15e9f4f7-b324-54f6-ba37-3c9cb17a4f20",
+     "title": "باقة الزفاف الملكية",
+     "description": "تصوير الجلسة الخارجية واستوديو؛ ألبوم حراري فاخر بطباعة ممتازة؛ لوحة جدارية قياس كبير؛ تغطية تفاصيل العروس (المكياج، الفستان، المجوهرات).",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": null,
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج_خدمات_المصورة_مريم_الخفاجي.pdf",
+     "is_active": true,
+     "sort_order": 1
+    }
+   ],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "phone",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "source_only",
+     "note": null
+    }
+   ]
+  },
+  {
+   "id": "aef3ac25-235d-5ea4-8e7e-718d4c5e8cd5",
+   "user_id": null,
+   "category_id": "photography",
+   "legacy_id": "photo_marwa_001",
+   "business_name": "ستوديو مروه الطائي",
+   "short_description": "موثّقة السعادة — تصوير الأعراس والمناسبات بمعدات Canon وإضاءة Godox.",
+   "description": "Marwa Altaie — ستوديو لتصوير كافة المناسبات في ساحة الاحتفالات. يستخدم أحدث الكاميرات والإضاءات الاحترافية (Canon R Series & Godox Lighting).",
+   "city": "بغداد",
+   "area": "ساحة الاحتفالات",
+   "address": "ساحة الاحتفالات — ستوديو مروه الطائي",
+   "instagram_url": "https://www.instagram.com/marwa.altaie63",
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": "assets/images/providers/photo_marwa/01.jpg",
+   "capacity": null,
+   "price_from": null,
+   "price_to": null,
+   "currency": "IQD",
+   "price_note": null,
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "كتالوج_خدمات_ستوديو_مروه_الطائي_موثقة_السعادة.pdf",
+   "images": [
+    {
+     "id": "2b9a0f73-7528-5e4e-9d4d-20db2cd8799f",
+     "provider_id": "aef3ac25-235d-5ea4-8e7e-718d4c5e8cd5",
+     "url": "assets/images/providers/photo_marwa/01.jpg",
+     "kind": "cover",
+     "sort_order": 0,
+     "alt_text": "بورتريه بإضاءة استوديو",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج_خدمات_ستوديو_مروه_الطائي_موثقة_السعادة.pdf"
+    },
+    {
+     "id": "36bafc13-b38b-5a19-a0a0-d8edf5772aeb",
+     "provider_id": "aef3ac25-235d-5ea4-8e7e-718d4c5e8cd5",
+     "url": "assets/images/providers/photo_marwa/02.jpg",
+     "kind": "gallery",
+     "sort_order": 1,
+     "alt_text": "معدات التصوير Canon وGodox",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج_خدمات_ستوديو_مروه_الطائي_موثقة_السعادة.pdf"
+    }
+   ],
+   "services": [
+    {
+     "id": "1ab53281-7d26-5d54-ab3c-5b2c771fac1f",
+     "provider_id": "aef3ac25-235d-5ea4-8e7e-718d4c5e8cd5",
+     "name": "تصوير الأعراس والزفاف",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "067b1b3d-1b4c-5823-9f38-1733bd8fb4b4",
+     "provider_id": "aef3ac25-235d-5ea4-8e7e-718d4c5e8cd5",
+     "name": "جلسات خطوبة وعقد محكمة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "afe213b0-9146-5158-9d95-66892988d42c",
+     "provider_id": "aef3ac25-235d-5ea4-8e7e-718d4c5e8cd5",
+     "name": "تصوير حفلات التخرج وأعياد الميلاد",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 2
+    },
+    {
+     "id": "74e44c95-0800-5053-8aef-a435a1a2c45c",
+     "provider_id": "aef3ac25-235d-5ea4-8e7e-718d4c5e8cd5",
+     "name": "إضاءة استوديو متكاملة في الموقع",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 3
+    }
+   ],
+   "packages": [
+    {
+     "id": "021fd2fa-987b-5226-b057-a939aef7412b",
+     "provider_id": "aef3ac25-235d-5ea4-8e7e-718d4c5e8cd5",
+     "title": "باقة الأعراس والزفاف",
+     "description": "تغطية كاملة للحفل والجلسة الخارجية؛ تصوير فيديو سينمائي + مقاطع Reels؛ ألبوم حراري فاخر بطباعة ممتازة؛ معالجة وألوان احترافية لجميع الصور.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": null,
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج_خدمات_ستوديو_مروه_الطائي_موثقة_السعادة.pdf",
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "7fc2bc13-1610-5980-b19e-cc66a0f8c38f",
+     "provider_id": "aef3ac25-235d-5ea4-8e7e-718d4c5e8cd5",
+     "title": "الحفلات والمناسبات الخاصة",
+     "description": "جلسات خطوبة وعقد محكمة؛ تصوير حفلات التخرج وأعياد الميلاد؛ تجهيز إضاءة استوديو متكاملة في الموقع؛ تسليم كادر الصور بملف إلكتروني عالي الدقة.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": null,
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج_خدمات_ستوديو_مروه_الطائي_موثقة_السعادة.pdf",
+     "is_active": true,
+     "sort_order": 1
+    }
+   ],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "phone",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "source_only",
+     "note": null
+    }
+   ]
+  },
+  {
+   "id": "9302cdf3-e1e6-5cd1-b5eb-a764506a7aab",
+   "user_id": null,
+   "category_id": "flowers",
+   "legacy_id": "decor_laflamme_001",
+   "business_name": "زهور وهدايا لافلام — LaFlamme Flowers",
+   "short_description": "ورد طبيعي فاخر وصناعي وبوكسات هدايا في الجادرية.",
+   "description": "زهور وهدايا لافلام في الجادرية داخل مطعم لافلام: ورد طبيعي فاخر، ورد صناعي دائم، بوكسات وهدايا مميزة، وهدايا عيد الحب والمناسبات. طرق الدفع: ماستر كارد وزين كاش.",
+   "city": "بغداد",
+   "area": "الجادرية",
+   "address": "الجادرية — داخل مطعم لافلام",
+   "instagram_url": "https://www.instagram.com/laflamme.flowers",
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": "assets/images/providers/flowers_laflamme/01.jpg",
+   "capacity": null,
+   "price_from": null,
+   "price_to": null,
+   "currency": "IQD",
+   "price_note": null,
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "كتالوج خدمات وعروض LaFlamme Flowers.pdf",
+   "images": [
+    {
+     "id": "4a4b4c86-79bd-5303-bb79-c0224849c1d2",
+     "provider_id": "9302cdf3-e1e6-5cd1-b5eb-a764506a7aab",
+     "url": "assets/images/providers/flowers_laflamme/01.jpg",
+     "kind": "cover",
+     "sort_order": 0,
+     "alt_text": "بوكيه الرقة والجمال",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج خدمات وعروض LaFlamme Flowers.pdf"
+    },
+    {
+     "id": "f2defc81-4347-58d4-894a-9f79d79591ac",
+     "provider_id": "9302cdf3-e1e6-5cd1-b5eb-a764506a7aab",
+     "url": "assets/images/providers/flowers_laflamme/02.jpg",
+     "kind": "gallery",
+     "sort_order": 1,
+     "alt_text": "باقة بيبي روز لافلام الملكية",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج خدمات وعروض LaFlamme Flowers.pdf"
+    }
+   ],
+   "services": [
+    {
+     "id": "a1530d53-b3d1-5aa0-a3de-9c4bdb43114f",
+     "provider_id": "9302cdf3-e1e6-5cd1-b5eb-a764506a7aab",
+     "name": "ورد طبيعي فاخر",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "57b35f83-a35a-5fc2-90c5-042504ee8dda",
+     "provider_id": "9302cdf3-e1e6-5cd1-b5eb-a764506a7aab",
+     "name": "ورد صناعي دائم",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "cd896b5a-32f1-5c67-9196-7fc3e2489e9b",
+     "provider_id": "9302cdf3-e1e6-5cd1-b5eb-a764506a7aab",
+     "name": "بوكسات وهدايا مميزة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 2
+    },
+    {
+     "id": "22af791f-2727-52ed-a733-a37890a65ba8",
+     "provider_id": "9302cdf3-e1e6-5cd1-b5eb-a764506a7aab",
+     "name": "هدايا عيد الحب والمناسبات",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 3
+    },
+    {
+     "id": "c68e8aa6-549e-535d-a748-3be5c7fe0b9f",
+     "provider_id": "9302cdf3-e1e6-5cd1-b5eb-a764506a7aab",
+     "name": "بوكيه الرقة والجمال",
+     "description": "ورد جوري وبيبي روز بتنسيق باستيل وردي وأبيض أنيق.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/flowers_laflamme/01.jpg",
+     "is_active": true,
+     "sort_order": 4
+    },
+    {
+     "id": "3231ab9d-4d77-5e64-8b7c-222b7b95b7a4",
+     "provider_id": "9302cdf3-e1e6-5cd1-b5eb-a764506a7aab",
+     "name": "باقة بيبي روز لافلام الملكية",
+     "description": "تجمّع كثيف وفاخر من البيبي روز الموشّح بالأحمر والأبيض.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/flowers_laflamme/02.jpg",
+     "is_active": true,
+     "sort_order": 5
+    }
+   ],
+   "packages": [],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "phone",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "source_only",
+     "note": null
+    }
+   ]
+  },
+  {
+   "id": "1d95d03f-b6a2-59a5-8d51-f48629338495",
+   "user_id": null,
+   "category_id": "flowers",
+   "legacy_id": "decor_lucci_001",
+   "business_name": "Luccè Flowers",
+   "short_description": "مسكات أعراس فاخرة وبوكيهات ورد طبيعي وصناعي في المنصور.",
+   "description": "Luccè Flowers في المنصور — شارع مول بابيلون باتجاه 14 رمضان: مسكات أعراس فاخرة، مسكات وتنسيقات تخرّج، بوكيهات ورد طبيعي وبوكيهات ورد صناعي. يتوفر دفع إلكتروني.",
+   "city": "بغداد",
+   "area": "المنصور",
+   "address": "المنصور — شارع مول بابيلون، باتجاه 14 رمضان",
+   "instagram_url": "https://www.instagram.com/lucci.flowers2",
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": "assets/images/providers/flowers_lucci/01.jpg",
+   "capacity": null,
+   "price_from": null,
+   "price_to": null,
+   "currency": "IQD",
+   "price_note": null,
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "كتالوج خدمات وعروض Lucce Flowers (1).pdf",
+   "images": [
+    {
+     "id": "54317239-16b3-56a6-a0c0-20103684b81b",
+     "provider_id": "1d95d03f-b6a2-59a5-8d51-f48629338495",
+     "url": "assets/images/providers/flowers_lucci/01.jpg",
+     "kind": "cover",
+     "sort_order": 0,
+     "alt_text": "بوكيه العشاق الكلاسيكي",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج خدمات وعروض Lucce Flowers (1).pdf"
+    },
+    {
+     "id": "a184e5cc-1d6e-5f8d-bbb2-11b2283c49cd",
+     "provider_id": "1d95d03f-b6a2-59a5-8d51-f48629338495",
+     "url": "assets/images/providers/flowers_lucci/02.jpg",
+     "kind": "gallery",
+     "sort_order": 1,
+     "alt_text": "بوكيه الأناقة النقي",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج خدمات وعروض Lucce Flowers (1).pdf"
+    }
+   ],
+   "services": [
+    {
+     "id": "77d56752-1be3-5028-977c-56daf5c26624",
+     "provider_id": "1d95d03f-b6a2-59a5-8d51-f48629338495",
+     "name": "مسكات أعراس فاخرة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "df5261ba-1b35-5dd4-b0ff-f67caf43aaee",
+     "provider_id": "1d95d03f-b6a2-59a5-8d51-f48629338495",
+     "name": "مسكات وتنسيقات تخرّج",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "aa54174c-bf6d-55a9-a835-bbdacafda547",
+     "provider_id": "1d95d03f-b6a2-59a5-8d51-f48629338495",
+     "name": "بوكيهات ورد طبيعي",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 2
+    },
+    {
+     "id": "c3a1403d-ee18-556d-a5b5-c6cbcb0571db",
+     "provider_id": "1d95d03f-b6a2-59a5-8d51-f48629338495",
+     "name": "بوكيهات ورد صناعي",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 3
+    },
+    {
+     "id": "eaabb712-be42-5fd0-9943-86649d0cf35f",
+     "provider_id": "1d95d03f-b6a2-59a5-8d51-f48629338495",
+     "name": "بوكيه العشاق الكلاسيكي",
+     "description": "ورد طبيعي أحمر وأبيض مع شريط مخصص للأسماء.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/flowers_lucci/01.jpg",
+     "is_active": true,
+     "sort_order": 4
+    },
+    {
+     "id": "fb44c6cd-3063-58e9-a76d-bebd5e565617",
+     "provider_id": "1d95d03f-b6a2-59a5-8d51-f48629338495",
+     "name": "بوكيه الأناقة النقي",
+     "description": "زهور بيضاء وخضراء مع تغليف باستيل تركوازي.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/flowers_lucci/02.jpg",
+     "is_active": true,
+     "sort_order": 5
+    }
+   ],
+   "packages": [],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "source_only",
+     "note": "المصدر يذكر @lucci.flowers2 في خانة التواصل و lucci.flowers في التذييل"
+    },
+    {
+     "field": "phone",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "source_only",
+     "note": null
+    }
+   ]
+  },
+  {
+   "id": "e35a2444-42f3-5dc0-9f5a-db80a1d738d5",
+   "user_id": null,
+   "category_id": "flowers",
+   "legacy_id": "decor_fayrouz_001",
+   "business_name": "زهور فيروز — Fayrouz Flowers",
+   "short_description": "ورد طبيعي وصناعي وكيك مناسبات وتنسيق هدايا في الكرادة.",
+   "description": "زهور فيروز في الكرادة شارع 52 (مجاور مطعم بافلو): ورد طبيعي، ورد صناعي، كيك مناسبات، وتنسيق هدايا وتنسيقات حسب الطلب. طرق الدفع: ماستر كارد أو زين كاش. الطلب مباشرة عبر إنستغرام أو واتساب.",
+   "city": "بغداد",
+   "area": "الكرادة",
+   "address": "الكرادة — شارع 52 (مجاور مطعم بافلو)",
+   "instagram_url": "https://www.instagram.com/fayrouz_flowers",
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": "assets/images/providers/flowers_fayrouz/02.jpg",
+   "capacity": null,
+   "price_from": null,
+   "price_to": null,
+   "currency": "IQD",
+   "price_note": null,
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "زهور_فيروز_كتالوج_الباقات_والهدايا.pdf",
+   "images": [
+    {
+     "id": "74d92335-931b-5380-a690-094526a551f4",
+     "provider_id": "e35a2444-42f3-5dc0-9f5a-db80a1d738d5",
+     "url": "assets/images/providers/flowers_fayrouz/02.jpg",
+     "kind": "cover",
+     "sort_order": 0,
+     "alt_text": "تنسيق ورد طبيعي مع كادي وزنبق",
+     "source": "pdf_extract",
+     "source_ref": "زهور_فيروز_كتالوج_الباقات_والهدايا.pdf"
+    },
+    {
+     "id": "68e11304-cb3c-5905-92d3-69a9ca50a581",
+     "provider_id": "e35a2444-42f3-5dc0-9f5a-db80a1d738d5",
+     "url": "assets/images/providers/flowers_fayrouz/01.jpg",
+     "kind": "gallery",
+     "sort_order": 1,
+     "alt_text": "باقة ورد جوري أحمر",
+     "source": "pdf_extract",
+     "source_ref": "زهور_فيروز_كتالوج_الباقات_والهدايا.pdf"
+    }
+   ],
+   "services": [
+    {
+     "id": "6c4a4b79-cd4f-503e-b05b-6d743cf76f45",
+     "provider_id": "e35a2444-42f3-5dc0-9f5a-db80a1d738d5",
+     "name": "ورد طبيعي",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "b66d6f9b-aa61-5a8a-a10b-9dd6dbd2e96b",
+     "provider_id": "e35a2444-42f3-5dc0-9f5a-db80a1d738d5",
+     "name": "ورد صناعي",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "fd0833c8-6185-5265-83dc-96e90f38d9b9",
+     "provider_id": "e35a2444-42f3-5dc0-9f5a-db80a1d738d5",
+     "name": "كيك مناسبات",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 2
+    },
+    {
+     "id": "0027bc89-1336-5adf-8891-7df8654e7a7e",
+     "provider_id": "e35a2444-42f3-5dc0-9f5a-db80a1d738d5",
+     "name": "تنسيق هدايا",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 3
+    },
+    {
+     "id": "46d5989c-293f-5178-9afb-6ebfe511c49a",
+     "provider_id": "e35a2444-42f3-5dc0-9f5a-db80a1d738d5",
+     "name": "باقة ورد جوري أحمر طبيعي",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/flowers_fayrouz/01.jpg",
+     "is_active": true,
+     "sort_order": 4
+    },
+    {
+     "id": "27bfa518-aaa1-578a-a135-6c7a22c3dccc",
+     "provider_id": "e35a2444-42f3-5dc0-9f5a-db80a1d738d5",
+     "name": "تنسيق ورد طبيعي مع كادي وزنبق",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/flowers_fayrouz/02.jpg",
+     "is_active": true,
+     "sort_order": 5
+    },
+    {
+     "id": "7d958bf1-3a1f-5c4d-852f-e002e0b92092",
+     "provider_id": "e35a2444-42f3-5dc0-9f5a-db80a1d738d5",
+     "name": "تنسيقات حسب الطلب",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 6
+    }
+   ],
+   "packages": [],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "phone",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "missing",
+     "note": "لا توجد أسعار في كتالوج فيروز (سعر v1 كان منقولاً خطأً من ورد بغداد)"
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "source_only",
+     "note": null
+    }
+   ]
+  },
+  {
+   "id": "1c341258-dd12-5c37-920a-0dd187a63de3",
+   "user_id": null,
+   "category_id": "flowers",
+   "legacy_id": "decor_ward_001",
+   "business_name": "ورد بغداد للزهور الطبيعية",
+   "short_description": "باقات بيبي روز وورد طبيعي مع توصيل سريع داخل بغداد.",
+   "description": "Ward Baghdad — ورد طبيعي وتنسيقات مميزة مع توصيل سريع داخل بغداد. الطلب والحجز عبر مراسلة الصفحة مباشرة. قائمة أسعار تقديرية لباقات البيبي روز حسب العدد.",
+   "city": "بغداد",
+   "area": "توصيل داخل بغداد",
+   "address": null,
+   "instagram_url": null,
+   "website": null,
+   "logo_url": null,
+   "cover_image_url": "assets/images/providers/flowers_ward/01.jpg",
+   "capacity": null,
+   "price_from": 10000,
+   "price_to": 65000,
+   "currency": "IQD",
+   "price_note": "أسعار تقديرية لباقات البيبي روز (15 إلى 150 وردة) حسب المصدر",
+   "status": "published",
+   "source": "pdf",
+   "source_ref": "كتالوج ورد بغداد للزهور الطبيعية.pdf",
+   "images": [
+    {
+     "id": "fbdd959e-c71f-58f7-8fa5-39e585c96bac",
+     "provider_id": "1c341258-dd12-5c37-920a-0dd187a63de3",
+     "url": "assets/images/providers/flowers_ward/01.jpg",
+     "kind": "cover",
+     "sort_order": 0,
+     "alt_text": "باقة ألوان الحياة والبهجة",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج ورد بغداد للزهور الطبيعية.pdf"
+    },
+    {
+     "id": "75fcb440-e1e7-58a5-836f-ab348003dad1",
+     "provider_id": "1c341258-dd12-5c37-920a-0dd187a63de3",
+     "url": "assets/images/providers/flowers_ward/02.jpg",
+     "kind": "gallery",
+     "sort_order": 1,
+     "alt_text": "باقة الجوري الملكي",
+     "source": "pdf_extract",
+     "source_ref": "كتالوج ورد بغداد للزهور الطبيعية.pdf"
+    }
+   ],
+   "services": [
+    {
+     "id": "bb4920f7-35bb-50a1-a6ee-570fe36b4679",
+     "provider_id": "1c341258-dd12-5c37-920a-0dd187a63de3",
+     "name": "ورد طبيعي وتنسيقات مميزة",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "dd7a6a21-f3b3-5952-9bf6-59f7d570835e",
+     "provider_id": "1c341258-dd12-5c37-920a-0dd187a63de3",
+     "name": "توصيل سريع داخل بغداد",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": null,
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "18ceb47c-fae6-5847-b25e-682e998616cc",
+     "provider_id": "1c341258-dd12-5c37-920a-0dd187a63de3",
+     "name": "باقة ألوان الحياة والبهجة",
+     "description": "مزيج من عباد الشمس والبيبي روز بتغليف بنفسجي.",
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/flowers_ward/01.jpg",
+     "is_active": true,
+     "sort_order": 2
+    },
+    {
+     "id": "1f280799-c34c-591d-beca-a745f39bcb2e",
+     "provider_id": "1c341258-dd12-5c37-920a-0dd187a63de3",
+     "name": "باقة الجوري الملكي",
+     "description": null,
+     "price_from": null,
+     "price_to": null,
+     "currency": "IQD",
+     "unit": null,
+     "image_url": "assets/images/providers/flowers_ward/02.jpg",
+     "is_active": true,
+     "sort_order": 3
+    }
+   ],
+   "packages": [
+    {
+     "id": "3b8b86be-3b44-523a-a577-fdabddd5def8",
+     "provider_id": "1c341258-dd12-5c37-920a-0dd187a63de3",
+     "title": "15 وردة بيبي روز",
+     "description": "شامل التغليف الفاخر والكرت.",
+     "price_from": 10000,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "سعر تقديري.",
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج ورد بغداد للزهور الطبيعية.pdf",
+     "is_active": true,
+     "sort_order": 0
+    },
+    {
+     "id": "32ab13c6-8a7a-551b-9250-236b0afa1625",
+     "provider_id": "1c341258-dd12-5c37-920a-0dd187a63de3",
+     "title": "25 وردة بيبي روز",
+     "description": "تنسيق كلاسيكي أنيق.",
+     "price_from": 15000,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "سعر تقديري.",
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج ورد بغداد للزهور الطبيعية.pdf",
+     "is_active": true,
+     "sort_order": 1
+    },
+    {
+     "id": "5fde3335-3fe5-59c9-a1e1-36ec464d18e6",
+     "provider_id": "1c341258-dd12-5c37-920a-0dd187a63de3",
+     "title": "50 وردة بيبي روز",
+     "description": "باقة متوسطة مميزة.",
+     "price_from": 25000,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "سعر تقديري.",
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج ورد بغداد للزهور الطبيعية.pdf",
+     "is_active": true,
+     "sort_order": 2
+    },
+    {
+     "id": "97f7578a-05c2-5912-97ff-ea2f082c3bee",
+     "provider_id": "1c341258-dd12-5c37-920a-0dd187a63de3",
+     "title": "75 وردة بيبي روز",
+     "description": "باقة كبيرة فاخرة.",
+     "price_from": 35000,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "سعر تقديري.",
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج ورد بغداد للزهور الطبيعية.pdf",
+     "is_active": true,
+     "sort_order": 3
+    },
+    {
+     "id": "a67ec133-076e-5ae9-9201-6adc2c84b060",
+     "provider_id": "1c341258-dd12-5c37-920a-0dd187a63de3",
+     "title": "100 وردة بيبي روز",
+     "description": "باقة ملكية مميزة جداً.",
+     "price_from": 45000,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "سعر تقديري.",
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج ورد بغداد للزهور الطبيعية.pdf",
+     "is_active": true,
+     "sort_order": 4
+    },
+    {
+     "id": "088128cf-59a7-5532-99fd-cd2a0ce59c44",
+     "provider_id": "1c341258-dd12-5c37-920a-0dd187a63de3",
+     "title": "150 وردة بيبي روز",
+     "description": "أضخم باقة بيبي روز + إكسسوارات مجاناً.",
+     "price_from": 65000,
+     "price_to": null,
+     "currency": "IQD",
+     "conditions": "سعر تقديري.",
+     "is_offer": false,
+     "valid_from": null,
+     "valid_until": null,
+     "source_ref": "كتالوج ورد بغداد للزهور الطبيعية.pdf",
+     "is_active": true,
+     "sort_order": 5
+    }
+   ],
+   "field_sources": [
+    {
+     "field": "city",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "business_name",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "category",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "description",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "area",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "address",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "instagram_url",
+     "status": "unverified",
+     "note": "المصدر يذكر حسابين: 1ward.baghdad و 2ward.baghdad"
+    },
+    {
+     "field": "phone",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "capacity",
+     "status": "missing",
+     "note": null
+    },
+    {
+     "field": "price",
+     "status": "source_only",
+     "note": "المصدر يصفها بـ«السعر المقدر»"
+    },
+    {
+     "field": "services",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "packages",
+     "status": "source_only",
+     "note": null
+    },
+    {
+     "field": "images",
+     "status": "source_only",
+     "note": null
+    }
+   ]
+  }
+ ]
+}

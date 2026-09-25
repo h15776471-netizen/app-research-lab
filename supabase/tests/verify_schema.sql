@@ -34,6 +34,14 @@ begin
       (select relrowsecurity from pg_class where oid = to_regclass('public.' || t)));
   end loop;
 
+  -- Schema not applied (or applied to a different project): report it
+  -- clearly instead of failing with 42P01 on the checks below.
+  if exists (select 1 from unnest(tables) x where to_regclass('public.' || x) is null) then
+    perform pg_temp.chk('tables', 'SCHEMA NOT APPLIED — remaining checks skipped', false,
+      'Run supabase/deploy/01_schema.sql on THIS project first');
+    return;
+  end if;
+
   -- ── Foreign keys (column → table, delete rule) ────────────────────────────
   for r in
     select * from (values

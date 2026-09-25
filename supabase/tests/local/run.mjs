@@ -126,6 +126,79 @@ try {
     console.log(`  ${ok ? '✓' : '✗'} ${summary?.check_name}: ${summary?.status}`);
   }
 
+  console.log('\n[3c] Split deploy bundles + provider catalog seed (new-project path)');
+  {
+    const { allBundles } = await import(pathToFileURL(path.join(supabaseDir, 'scripts', 'bundle.mjs')).href);
+    const { build } = await import(pathToFileURL(path.join(supabaseDir, 'scripts', 'build_catalog.mjs')).href);
+    const bundles = allBundles();
+    for (const name of ['01_schema.sql', '02_storage.sql']) {
+      const p = path.join(supabaseDir, 'deploy', name);
+      const fresh = fs.existsSync(p) && read(p).replace(/\r\n/g, '\n') === bundles[p];
+      console.log(`  ${fresh ? '✓' : '✗'} ${name} matches supabase/migrations`);
+      if (!fresh) failed = true;
+      await run(client, name, read(p));
+    }
+    const seedPath = path.join(supabaseDir, 'deploy', 'seed_providers.sql');
+    const seedFresh = fs.existsSync(seedPath) && read(seedPath).replace(/\r\n/g, '\n') === build().sql;
+    console.log(`  ${seedFresh ? '✓' : '✗'} seed_providers.sql matches provider-data/catalog/providers.v2.json`);
+    if (!seedFresh) failed = true;
+    await run(client, 'seed_providers.sql (1st run)', read(seedPath));
+    await run(client, 'seed_providers.sql (2nd run — idempotent)', read(seedPath));
+
+    const seedChecks = [
+      ['15 published + 2 draft SAWA listings',
+        `select count(*) filter (where status = 'published') = 15 and count(*) filter (where status = 'draft') = 2
+           from public.providers where source = 'pdf'`],
+      ['no duplicated children after re-run',
+        `select (select count(*) from public.services) = (select count(distinct id) from public.services)
+            and (select count(*) from public.provider_field_sources)
+              = (select count(*) from (select distinct provider_id, field from public.provider_field_sources) x)`],
+      ['anon sees exactly the 15 published providers',
+        `select public_count = 15 from (select 0) x, lateral (select 1) y,
+           lateral (select count(*) as public_count from public.providers where status = 'published') z`],
+      ['no Instagram link unless provenance allows it',
+        `select not exists (select 1 from public.providers p join public.provider_field_sources f
+                              on f.provider_id = p.id and f.field = 'instagram_url'
+                            where p.instagram_url is not null and f.status not in ('source_only','verified'))`],
+      ['every published provider has full provenance',
+        `select bool_and(n >= 12) from (select p.id, count(f.*) n from public.providers p
+           left join public.provider_field_sources f on f.provider_id = p.id
+           where p.status = 'published' group by p.id) x`],
+      ['legacy QA request linked to Ritaj',
+        `select coalesce(bool_and(provider_uuid is not null), true) from public.contact_requests where provider_id = 'hall_ritaj_001'`],
+    ];
+    for (const [label, sql] of seedChecks) {
+      const { rows } = await client.query(sql);
+      const ok = Object.values(rows[0])[0] === true;
+      if (!ok) failed = true;
+      console.log(`  ${ok ? '✓' : '✗'} ${label}`);
+    }
+
+    // RLS as anon: published only, and provider_private is invisible.
+    await client.query('begin');
+    await client.query(`select set_config('request.jwt.claims', '{"role":"anon"}', true)`);
+    await client.query('set local role anon');
+    const { rows: [a] } = await client.query('select count(*)::int as n from public.providers');
+    let privDenied = false;
+    try { await client.query('select 1 from public.provider_private limit 1'); } catch { privDenied = true; }
+    await client.query('rollback');
+    const anonOk = a.n === 15 && privDenied;
+    if (!anonOk) failed = true;
+    console.log(`  ${anonOk ? '✓' : '✗'} RLS as anon: ${a.n} providers visible, provider_private denied=${privDenied}`);
+
+    // The guest contact flow end-to-end against a seeded provider.
+    await client.query('begin');
+    await client.query(`select set_config('request.jwt.claims', '{"role":"anon"}', true)`);
+    await client.query('set local role anon');
+    const { rows: [sub] } = await client.query(
+      `select * from public.submit_contact_request((select id from public.providers where legacy_id = 'hall_malika_001'),
+         'ضيف تجريبي', '07701234567', 'اختبار محلي')`);
+    await client.query('rollback');
+    const subOk = /^SW-[0-9A-F]{8}$/.test(sub.reference_code);
+    if (!subOk) failed = true;
+    console.log(`  ${subOk ? '✓' : '✗'} guest submit_contact_request → ${sub.reference_code}`);
+  }
+
   console.log('\n[4] RLS / security suite (supabase/tests/rls_test.sql)');
   let notices = 0;
   client.on('notice', (n) => { notices++; if (process.env.VERBOSE) console.log(`    ${n.message}`); });

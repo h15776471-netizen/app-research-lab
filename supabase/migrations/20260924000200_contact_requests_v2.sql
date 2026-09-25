@@ -124,7 +124,9 @@ create index if not exists idx_contact_requests_inquiry       on public.contact_
 create index if not exists idx_contact_requests_status        on public.contact_requests (status, created_at desc);
 create index if not exists idx_contact_requests_ip            on public.contact_requests (ip_hash, created_at desc);
 create index if not exists idx_contact_requests_contact       on public.contact_requests (user_contact, created_at desc);
--- (idx_contact_requests_provider_id / _created_at from v1 are kept as-is.)
+-- v1 indexes: kept as-is where they exist; created on a fresh project.
+create index if not exists idx_contact_requests_provider_id   on public.contact_requests (provider_id);
+create index if not exists idx_contact_requests_created_at    on public.contact_requests (created_at desc);
 
 -- ═════════════════════════════════════════════════════════════════════════════
 -- Rate limiting / anti-spam (server-side, applies to every insert path)
