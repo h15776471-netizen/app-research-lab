@@ -1,51 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_strings.dart';
-import '../../../core/theme/app_spacing.dart';
-import '../../../core/widgets/empty_state_view.dart';
-import '../../../core/widgets/error_view.dart';
-import '../../../core/widgets/loading_view.dart';
-import '../data/provider_category.dart';
-import '../state/providers_list_notifier.dart';
-import 'provider_card.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/widgets/category_icon.dart';
+import '../../../core/widgets/ui.dart';
+import '../../../data/data_providers.dart';
+import 'provider_browser.dart';
 
-/// Displays all providers belonging to [category] in a scrollable
-/// ListView.builder. Handles loading / error / empty states explicitly —
-/// never a blank screen (Master Spec §13 Screen 2 / Skill Module 9).
 class CategoryScreen extends ConsumerWidget {
-  const CategoryScreen({super.key, required this.category});
+  const CategoryScreen({super.key, required this.categoryId});
 
-  final ProviderCategory category;
+  final String categoryId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final asyncProviders = ref.watch(providersByCategoryProvider(category));
+    final categories = ref.watch(categoriesProvider).valueOrNull ?? const [];
+    final category = categories.where((c) => c.id == categoryId).firstOrNull;
+    final count = ref.watch(categoryCountsProvider)[categoryId] ?? 0;
+    final pad = pagePadding(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(category.labelAr)),
-      body: asyncProviders.when(
-        loading: () => const LoadingView(),
-        error: (error, stack) => ErrorView(
-          onRetry: () => ref.invalidate(providersByCategoryProvider(category)),
+      appBar: AppBar(
+        title: Text(category?.nameAr ?? ''),
+        leading: BackButton(onPressed: () => context.canPop() ? context.pop() : context.go('/c/home')),
+      ),
+      body: ProviderBrowser(
+        fixedCategoryId: categoryId,
+        header: ContentFrame(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(pad, 4, pad, 0),
+            child: Row(children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(color: AppColors.primaryLight, borderRadius: BorderRadius.circular(14)),
+                child: Icon(categoryIcon(categoryId), color: AppColors.primary),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(category?.nameAr ?? '', style: AppTextStyles.h2),
+                  Text(
+                    count == 0 ? 'لا مزودين منشورين بعد' : '$count مزود في بغداد · بيانات من مصادر المزودين',
+                    style: AppTextStyles.caption,
+                  ),
+                ]),
+              ),
+            ]),
+          ),
         ),
-        data: (providers) {
-          if (providers.isEmpty) {
-            return const EmptyStateView(message: AppStrings.categoryEmptyState);
-          }
-          return ListView.builder(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            itemCount: providers.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.only(
-                  bottom: index < providers.length - 1 ? AppSpacing.md : 0,
-                ),
-                child: ProviderCard(provider: providers[index]),
-              );
-            },
-          );
-        },
       ),
     );
   }

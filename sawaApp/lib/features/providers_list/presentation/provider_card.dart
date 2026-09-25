@@ -1,137 +1,183 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_strings.dart';
-import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_radii.dart';
-import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_text_styles.dart';
-import '../../../core/widgets/app_card.dart';
-import '../data/provider_model.dart';
+import '../../../core/utils/formatters.dart';
+import '../../../core/widgets/category_icon.dart';
+import '../../../core/widgets/sawa_image.dart';
+import '../../../core/widgets/ui.dart' show Pressable, Breakpoints;
+import '../../../data/models/catalog_models.dart';
 
-/// Full-width provider card — used in CategoryScreen (Design Handoff §16).
-///
-/// Layout: 4:3 image → name → optional description → optional price range →
-/// "reviewed by sawa" badge. The entire card is a single tap target that
-/// navigates to ProviderDetailsScreen (no separate button inside the card).
+/// Provider card: real image (or branded placeholder), name, category,
+/// location, honest price label. No badges that the data cannot support.
 class ProviderCard extends StatelessWidget {
-  const ProviderCard({super.key, required this.provider});
+  const ProviderCard({
+    super.key,
+    required this.provider,
+    required this.onTap,
+    this.categoryName,
+    this.now,
+  });
 
   final SawaProvider provider;
+  final VoidCallback onTap;
+  final String? categoryName;
+  final DateTime? now;
 
   @override
   Widget build(BuildContext context) {
-    return AppCard(
-      onTap: () => context.goNamed(
-        AppRoute.providerDetails,
-        pathParameters: {'providerId': provider.id},
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _ProviderImage(imagePath: provider.images.first),
-          _ProviderInfo(provider: provider),
-        ],
-      ),
-    );
-  }
-}
-
-class _ProviderImage extends StatelessWidget {
-  const _ProviderImage({required this.imagePath});
-
-  final String imagePath;
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 4 / 3,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(AppRadii.card),
+    final p = provider;
+    final price = p.displayPrice(now ?? DateTime.now());
+    final location = [p.area, p.city].whereType<String>().toSet().join(' · ');
+    return Pressable(
+      onTap: onTap,
+      semanticLabel: p.businessName,
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(AppRadii.card),
+          border: Border.all(color: AppColors.border),
+          boxShadow: AppColors.softShadow,
         ),
-        child: Image.asset(
-          imagePath,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stack) => const ColoredBox(
-            color: AppColors.border,
-            child: Center(
-              child: Icon(
-                Icons.image_not_supported_outlined,
-                color: AppColors.textSecondary,
-                size: 32,
+        clipBehavior: Clip.antiAlias,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          AspectRatio(
+            aspectRatio: 4 / 3,
+            child: Stack(fit: StackFit.expand, children: [
+              Hero(
+                tag: 'provider-image-${p.id}',
+                child: SawaImage(url: p.cardImageUrl, categoryId: p.categoryId, semanticLabel: p.businessName),
               ),
-            ),
+              const Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                height: 70,
+                child: DecoratedBox(decoration: BoxDecoration(gradient: AppColors.gradientCard)),
+              ),
+              if (categoryName != null)
+                PositionedDirectional(
+                  top: 10,
+                  start: 10,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.92),
+                      borderRadius: BorderRadius.circular(AppRadii.full),
+                    ),
+                    child: Row(mainAxisSize: MainAxisSize.min, children: [
+                      Icon(categoryIcon(p.categoryId), size: 14, color: AppColors.primary),
+                      const SizedBox(width: 4),
+                      Text(categoryName!,
+                          style: AppTextStyles.caption
+                              .copyWith(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
+                    ]),
+                  ),
+                ),
+              if (price != null && price.isOffer)
+                PositionedDirectional(
+                  top: 10,
+                  end: 10,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration:
+                        BoxDecoration(color: AppColors.accent, borderRadius: BorderRadius.circular(AppRadii.full)),
+                    child: Text('عرض',
+                        style: AppTextStyles.caption.copyWith(color: Colors.white, fontWeight: FontWeight.w700)),
+                  ),
+                ),
+              if (p.capacity != null)
+                PositionedDirectional(
+                  bottom: 10,
+                  start: 10,
+                  child: Row(children: [
+                    const Icon(Icons.groups_outlined, size: 15, color: Colors.white),
+                    const SizedBox(width: 4),
+                    Text('${p.capacity} ضيف',
+                        style: AppTextStyles.caption.copyWith(color: Colors.white, fontWeight: FontWeight.w600)),
+                  ]),
+                ),
+              if (p.galleryImages.length > 1)
+                PositionedDirectional(
+                  bottom: 10,
+                  end: 10,
+                  child: Row(children: [
+                    const Icon(Icons.photo_library_outlined, size: 14, color: Colors.white),
+                    const SizedBox(width: 4),
+                    Text('${p.galleryImages.length}', style: AppTextStyles.caption.copyWith(color: Colors.white)),
+                  ]),
+                ),
+            ]),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(p.businessName, style: AppTextStyles.h3, maxLines: 1, overflow: TextOverflow.ellipsis),
+              const SizedBox(height: 4),
+              Row(children: [
+                const Icon(Icons.place_outlined, size: 15, color: AppColors.textSecondary),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(location.isEmpty ? 'بغداد' : location,
+                      style: AppTextStyles.caption, maxLines: 1, overflow: TextOverflow.ellipsis),
+                ),
+              ]),
+              if (p.shortDescription != null) ...[
+                const SizedBox(height: 8),
+                Text(p.shortDescription!, style: AppTextStyles.bodySmall, maxLines: 2, overflow: TextOverflow.ellipsis),
+              ],
+              const SizedBox(height: 10),
+              if (price != null)
+                Text(
+                  displayPriceLabel(price),
+                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary, fontWeight: FontWeight.w700),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )
+              else
+                Text('السعر عند الطلب', style: AppTextStyles.caption),
+            ]),
+          ),
+        ]),
       ),
     );
   }
 }
 
-class _ProviderInfo extends StatelessWidget {
-  const _ProviderInfo({required this.provider});
+/// Responsive grid of provider cards.
+class ProviderGrid extends StatelessWidget {
+  const ProviderGrid({super.key, required this.providers, required this.onTap, this.categoryNames = const {}});
 
-  final SawaProvider provider;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(provider.name, style: AppTextStyles.h2),
-          if (provider.shortDescription != null) ...[
-            const SizedBox(height: AppSpacing.xs),
-            Text(
-              provider.shortDescription!,
-              style: AppTextStyles.bodySmall,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-          if (provider.priceRangeText != null) ...[
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              provider.priceRangeText!,
-              style: AppTextStyles.bodySmall,
-            ),
-          ],
-          const SizedBox(height: AppSpacing.sm),
-          const _ReviewedBadge(),
-        ],
-      ),
-    );
-  }
-}
-
-/// "تمت مراجعته من فريق sawa" badge — icon in [AppColors.reviewedBadgeIcon]
-/// (textSecondary, ≥4.5:1 contrast) per Master Spec Phase 20 fix.
-/// Never rendered with the secondary color (#D9A05B) which falls below the
-/// 3:1 minimum for meaningful UI graphics.
-class _ReviewedBadge extends StatelessWidget {
-  const _ReviewedBadge();
+  final List<SawaProvider> providers;
+  final void Function(SawaProvider) onTap;
+  final Map<String, String> categoryNames;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Icon(
-          Icons.check_circle_outline,
-          size: 16,
-          color: AppColors.reviewedBadgeIcon,
+    return SliverLayoutBuilder(builder: (context, c) {
+      final cols = Breakpoints.cardColumns(c.crossAxisExtent);
+      return SliverGrid(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: cols,
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
+          mainAxisExtent: _cardHeight(c.crossAxisExtent, cols),
         ),
-        const SizedBox(width: AppSpacing.xs),
-        Text(
-          AppStrings.reviewedBadge,
-          style: AppTextStyles.caption.copyWith(
-            color: AppColors.reviewedBadgeIcon,
+        delegate: SliverChildBuilderDelegate(
+          (context, i) => ProviderCard(
+            provider: providers[i],
+            categoryName: categoryNames[providers[i].categoryId],
+            onTap: () => onTap(providers[i]),
           ),
+          childCount: providers.length,
         ),
-      ],
-    );
+      );
+    });
+  }
+
+  static double _cardHeight(double width, int cols) {
+    final cardWidth = (width - (cols - 1) * 16) / cols;
+    return cardWidth * 3 / 4 + 150;
   }
 }

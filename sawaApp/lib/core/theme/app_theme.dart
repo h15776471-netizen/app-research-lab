@@ -117,6 +117,36 @@ abstract final class AppTheme {
         type: BottomNavigationBarType.fixed,
         elevation: 0,
       ),
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: AppColors.surface,
+        indicatorColor: AppColors.primaryLight,
+        elevation: 0,
+        height: 68,
+        labelTextStyle: WidgetStateProperty.resolveWith(
+          (s) => AppTextStyles.caption.copyWith(
+            color: s.contains(WidgetState.selected) ? AppColors.primary : AppColors.textSecondary,
+            fontWeight: s.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w500,
+          ),
+        ),
+        iconTheme: WidgetStateProperty.resolveWith(
+          (s) => IconThemeData(
+            color: s.contains(WidgetState.selected) ? AppColors.primary : AppColors.textSecondary,
+          ),
+        ),
+      ),
+      navigationRailTheme: NavigationRailThemeData(
+        backgroundColor: AppColors.surface,
+        indicatorColor: AppColors.primaryLight,
+        selectedIconTheme: const IconThemeData(color: AppColors.primary),
+        unselectedIconTheme: const IconThemeData(color: AppColors.textSecondary),
+        selectedLabelTextStyle: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w700),
+        unselectedLabelTextStyle: AppTextStyles.caption,
+      ),
+      pageTransitionsTheme: const PageTransitionsTheme(builders: {
+        TargetPlatform.android: FadeForwardsPageTransitionsBuilder(),
+        TargetPlatform.windows: FadeForwardsPageTransitionsBuilder(),
+        TargetPlatform.linux: FadeForwardsPageTransitionsBuilder(),
+      }),
       dividerTheme: const DividerThemeData(
         color: AppColors.border,
         thickness: 1,

@@ -63,7 +63,7 @@ abstract final class AppTextStyles {
         fontSize: 11,
         fontWeight: FontWeight.w500,
         height: 1.4,
-        letterSpacing: 0.5,
+        letterSpacing: 0.2,
         color: AppColors.textSecondary,
       );
 }

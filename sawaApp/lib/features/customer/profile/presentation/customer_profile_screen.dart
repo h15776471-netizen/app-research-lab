@@ -5,205 +5,185 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/auth/auth_notifier.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/widgets/app_button.dart';
+import '../../../../core/utils/errors.dart';
+import '../../../../core/utils/formatters.dart';
+import '../../../../core/widgets/ui.dart';
+import '../../../../data/data_providers.dart';
 
 class CustomerProfileScreen extends ConsumerWidget {
   const CustomerProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authNotifierProvider);
+    final auth = ref.watch(authNotifierProvider);
+    final user = auth.user;
+    final online = ref.watch(authRepositoryProvider).isAvailable;
+    final live = ref.watch(catalogRepositoryProvider).isLive;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('حسابي'),
-        automaticallyImplyLeading: false,
+      appBar: AppBar(title: const Text('حسابي'), automaticallyImplyLeading: false),
+      body: ListView(padding: const EdgeInsets.all(16), children: [
+        ContentFrame(
+          maxWidth: 640,
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            SurfaceCard(
+              padding: const EdgeInsets.all(20),
+              child: Row(children: [
+                CircleAvatar(
+                  radius: 30,
+                  backgroundColor: AppColors.primaryLight,
+                  child: user == null
+                      ? const Icon(Icons.person_outline, color: AppColors.primary)
+                      : Text(user.displayName.characters.first,
+                          style: AppTextStyles.h2.copyWith(color: AppColors.primary)),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Text(user?.displayName ?? 'زائر', style: AppTextStyles.h2),
+                    Text(user?.email ?? 'تتصفح بدون حساب',
+                        style: AppTextStyles.bodySmall, textDirection: user == null ? null : TextDirection.ltr),
+                    if (user?.phone != null)
+                      Text(user!.phone!, style: AppTextStyles.caption, textDirection: TextDirection.ltr),
+                  ]),
+                ),
+              ]),
+            ),
+            const SizedBox(height: 16),
+            if (user == null) ...[
+              if (online) ...[
+                FilledButton(
+                  style: FilledButton.styleFrom(
+                      backgroundColor: AppColors.primary, minimumSize: const Size.fromHeight(52)),
+                  onPressed: () => context.pushNamed(AppRoute.login, queryParameters: {'from': '/c/profile'}),
+                  child: const Text('تسجيل الدخول'),
+                ),
+                const SizedBox(height: 10),
+                OutlinedButton(onPressed: () => context.pushNamed(AppRoute.signup), child: const Text('إنشاء حساب')),
+              ] else
+                const InfoBanner(icon: Icons.cloud_off_outlined, color: AppColors.warning, message: offlineMessage),
+            ] else ...[
+              _Tile(
+                icon: Icons.edit_outlined,
+                title: 'تعديل الاسم ورقم الهاتف',
+                onTap: () => _editProfile(context, ref),
+              ),
+              _Tile(icon: Icons.inbox_outlined, title: 'طلباتي', onTap: () => context.go('/c/requests')),
+            ],
+            _Tile(
+                icon: Icons.event_note_outlined,
+                title: 'مخطط المناسبة',
+                onTap: () => context.pushNamed(AppRoute.eventPlanner)),
+            const SizedBox(height: 16),
+            SurfaceCard(
+              color: AppColors.surfaceWarm,
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text('عن بيانات SAWA', style: AppTextStyles.h3),
+                const SizedBox(height: 6),
+                Text(
+                  'معلومات المزودين مستخرجة من كتالوجاتهم ومنظمة يدوياً. لا نخمّن الأسعار أو المواقع: '
+                  'ما لا يذكره المصدر يظهر «غير متوفر»، وما هو ملتبس يظهر «غير مؤكد».',
+                  style: AppTextStyles.bodySmall,
+                ),
+                const SizedBox(height: 8),
+                Text(live ? 'متصل بخادم SAWA' : 'وضع التصفح دون اتصال (بيانات مضمّنة)', style: AppTextStyles.caption),
+              ]),
+            ),
+            if (user != null) ...[
+              const SizedBox(height: 16),
+              TextButton.icon(
+                style: TextButton.styleFrom(foregroundColor: AppColors.error),
+                onPressed: () async {
+                  await ref.read(authNotifierProvider.notifier).signOut();
+                  if (context.mounted) context.go('/welcome');
+                },
+                icon: const Icon(Icons.logout_rounded),
+                label: const Text('تسجيل الخروج'),
+              ),
+            ],
+          ]),
+        ),
+      ]),
+    );
+  }
+
+  Future<void> _editProfile(BuildContext context, WidgetRef ref) async {
+    final user = ref.read(authNotifierProvider).user!;
+    final name = TextEditingController(text: user.fullName ?? '');
+    final phone = TextEditingController(text: user.phone ?? '');
+    final form = GlobalKey<FormState>();
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (c) => Padding(
+        padding: EdgeInsets.fromLTRB(20, 0, 20, MediaQuery.viewInsetsOf(c).bottom + 20),
+        child: Form(
+          key: form,
+          child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            Text('بياناتي', style: AppTextStyles.h2),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: name,
+              decoration: const InputDecoration(labelText: 'الاسم'),
+              validator: (v) => (v?.trim().length ?? 0) > 120 ? 'الاسم طويل جداً' : null,
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              controller: phone,
+              keyboardType: TextInputType.phone,
+              textDirection: TextDirection.ltr,
+              decoration: const InputDecoration(labelText: 'رقم الهاتف', hintText: '07XXXXXXXXX'),
+              validator: (v) => (v == null || v.trim().isEmpty || isValidPhone(v)) ? null : 'رقم الهاتف غير صحيح',
+            ),
+            const SizedBox(height: 20),
+            FilledButton(
+              style: FilledButton.styleFrom(backgroundColor: AppColors.primary, minimumSize: const Size.fromHeight(50)),
+              onPressed: () async {
+                if (!form.currentState!.validate()) return;
+                final err = await ref.read(authNotifierProvider.notifier).updateProfile(
+                      fullName: name.text,
+                      phone: phone.text.trim().isEmpty ? '' : normalizePhone(phone.text),
+                    );
+                if (!c.mounted) return;
+                Navigator.pop(c);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err ?? 'تم حفظ بياناتك')));
+              },
+              child: const Text('حفظ'),
+            ),
+          ]),
+        ),
       ),
-      body: authState.isAuthenticated
-          ? _ProfileContent(
-              displayName: authState.user?.displayName ?? '',
-              email: authState.user?.email ?? '',
-              onSignOut: () => ref.read(authNotifierProvider.notifier).signOut(),
-            )
-          : _GuestState(),
     );
+    name.dispose();
+    phone.dispose();
   }
 }
 
-class _GuestState extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.xl),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 88,
-              height: 88,
-              decoration: const BoxDecoration(
-                color: AppColors.primaryLight,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.person_outlined,
-                color: AppColors.primary,
-                size: 40,
-              ),
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            Text('زائر', style: AppTextStyles.h2),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              'سجّل دخولك للوصول لحسابك الكامل',
-              style:
-                  AppTextStyles.body.copyWith(color: AppColors.textSecondary),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppSpacing.xl),
-            SizedBox(
-              width: 220,
-              child: AppPrimaryButton(
-                label: 'تسجيل الدخول',
-                onPressed: () => context.goNamed(AppRoute.login),
-              ),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            SizedBox(
-              width: 220,
-              child: AppSecondaryButton(
-                label: 'إنشاء حساب',
-                onPressed: () => context.goNamed(AppRoute.signup),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ProfileContent extends StatelessWidget {
-  const _ProfileContent({
-    required this.displayName,
-    required this.email,
-    required this.onSignOut,
-  });
-
-  final String displayName;
-  final String email;
-  final VoidCallback onSignOut;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      children: [
-        // Avatar
-        Center(
-          child: Container(
-            width: 88,
-            height: 88,
-            decoration: const BoxDecoration(
-              color: AppColors.primaryLight,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.person,
-              color: AppColors.primary,
-              size: 40,
-            ),
-          ),
-        ),
-        const SizedBox(height: AppSpacing.md),
-        Center(
-          child: Text(displayName, style: AppTextStyles.h2),
-        ),
-        Center(
-          child: Text(
-            email,
-            style:
-                AppTextStyles.body.copyWith(color: AppColors.textSecondary),
-          ),
-        ),
-        const SizedBox(height: AppSpacing.xl),
-
-        // Menu items
-        _ProfileMenuItem(
-          icon: Icons.inbox_outlined,
-          label: 'طلباتي',
-          onTap: () => context.goNamed(AppRoute.myRequests),
-        ),
-        _ProfileMenuItem(
-          icon: Icons.event_note_outlined,
-          label: 'مناسباتي',
-          onTap: () => context.goNamed(AppRoute.eventPlanner),
-        ),
-
-        const Divider(color: AppColors.border, height: AppSpacing.xxl),
-
-        _ProfileMenuItem(
-          icon: Icons.logout,
-          label: 'تسجيل الخروج',
-          onTap: onSignOut,
-          destructive: true,
-        ),
-      ],
-    );
-  }
-}
-
-class _ProfileMenuItem extends StatelessWidget {
-  const _ProfileMenuItem({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-    this.destructive = false,
-  });
+class _Tile extends StatelessWidget {
+  const _Tile({required this.icon, required this.title, required this.onTap});
 
   final IconData icon;
-  final String label;
+  final String title;
   final VoidCallback onTap;
-  final bool destructive;
 
   @override
   Widget build(BuildContext context) {
-    final color = destructive ? AppColors.error : AppColors.textPrimary;
-    return Material(
-      color: AppColors.surface,
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          margin: const EdgeInsets.only(bottom: AppSpacing.sm),
-          padding: const EdgeInsets.all(AppSpacing.md),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.border),
-          ),
-          child: Row(
-            children: [
-              Icon(icon, color: color, size: 20),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: Text(
-                  label,
-                  style: AppTextStyles.body.copyWith(color: color),
-                ),
-              ),
-              if (!destructive)
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  color: AppColors.textHint,
-                  size: 14,
-                ),
-            ],
-          ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Material(
+        color: AppColors.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: AppColors.border),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: ListTile(
+          leading: Icon(icon, color: AppColors.primary),
+          title: Text(title, style: AppTextStyles.body),
+          trailing: const Icon(Icons.chevron_left_rounded),
+          onTap: onTap,
         ),
       ),
     );

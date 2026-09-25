@@ -2,557 +2,619 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/auth/auth_notifier.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_radii.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/widgets/app_button.dart';
+import '../../../../core/utils/errors.dart';
+import '../../../../core/utils/formatters.dart';
+import '../../../../core/widgets/category_icon.dart';
+import '../../../../core/widgets/sawa_image.dart';
+import '../../../../core/widgets/ui.dart';
+import '../../../../data/data_providers.dart';
+import '../../../../data/models/account_models.dart';
+import '../../../../data/models/catalog_models.dart';
+import '../../../../data/repositories/requests_repository.dart';
+import '../domain/planner_engine.dart';
 
-// Event service type for planner (broader than ProviderCategory)
-enum EventServiceType {
-  hall,
-  photography,
-  decor,
-  catering,
-  music,
-  invitation,
-}
-
-extension EventServiceTypeX on EventServiceType {
-  String get labelAr => switch (this) {
-        EventServiceType.hall => 'قاعة',
-        EventServiceType.photography => 'تصوير',
-        EventServiceType.decor => 'ديكور',
-        EventServiceType.catering => 'تموين',
-        EventServiceType.music => 'موسيقى',
-        EventServiceType.invitation => 'دعوات',
-      };
-
-  String get emoji => switch (this) {
-        EventServiceType.hall => '🏛️',
-        EventServiceType.photography => '📸',
-        EventServiceType.decor => '✨',
-        EventServiceType.catering => '🍽️',
-        EventServiceType.music => '🎵',
-        EventServiceType.invitation => '📜',
-      };
-}
-
-enum EventType { wedding, engagement, birthday, graduation, corporate, other }
-
-extension EventTypeX on EventType {
-  String get labelAr => switch (this) {
-        EventType.wedding => 'زفاف',
-        EventType.engagement => 'خطوبة',
-        EventType.birthday => 'عيد ميلاد',
-        EventType.graduation => 'تخرج',
-        EventType.corporate => 'مناسبة عمل',
-        EventType.other => 'أخرى',
-      };
-
-  String get emoji => switch (this) {
-        EventType.wedding => '💍',
-        EventType.engagement => '💕',
-        EventType.birthday => '🎂',
-        EventType.graduation => '🎓',
-        EventType.corporate => '💼',
-        EventType.other => '🎉',
-      };
-}
-
-// Planner state
-class _PlannerState {
-  const _PlannerState({
-    this.step = 0,
-    this.eventType,
-    this.services = const {},
-    this.guestCount,
-    this.notes = '',
-  });
-
-  final int step;
-  final EventType? eventType;
-  final Set<EventServiceType> services;
-  final int? guestCount;
-  final String notes;
-
-  _PlannerState copyWith({
-    int? step,
-    EventType? eventType,
-    Set<EventServiceType>? services,
-    int? guestCount,
-    String? notes,
-  }) {
-    return _PlannerState(
-      step: step ?? this.step,
-      eventType: eventType ?? this.eventType,
-      services: services ?? this.services,
-      guestCount: guestCount ?? this.guestCount,
-      notes: notes ?? this.notes,
-    );
-  }
-}
-
-class _PlannerNotifier extends Notifier<_PlannerState> {
-  @override
-  _PlannerState build() => const _PlannerState();
-
-  void setEventType(EventType type) =>
-      state = state.copyWith(eventType: type, step: 1);
-
-  void toggleService(EventServiceType s) {
-    final updated = Set<EventServiceType>.from(state.services);
-    if (updated.contains(s)) {
-      updated.remove(s);
-    } else {
-      updated.add(s);
-    }
-    state = state.copyWith(services: updated);
-  }
-
-  void setGuestCount(int count) => state = state.copyWith(guestCount: count);
-  void setNotes(String notes) => state = state.copyWith(notes: notes);
-  void goTo(int step) => state = state.copyWith(step: step);
-  void reset() => state = const _PlannerState();
-}
-
-final _plannerProvider = NotifierProvider<_PlannerNotifier, _PlannerState>(
-  _PlannerNotifier.new,
-);
-
-// Main screen
-
-class EventPlannerScreen extends ConsumerWidget {
+class EventPlannerScreen extends ConsumerStatefulWidget {
   const EventPlannerScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(_plannerProvider);
-
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('خطّط مناسبتك'),
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () {
-            ref.read(_plannerProvider.notifier).reset();
-            context.goNamed(AppRoute.customerHome);
-          },
-        ),
-      ),
-      body: Column(
-        children: [
-          _StepIndicator(currentStep: state.step, totalSteps: 3),
-          Expanded(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
-              child: switch (state.step) {
-                0 => const _StepEventType(),
-                1 => const _StepServices(),
-                2 => const _StepDetails(),
-                _ => const _StepDone(),
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  ConsumerState<EventPlannerScreen> createState() => _EventPlannerScreenState();
 }
 
-class _StepIndicator extends StatelessWidget {
-  const _StepIndicator({required this.currentStep, required this.totalSteps});
+class _EventPlannerScreenState extends ConsumerState<EventPlannerScreen> {
+  static const _titles = ['نوع المناسبة', 'الخدمات المطلوبة', 'التفاصيل', 'الخيارات المناسبة'];
 
-  final int currentStep;
-  final int totalSteps;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
-        vertical: AppSpacing.md,
-      ),
-      child: Row(
-        children: List.generate(
-          totalSteps,
-          (i) => Expanded(
-            child: Container(
-              height: 4,
-              margin: EdgeInsets.only(right: i < totalSteps - 1 ? 4 : 0),
-              decoration: BoxDecoration(
-                color: i <= currentStep
-                    ? AppColors.primary
-                    : AppColors.border,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// Step 1: Event type
-
-class _StepEventType extends ConsumerWidget {
-  const _StepEventType();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ListView(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      children: [
-        Text('نوع المناسبة', style: AppTextStyles.h1),
-        const SizedBox(height: AppSpacing.sm),
-        Text(
-          'ما نوع المناسبة التي تخطط لها؟',
-          style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
-        ),
-        const SizedBox(height: AppSpacing.xl),
-        ...EventType.values.map(
-          (t) => Padding(
-            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-            child: AppSelectCard(
-              label: t.labelAr,
-              emoji: t.emoji,
-              isSelected: false,
-              onTap: () =>
-                  ref.read(_plannerProvider.notifier).setEventType(t),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-// Step 2: Services
-
-class _StepServices extends ConsumerWidget {
-  const _StepServices();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(_plannerProvider);
-
-    return Column(
-      children: [
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            children: [
-              Text('الخدمات المطلوبة', style: AppTextStyles.h1),
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                'اختر الخدمات التي تحتاجها (يمكن اختيار أكثر من خدمة)',
-                style:
-                    AppTextStyles.body.copyWith(color: AppColors.textSecondary),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              ...EventServiceType.values.map(
-                (s) => Padding(
-                  padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-                  child: AppSelectCard(
-                    label: s.labelAr,
-                    emoji: s.emoji,
-                    isSelected: state.services.contains(s),
-                    onTap: () =>
-                        ref.read(_plannerProvider.notifier).toggleService(s),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        _StepNav(
-          onBack: () => ref.read(_plannerProvider.notifier).goTo(0),
-          onNext: state.services.isNotEmpty
-              ? () => ref.read(_plannerProvider.notifier).goTo(2)
-              : null,
-          nextLabel: 'التالي',
-        ),
-      ],
-    );
-  }
-}
-
-// Step 3: Details
-
-class _StepDetails extends ConsumerStatefulWidget {
-  const _StepDetails();
-
-  @override
-  ConsumerState<_StepDetails> createState() => _StepDetailsState();
-}
-
-class _StepDetailsState extends ConsumerState<_StepDetails> {
-  final _notesCtrl = TextEditingController();
-  int _guests = 50;
+  int _step = 0;
+  EventType? _type;
+  final Set<String> _services = {};
+  int? _guests;
+  String? _area;
+  DateTime? _date;
+  double? _budget;
+  final _style = TextEditingController();
+  final _guestsCtrl = TextEditingController();
 
   @override
   void dispose() {
-    _notesCtrl.dispose();
+    _style.dispose();
+    _guestsCtrl.dispose();
     super.dispose();
   }
 
+  bool get _canNext => switch (_step) {
+        0 => _type != null,
+        1 => _services.isNotEmpty,
+        _ => true,
+      };
+
+  PlannerCriteria get _criteria => PlannerCriteria(
+        eventType: _type ?? EventType.other,
+        categoryIds: _services.toList(),
+        guestCount: _guests,
+        area: _area,
+        eventDate: _date,
+        budgetMax: _budget,
+        style: _style.text.trim().isEmpty ? null : _style.text.trim(),
+      );
+
+  void _back() {
+    if (_step == 0) {
+      context.canPop() ? context.pop() : context.go('/c/home');
+    } else {
+      setState(() => _step--);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            children: [
-              Text('تفاصيل إضافية', style: AppTextStyles.h1),
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                'هذه المعلومات تساعدنا في تقديم أنسب المزودين',
-                style:
-                    AppTextStyles.body.copyWith(color: AppColors.textSecondary),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-
-              // Guest count
-              Text('عدد الضيوف المتوقع', style: AppTextStyles.h3),
-              const SizedBox(height: AppSpacing.md),
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      if (_guests > 10) {
-                        setState(() => _guests -= 10);
-                        ref
-                            .read(_plannerProvider.notifier)
-                            .setGuestCount(_guests);
-                      }
-                    },
-                    icon: const Icon(Icons.remove_circle_outline),
-                    color: AppColors.primary,
-                  ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('خطّط مناسبتك'),
+        leading: IconButton(icon: const Icon(Icons.arrow_forward_rounded), tooltip: 'رجوع', onPressed: _back),
+      ),
+      body: Column(children: [
+        ContentFrame(
+          maxWidth: 820,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(children: [
+                for (var i = 0; i < _titles.length; i++)
                   Expanded(
-                    child: Center(
-                      child: Text(
-                        '$_guests ضيف',
-                        style: AppTextStyles.h2,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 250),
+                      height: 4,
+                      margin: const EdgeInsetsDirectional.only(end: 4),
+                      decoration: BoxDecoration(
+                        color: i <= _step ? AppColors.primary : AppColors.border,
+                        borderRadius: BorderRadius.circular(2),
                       ),
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      if (_guests < 1000) {
-                        setState(() => _guests += 10);
-                        ref
-                            .read(_plannerProvider.notifier)
-                            .setGuestCount(_guests);
-                      }
-                    },
-                    icon: const Icon(Icons.add_circle_outline),
-                    color: AppColors.primary,
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: AppSpacing.xl),
-
-              // Notes
-              Text('ملاحظات إضافية (اختياري)', style: AppTextStyles.h3),
-              const SizedBox(height: AppSpacing.md),
-              TextField(
-                controller: _notesCtrl,
-                maxLines: 4,
-                onChanged: (v) =>
-                    ref.read(_plannerProvider.notifier).setNotes(v),
-                decoration: const InputDecoration(
-                  hintText:
-                      'أي تفاصيل إضافية عن مناسبتك...',
-                  alignLabelWithHint: true,
-                ),
-              ),
-            ],
+              ]),
+              const SizedBox(height: 8),
+              Text('الخطوة ${_step + 1} من ${_titles.length} · ${_titles[_step]}', style: AppTextStyles.caption),
+            ]),
           ),
         ),
-        _StepNav(
-          onBack: () => ref.read(_plannerProvider.notifier).goTo(1),
-          onNext: () {
-            ref.read(_plannerProvider.notifier).setGuestCount(_guests);
-            ref.read(_plannerProvider.notifier).goTo(3);
-          },
-          nextLabel: 'إنهاء التخطيط',
+        Expanded(
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 260),
+            transitionBuilder: (child, a) => FadeTransition(
+              opacity: a,
+              child: SlideTransition(
+                position: Tween(begin: const Offset(0.04, 0), end: Offset.zero).animate(a),
+                child: child,
+              ),
+            ),
+            child: KeyedSubtree(key: ValueKey(_step), child: _body()),
+          ),
         ),
-      ],
+        if (_step < 3)
+          SafeArea(
+            top: false,
+            child: ContentFrame(
+              maxWidth: 820,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                child: FilledButton(
+                  style: FilledButton.styleFrom(
+                      backgroundColor: AppColors.primary, minimumSize: const Size.fromHeight(52)),
+                  onPressed: _canNext ? () => setState(() => _step++) : null,
+                  child: Text(_step == 2 ? 'اعرض الخيارات' : 'التالي'),
+                ),
+              ),
+            ),
+          ),
+      ]),
     );
+  }
+
+  Widget _body() => switch (_step) {
+        0 => _stepType(),
+        1 => _stepServices(),
+        2 => _stepDetails(),
+        _ => _Results(criteria: _criteria),
+      };
+
+  Widget _page(List<Widget> children) => ListView(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+        children: [
+          ContentFrame(maxWidth: 820, child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: children))
+        ],
+      );
+
+  Widget _stepType() {
+    const icons = {
+      EventType.wedding: Icons.favorite_outline,
+      EventType.engagement: Icons.diamond_outlined,
+      EventType.birthday: Icons.cake_outlined,
+      EventType.graduation: Icons.school_outlined,
+      EventType.corporate: Icons.business_center_outlined,
+      EventType.other: Icons.celebration_outlined,
+    };
+    return _page([
+      Text('شنو نوع مناسبتك؟', style: AppTextStyles.h2),
+      const SizedBox(height: 16),
+      LayoutBuilder(builder: (context, c) {
+        final cols = c.maxWidth > 560 ? 3 : 2;
+        return GridView.count(
+          crossAxisCount: cols,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          childAspectRatio: 1.35,
+          children: [
+            for (final t in EventType.values)
+              _ChoiceTile(
+                icon: icons[t]!,
+                label: t.labelAr,
+                selected: _type == t,
+                onTap: () => setState(() {
+                  _type = t;
+                  _step = 1;
+                }),
+              ),
+          ],
+        );
+      }),
+    ]);
+  }
+
+  Widget _stepServices() {
+    final categories = ref.watch(categoriesProvider).valueOrNull ?? const <SawaCategory>[];
+    final counts = ref.watch(categoryCountsProvider);
+    return _page([
+      Text('شنو الخدمات اللي تحتاجها؟', style: AppTextStyles.h2),
+      Text('اختر أكثر من خدمة إذا تحب.', style: AppTextStyles.bodySmall),
+      const SizedBox(height: 16),
+      for (final c in categories)
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: _SelectRow(
+            icon: categoryIcon(c.id),
+            label: c.nameAr,
+            subtitle: (counts[c.id] ?? 0) > 0
+                ? '${counts[c.id]} مزود متاح'
+                : 'لا مزودين منشورين بعد — نبلغ فريق SAWA باحتياجك',
+            selected: _services.contains(c.id),
+            onTap: () => setState(() => _services.contains(c.id) ? _services.remove(c.id) : _services.add(c.id)),
+          ),
+        ),
+    ]);
+  }
+
+  Widget _stepDetails() {
+    final providers = ref.watch(providersProvider).valueOrNull ?? const <SawaProvider>[];
+    final areas = knownAreas(providers.where((p) => _services.contains(p.categoryId)).toList());
+    return _page([
+      Text('التفاصيل (كلها اختيارية)', style: AppTextStyles.h2),
+      const SizedBox(height: 18),
+      Text('عدد الضيوف', style: AppTextStyles.h3),
+      const SizedBox(height: 8),
+      Wrap(spacing: 8, runSpacing: 8, children: [
+        for (final n in const [50, 100, 200, 300, 500])
+          ChoiceChip(
+            label: Text('$n'),
+            selected: _guests == n,
+            onSelected: (s) => setState(() {
+              _guests = s ? n : null;
+              _guestsCtrl.text = s ? '$n' : '';
+            }),
+          ),
+        SizedBox(
+          width: 130,
+          child: TextField(
+            controller: _guestsCtrl,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(hintText: 'عدد آخر', isDense: true),
+            onChanged: (v) => setState(() => _guests = int.tryParse(normalizePhone(v))),
+          ),
+        ),
+      ]),
+      const SizedBox(height: 20),
+      Text('المنطقة في بغداد', style: AppTextStyles.h3),
+      const SizedBox(height: 8),
+      Wrap(spacing: 8, runSpacing: 8, children: [
+        ChoiceChip(
+            label: const Text('أي منطقة'), selected: _area == null, onSelected: (_) => setState(() => _area = null)),
+        for (final a in areas)
+          ChoiceChip(label: Text(a), selected: _area == a, onSelected: (s) => setState(() => _area = s ? a : null)),
+      ]),
+      if (areas.isEmpty)
+        Padding(
+          padding: const EdgeInsets.only(top: 6),
+          child: Text('لا توجد مناطق محددة في بيانات الخدمات المختارة.', style: AppTextStyles.caption),
+        ),
+      const SizedBox(height: 20),
+      Text('تاريخ المناسبة', style: AppTextStyles.h3),
+      const SizedBox(height: 8),
+      OutlinedButton.icon(
+        onPressed: () async {
+          final now = DateTime.now();
+          final d = await showDatePicker(
+            context: context,
+            initialDate: _date ?? now.add(const Duration(days: 30)),
+            firstDate: DateTime(now.year, now.month, now.day),
+            lastDate: now.add(const Duration(days: 730)),
+          );
+          if (d != null) setState(() => _date = d);
+        },
+        icon: const Icon(Icons.calendar_month_outlined),
+        label: Text(_date == null ? 'اختر التاريخ' : formatDate(_date!)),
+      ),
+      const SizedBox(height: 20),
+      Text('الميزانية التقريبية لكل خدمة', style: AppTextStyles.h3),
+      const SizedBox(height: 8),
+      Wrap(spacing: 8, runSpacing: 8, children: [
+        ChoiceChip(
+            label: const Text('غير محددة'),
+            selected: _budget == null,
+            onSelected: (_) => setState(() => _budget = null)),
+        for (final b in const [100000.0, 500000.0, 1000000.0, 1500000.0, 3000000.0])
+          ChoiceChip(
+            label: Text('حتى ${formatIqd(b)}'),
+            selected: _budget == b,
+            onSelected: (s) => setState(() => _budget = s ? b : null),
+          ),
+      ]),
+      const SizedBox(height: 20),
+      Text('الستايل أو ملاحظات', style: AppTextStyles.h3),
+      const SizedBox(height: 8),
+      TextField(
+        controller: _style,
+        maxLength: 500,
+        maxLines: 3,
+        decoration: const InputDecoration(hintText: 'مثلاً: ألوان هادئة، كوشة كلاسيكية، تصوير نسائي…'),
+      ),
+    ]);
   }
 }
 
-// Done step
+class _Results extends ConsumerWidget {
+  const _Results({required this.criteria});
 
-class _StepDone extends ConsumerWidget {
-  const _StepDone();
+  final PlannerCriteria criteria;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(_plannerProvider);
+    final providers = ref.watch(providersProvider).valueOrNull ?? const <SawaProvider>[];
+    final categories = {for (final c in ref.watch(categoriesProvider).valueOrNull ?? const <SawaCategory>[]) c.id: c};
+    final result = matchProviders(providers, criteria);
 
-    return Padding(
-      padding: const EdgeInsets.all(AppSpacing.xl),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 88,
-            height: 88,
-            decoration: const BoxDecoration(
-              color: AppColors.successLight,
-              shape: BoxShape.circle,
+    return ListView(padding: const EdgeInsets.fromLTRB(16, 8, 16, 32), children: [
+      ContentFrame(
+        maxWidth: 820,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          const InfoBanner(
+            icon: Icons.rule_rounded,
+            message: 'الترتيب مبني على قواعد واضحة (الفئة، السعة، المنطقة، الميزانية، اكتمال البيانات) — '
+                'وليس ذكاءً اصطناعياً. البيانات غير المتوفرة لا تُحتسب ولا تستبعد أحداً.',
+          ),
+          const SizedBox(height: 16),
+          for (final id in criteria.categoryIds) ...[
+            SectionHeader(title: categories[id]?.nameAr ?? id),
+            const SizedBox(height: 10),
+            if (result.byCategory[id]!.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Text(
+                  'لا يوجد مزود منشور يطابق هذا الطلب حالياً. أرسل احتياجك لفريق SAWA وسنبحث لك.',
+                  style: AppTextStyles.bodySmall,
+                ),
+              )
+            else
+              for (final m in result.byCategory[id]!.take(5)) _MatchCard(match: m),
+            const SizedBox(height: 12),
+          ],
+          if (result.excluded.isNotEmpty) ...[
+            ExpansionTile(
+              tilePadding: EdgeInsets.zero,
+              title: Text('مستبعد بسبب السعة (${result.excluded.length})', style: AppTextStyles.bodySmall),
+              children: [for (final m in result.excluded) _MatchCard(match: m)],
             ),
-            child: const Icon(
-              Icons.check_circle_outline,
-              color: AppColors.success,
-              size: 44,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xl),
-          Text(
-            'تم تسجيل مناسبتك!',
-            style: AppTextStyles.h1,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            'تصفّح المزودين الآن وتواصل مع من يناسبك',
-            style:
-                AppTextStyles.body.copyWith(color: AppColors.textSecondary),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppSpacing.xl),
-
-          // Summary
-          Container(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.border),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (state.eventType != null)
-                  _SummaryRow(
-                    label: 'نوع المناسبة',
-                    value:
-                        '${state.eventType!.emoji} ${state.eventType!.labelAr}',
-                  ),
-                if (state.services.isNotEmpty)
-                  _SummaryRow(
-                    label: 'الخدمات',
-                    value: state.services.map((s) => s.labelAr).join('، '),
-                  ),
-                if (state.guestCount != null)
-                  _SummaryRow(
-                    label: 'عدد الضيوف',
-                    value: '${state.guestCount} ضيف',
-                  ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: AppSpacing.xl),
-          AppPrimaryButton(
-            label: 'تصفّح المزودين',
-            onPressed: () {
-              ref.read(_plannerProvider.notifier).reset();
-              context.goNamed(AppRoute.explore);
-            },
-          ),
-          const SizedBox(height: AppSpacing.md),
-          AppGhostButton(
-            label: 'العودة للرئيسية',
-            onPressed: () {
-              ref.read(_plannerProvider.notifier).reset();
-              context.goNamed(AppRoute.customerHome);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SummaryRow extends StatelessWidget {
-  const _SummaryRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '$label: ',
-            style: AppTextStyles.bodySmall.copyWith(
-              color: AppColors.textHint,
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.textPrimary,
+          ],
+          const SizedBox(height: 16),
+          SurfaceCard(
+            color: AppColors.surfaceWarm,
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              Text('تحب فريق SAWA يساعدك؟', style: AppTextStyles.h3),
+              const SizedBox(height: 4),
+              Text('أرسل احتياجاتك كما اخترتها، ونتواصل معك بخيارات مناسبة.', style: AppTextStyles.bodySmall),
+              const SizedBox(height: 12),
+              FilledButton.icon(
+                style:
+                    FilledButton.styleFrom(backgroundColor: AppColors.primary, minimumSize: const Size.fromHeight(50)),
+                onPressed: () => _sendInquiry(context, ref),
+                icon: const Icon(Icons.send_outlined, size: 18),
+                label: const Text('أرسل طلب التخطيط'),
               ),
-            ),
+            ]),
           ),
-        ],
+        ]),
+      ),
+    ]);
+  }
+
+  Future<void> _sendInquiry(BuildContext context, WidgetRef ref) async {
+    final repo = ref.read(requestsRepositoryProvider);
+    if (!repo.isAvailable) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text(offlineMessage)));
+      return;
+    }
+    final user = ref.read(authNotifierProvider).user;
+    final ref0 = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (_) => _InquirySheet(
+          criteria: criteria, guest: user == null, defaultName: user?.fullName, defaultPhone: user?.phone),
+    );
+    if (ref0 != null && context.mounted) {
+      context.pushReplacementNamed(AppRoute.contactSuccess, queryParameters: {'ref': ref0, 'kind': 'inquiry'});
+    }
+  }
+}
+
+class _InquirySheet extends ConsumerStatefulWidget {
+  const _InquirySheet({required this.criteria, required this.guest, this.defaultName, this.defaultPhone});
+
+  final PlannerCriteria criteria;
+  final bool guest;
+  final String? defaultName;
+  final String? defaultPhone;
+
+  @override
+  ConsumerState<_InquirySheet> createState() => _InquirySheetState();
+}
+
+class _InquirySheetState extends ConsumerState<_InquirySheet> {
+  final _form = GlobalKey<FormState>();
+  late final _name = TextEditingController(text: widget.defaultName ?? '');
+  late final _phone = TextEditingController(text: widget.defaultPhone ?? '');
+  bool _busy = false;
+  String? _error;
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _phone.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit() async {
+    if (!_form.currentState!.validate()) return;
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    final c = widget.criteria;
+    try {
+      final r = await ref.read(requestsRepositoryProvider).createInquiry(InquiryInput(
+            eventType: c.eventType,
+            guestCount: c.guestCount,
+            area: c.area,
+            eventDate: c.eventDate,
+            budgetMax: c.budgetMax,
+            services: c.categoryIds,
+            style: c.style,
+            guestName: _name.text.trim().isEmpty ? null : _name.text.trim(),
+            guestContact: _phone.text.trim().isEmpty ? null : normalizePhone(_phone.text),
+          ));
+      if (mounted) Navigator.pop(context, r.referenceCode);
+    } catch (e) {
+      setState(() {
+        _busy = false;
+        _error = friendlyError(e);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(20, 0, 20, MediaQuery.viewInsetsOf(context).bottom + 20),
+      child: Form(
+        key: _form,
+        child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Text('إرسال طلب التخطيط', style: AppTextStyles.h2),
+          const SizedBox(height: 4),
+          Text('يصل إلى فريق SAWA فقط.', style: AppTextStyles.caption),
+          const SizedBox(height: 16),
+          if (_error != null) ...[
+            Text(_error!, style: AppTextStyles.bodySmall.copyWith(color: AppColors.error)),
+            const SizedBox(height: 10),
+          ],
+          TextFormField(
+            controller: _name,
+            decoration: const InputDecoration(labelText: 'الاسم'),
+            validator: (v) => widget.guest && (v == null || v.trim().isEmpty) ? 'يرجى كتابة الاسم' : null,
+          ),
+          const SizedBox(height: 12),
+          TextFormField(
+            controller: _phone,
+            keyboardType: TextInputType.phone,
+            textDirection: TextDirection.ltr,
+            decoration: InputDecoration(
+                labelText: widget.guest ? 'رقم الهاتف' : 'رقم الهاتف (اختياري)', hintText: '07XXXXXXXXX'),
+            validator: (v) {
+              final empty = v == null || v.trim().isEmpty;
+              if (widget.guest && empty) return 'يرجى إدخال رقم للتواصل';
+              if (!empty && !isValidPhone(v)) return 'رقم الهاتف غير صحيح';
+              return null;
+            },
+          ),
+          const SizedBox(height: 20),
+          FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: AppColors.primary, minimumSize: const Size.fromHeight(50)),
+            onPressed: _busy ? null : _submit,
+            child: _busy
+                ? const SizedBox(
+                    width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                : const Text('إرسال'),
+          ),
+        ]),
       ),
     );
   }
 }
 
-// Navigation buttons
+class _MatchCard extends StatelessWidget {
+  const _MatchCard({required this.match});
 
-class _StepNav extends StatelessWidget {
-  const _StepNav({
-    required this.onBack,
-    required this.onNext,
-    required this.nextLabel,
-  });
-
-  final VoidCallback onBack;
-  final VoidCallback? onNext;
-  final String nextLabel;
+  final PlannerMatch match;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
-        border: Border(top: BorderSide(color: AppColors.border)),
+    final p = match.provider;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Pressable(
+        onTap: () => context.pushNamed(AppRoute.providerDetails, pathParameters: {'providerId': p.id}),
+        semanticLabel: p.businessName,
+        child: SurfaceCard(
+          padding: const EdgeInsets.all(12),
+          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: SizedBox(width: 76, height: 76, child: SawaImage(url: p.cardImageUrl, categoryId: p.categoryId)),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(p.businessName, style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w700)),
+                const SizedBox(height: 4),
+                for (final r in match.reasons.take(4))
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2),
+                    child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Icon(
+                        switch (r.kind) {
+                          ReasonKind.match => Icons.check_circle_outline,
+                          ReasonKind.warning => Icons.error_outline,
+                          ReasonKind.info => Icons.info_outline,
+                        },
+                        size: 14,
+                        color: switch (r.kind) {
+                          ReasonKind.match => AppColors.success,
+                          ReasonKind.warning => AppColors.warning,
+                          ReasonKind.info => AppColors.textHint,
+                        },
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(child: Text(r.text, style: AppTextStyles.caption)),
+                    ]),
+                  ),
+              ]),
+            ),
+          ]),
+        ),
       ),
-      child: Row(
-        children: [
+    );
+  }
+}
+
+class _ChoiceTile extends StatelessWidget {
+  const _ChoiceTile({required this.icon, required this.label, required this.selected, required this.onTap});
+
+  final IconData icon;
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Pressable(
+      onTap: onTap,
+      semanticLabel: label,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.primary : AppColors.surface,
+          borderRadius: BorderRadius.circular(AppRadii.card),
+          border: Border.all(color: selected ? AppColors.primary : AppColors.border),
+          boxShadow: selected ? AppColors.liftShadow : AppColors.softShadow,
+        ),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Icon(icon, size: 30, color: selected ? Colors.white : AppColors.primary),
+          const SizedBox(height: 8),
+          Text(label,
+              style: AppTextStyles.body.copyWith(
+                color: selected ? Colors.white : AppColors.textPrimary,
+                fontWeight: FontWeight.w700,
+              )),
+        ]),
+      ),
+    );
+  }
+}
+
+class _SelectRow extends StatelessWidget {
+  const _SelectRow(
+      {required this.icon, required this.label, required this.subtitle, required this.selected, required this.onTap});
+
+  final IconData icon;
+  final String label;
+  final String subtitle;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Pressable(
+      onTap: onTap,
+      semanticLabel: label,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.primaryLight : AppColors.surface,
+          borderRadius: BorderRadius.circular(AppRadii.card),
+          border: Border.all(color: selected ? AppColors.primary : AppColors.border, width: selected ? 1.5 : 1),
+        ),
+        child: Row(children: [
+          Icon(icon, color: selected ? AppColors.primary : AppColors.textSecondary),
+          const SizedBox(width: 12),
           Expanded(
-            child: AppSecondaryButton(
-              label: 'رجوع',
-              onPressed: onBack,
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(label, style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w700)),
+              Text(subtitle, style: AppTextStyles.caption),
+            ]),
+          ),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 180),
+            child: Icon(
+              selected ? Icons.check_circle_rounded : Icons.circle_outlined,
+              key: ValueKey(selected),
+              color: selected ? AppColors.primary : AppColors.border,
             ),
           ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            flex: 2,
-            child: AppPrimaryButton(
-              label: nextLabel,
-              onPressed: onNext,
-            ),
-          ),
-        ],
+        ]),
       ),
     );
   }

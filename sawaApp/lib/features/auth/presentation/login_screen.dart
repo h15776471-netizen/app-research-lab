@@ -4,34 +4,30 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/auth/auth_notifier.dart';
 import '../../../core/router/app_router.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_spacing.dart';
-import '../../../core/theme/app_text_styles.dart';
 import '../../../core/widgets/app_button.dart';
+import 'auth_scaffold.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, this.returnTo});
+
+  /// Customer path to return to after signing in (e.g. /c/requests).
+  final String? returnTo;
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final _form = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _password = TextEditingController();
   bool _obscure = true;
 
-  bool get _valid =>
-      _email.text.trim().isNotEmpty && _password.text.trim().length >= 6;
-
   @override
   void initState() {
     super.initState();
-    _email.addListener(_rebuild);
-    _password.addListener(_rebuild);
+    Future.microtask(() => ref.read(authNotifierProvider.notifier).clearMessages());
   }
-
-  void _rebuild() => setState(() {});
 
   @override
   void dispose() {
@@ -41,118 +37,71 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<void> _submit() async {
-    await ref.read(authNotifierProvider.notifier).signIn(
-          email: _email.text.trim(),
-          password: _password.text,
-        );
+    if (!_form.currentState!.validate()) return;
+    final ok = await ref.read(authNotifierProvider.notifier).signIn(email: _email.text, password: _password.text);
+    if (!ok || !mounted) return;
+    final auth = ref.read(authNotifierProvider);
+    final back = widget.returnTo;
+    if (!auth.isProvider && back != null && back.startsWith('/c/')) {
+      context.go(back);
+    } else {
+      context.go(auth.isProvider ? '/p/dashboard' : '/c/home');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(authNotifierProvider, (prev, next) {
-      if (!next.isLoading && next.isAuthenticated) {
-        // Router redirect handles navigation
-      }
-    });
-
-    final state = ref.watch(authNotifierProvider);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('تسجيل الدخول'),
-        leading: BackButton(onPressed: () => context.goNamed(AppRoute.welcome)),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: AppSpacing.xl),
-            Text('أهلاً بعودتك 👋', style: AppTextStyles.h1),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              'سجّل دخولك للمتابعة',
-              style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
-            ),
-            const SizedBox(height: AppSpacing.xxl),
-            TextField(
+    final auth = ref.watch(authNotifierProvider);
+    return AuthScaffold(
+      title: 'أهلاً بعودتك',
+      subtitle: 'سجّل الدخول لمتابعة طلباتك أو إدارة نشاطك التجاري.',
+      child: Form(
+        key: _form,
+        child: AutofillGroup(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            if (auth.error != null) FormMessage(text: auth.error!),
+            TextFormField(
               controller: _email,
               keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                labelText: 'البريد الإلكتروني',
-                prefixIcon: Icon(Icons.email_outlined),
-              ),
+              textDirection: TextDirection.ltr,
+              autofillHints: const [AutofillHints.email],
+              decoration: const InputDecoration(labelText: 'البريد الإلكتروني', prefixIcon: Icon(Icons.mail_outline)),
+              validator: validateEmail,
             ),
-            const SizedBox(height: AppSpacing.md),
-            TextField(
+            const SizedBox(height: 14),
+            TextFormField(
               controller: _password,
               obscureText: _obscure,
-              textInputAction: TextInputAction.done,
-              onSubmitted: (_) => _valid ? _submit() : null,
+              textDirection: TextDirection.ltr,
+              autofillHints: const [AutofillHints.password],
+              onFieldSubmitted: (_) => _submit(),
               decoration: InputDecoration(
                 labelText: 'كلمة المرور',
-                prefixIcon: const Icon(Icons.lock_outlined),
+                prefixIcon: const Icon(Icons.lock_outline),
                 suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                  ),
+                  tooltip: _obscure ? 'إظهار' : 'إخفاء',
+                  icon: Icon(_obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined),
                   onPressed: () => setState(() => _obscure = !_obscure),
                 ),
               ),
+              validator: (v) => (v == null || v.isEmpty) ? 'يرجى إدخال كلمة المرور' : null,
             ),
-            if (state.hasError) ...[
-              const SizedBox(height: AppSpacing.md),
-              _ErrorBanner(message: state.error!),
-            ],
-            const SizedBox(height: AppSpacing.xl),
-            AppPrimaryButton(
-              label: 'دخول',
-              isLoading: state.isLoading,
-              onPressed: _valid && !state.isLoading ? _submit : null,
+            Align(
+              alignment: AlignmentDirectional.centerEnd,
+              child: TextButton(
+                onPressed: () => context.pushNamed(AppRoute.forgotPassword),
+                child: const Text('نسيت كلمة المرور؟'),
+              ),
             ),
-            const SizedBox(height: AppSpacing.xl),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('ما عندك حساب؟ ', style: AppTextStyles.bodySmall),
-                TextButton(
-                  onPressed: () => context.goNamed(AppRoute.signup),
-                  child: const Text('إنشاء حساب'),
-                ),
-              ],
+            const SizedBox(height: 8),
+            AppPrimaryButton(label: 'تسجيل الدخول', isLoading: auth.isLoading, onPressed: _submit),
+            const SizedBox(height: 12),
+            TextButton(
+              onPressed: () => context.pushReplacementNamed(AppRoute.signup),
+              child: const Text('ليس لديك حساب؟ أنشئ حساباً'),
             ),
-          ],
+          ]),
         ),
-      ),
-    );
-  }
-}
-
-class _ErrorBanner extends StatelessWidget {
-  const _ErrorBanner({required this.message});
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppColors.errorLight,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.error_outline, color: AppColors.error, size: 18),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              message,
-              style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -1,7 +1,8 @@
 name: sawa
 description: >
-  sawa — a Baghdad-only, curated event-provider directory (halls,
-  photographers, decor) with a real contact-request flow. Hackathon MVP.
+  SAWA — premium Iraqi event & wedding platform (Baghdad first): structured
+  provider catalogue, guest contact requests, rule-based event planner and a
+  provider portal on Supabase (Auth + RLS + Storage).
 publish_to: 'none'
 version: 0.1.0+1
 
@@ -34,6 +35,8 @@ dependencies:
 
   # Instagram link launcher — ProviderDetailsScreen (Master Spec §36 point 4).
   url_launcher: ^6.3.0
+  image_picker: ^1.2.3
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
@@ -44,21 +47,18 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/data/providers.json
-    - assets/data/dev_fixture_providers.json
-    - assets/images/providers/hall_ritaj/
-    - assets/images/providers/hall_rotana_baghdad/
-    - assets/images/providers/hall_malika/
-    - assets/images/providers/hall_weam/
+    - assets/data/catalog.json
+    - assets/images/providers/flowers_fayrouz/
+    - assets/images/providers/flowers_laflamme/
+    - assets/images/providers/flowers_lucci/
+    - assets/images/providers/flowers_ward/
     - assets/images/providers/hall_asawer/
     - assets/images/providers/hall_jadriya/
-    - assets/images/providers/photo_tabarek/
-    - assets/images/providers/photo_shot/
+    - assets/images/providers/hall_malika/
+    - assets/images/providers/hall_qasr_rotana/
+    - assets/images/providers/hall_weam/
     - assets/images/providers/photo_asmer/
     - assets/images/providers/photo_mariam/
     - assets/images/providers/photo_marwa/
-    - assets/images/providers/decor_laflamme/
-    - assets/images/providers/decor_lucci/
-    - assets/images/providers/decor_fayrouz/
-    - assets/images/providers/decor_ward/
-    - assets/images/dev_fixtures/
+    - assets/images/providers/photo_shot/
+    - assets/images/providers/photo_tabarek/

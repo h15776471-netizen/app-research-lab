@@ -1,138 +1,92 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
-import '../../../core/widgets/app_button.dart';
+import '../../../core/utils/errors.dart';
+import '../../../data/data_providers.dart';
+import 'sawa_wordmark.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends ConsumerWidget {
   const WelcomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final online = ref.watch(authRepositoryProvider).isAvailable;
     return Scaffold(
-      backgroundColor: AppColors.primary,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Hero section
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Logo
-                    Container(
-                      width: 88,
-                      height: 88,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.15),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.3),
-                          width: 2,
-                        ),
-                      ),
-                      child: const Icon(
-                        Icons.auto_awesome,
-                        color: Colors.white,
-                        size: 40,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      'sawa',
-                      style: AppTextStyles.display.copyWith(
-                        color: Colors.white,
-                        letterSpacing: 3,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'خلّي مناسبتك\nتبدأ من هنا.',
-                      style: AppTextStyles.h2.copyWith(
-                        color: Colors.white,
-                        height: 1.5,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'اكتشف أفضل خدمات المناسبات في بغداد',
-                      style: AppTextStyles.body.copyWith(
-                        color: Colors.white.withValues(alpha: 0.75),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // Action panel
-            Container(
-              decoration: const BoxDecoration(
-                color: AppColors.background,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(32),
-                ),
-              ),
-              padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AppPrimaryButton(
-                    label: 'إنشاء حساب',
-                    onPressed: () => context.goNamed(AppRoute.signup),
+      body: DecoratedBox(
+        decoration: const BoxDecoration(gradient: AppColors.gradientHero),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 440),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                  const SizedBox(height: 24),
+                  const SawaWordmark(light: true, size: 48),
+                  const SizedBox(height: 40),
+                  Text(
+                    'خلّي مناسبتك\nتبدأ من هنا.',
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.display.copyWith(color: Colors.white, height: 1.35),
                   ),
                   const SizedBox(height: 12),
-                  AppSecondaryButton(
-                    label: 'تسجيل الدخول',
-                    onPressed: () => context.goNamed(AppRoute.login),
+                  Text(
+                    'قاعات، تصوير، ورد وخدمات مناسبات في بغداد — بمعلومات منظمة وواضحة.',
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.body.copyWith(color: Colors.white.withValues(alpha: 0.8)),
                   ),
-                  const SizedBox(height: 16),
-                  const _Divider(),
-                  const SizedBox(height: 16),
-                  _BrowseButton(),
-                ],
+                  const SizedBox(height: 40),
+                  FilledButton(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: AppColors.primary,
+                      minimumSize: const Size.fromHeight(54),
+                      textStyle: AppTextStyles.button,
+                    ),
+                    onPressed: () => context.goNamed(AppRoute.customerHome),
+                    child: const Text('تصفح بدون تسجيل'),
+                  ),
+                  if (online) ...[
+                    const SizedBox(height: 12),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        side: BorderSide(color: Colors.white.withValues(alpha: 0.6)),
+                      ),
+                      onPressed: () => context.pushNamed(AppRoute.signup),
+                      child: const Text('إنشاء حساب'),
+                    ),
+                    const SizedBox(height: 4),
+                    TextButton(
+                      style: TextButton.styleFrom(foregroundColor: AppColors.champagne),
+                      onPressed: () => context.pushNamed(AppRoute.login),
+                      child: const Text('تسجيل الدخول'),
+                    ),
+                    const SizedBox(height: 16),
+                    TextButton.icon(
+                      style: TextButton.styleFrom(foregroundColor: Colors.white70),
+                      onPressed: () => context.pushNamed(AppRoute.signup, queryParameters: {'role': 'provider'}),
+                      icon: const Icon(Icons.storefront_outlined, size: 18),
+                      label: const Text('صاحب قاعة أو مصور أو محل ورد؟ انضم كمزود خدمة'),
+                    ),
+                  ],
+                  if (!online) ...[
+                    const SizedBox(height: 16),
+                    Text(
+                      offlineMessage,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.caption.copyWith(color: Colors.white60),
+                    ),
+                  ],
+                ]),
               ),
             ),
-          ],
+          ),
         ),
-      ),
-    );
-  }
-}
-
-class _Divider extends StatelessWidget {
-  const _Divider();
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Expanded(child: Divider(color: AppColors.border)),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text('أو', style: AppTextStyles.caption),
-        ),
-        const Expanded(child: Divider(color: AppColors.border)),
-      ],
-    );
-  }
-}
-
-class _BrowseButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () => context.goNamed(AppRoute.customerHome),
-      child: Text(
-        'تصفح بدون تسجيل',
-        style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
       ),
     );
   }

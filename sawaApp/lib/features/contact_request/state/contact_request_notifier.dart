@@ -1,74 +1,59 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/constants/app_strings.dart';
-import '../data/contact_request_model.dart';
-import '../data/contact_request_repository.dart';
+import '../../../core/utils/errors.dart';
+import '../../../data/data_providers.dart';
 
-/// Simple flat state — four meaningful conditions, no boolean soup.
-@immutable
-class ContactRequestState {
-  const ContactRequestState({
-    this.isSubmitting = false,
-    this.isSuccess = false,
-    this.errorMessage,
-  });
-
-  final bool isSubmitting;
-  final bool isSuccess;
-  final String? errorMessage;
-
-  bool get hasError => errorMessage != null;
+sealed class ContactSubmitState {
+  const ContactSubmitState();
 }
 
-/// Repository provider — lazy; ContactRequestRepository only accesses
-/// Supabase.instance.client at submit-time, so no crash when Supabase is
-/// not configured (contact browsing remains fully functional offline).
-final contactRequestRepositoryProvider = Provider<ContactRequestRepository>(
-  (ref) => ContactRequestRepository(),
-);
+class ContactIdle extends ContactSubmitState {
+  const ContactIdle();
+}
 
-/// AutoDispose: the state is reset automatically when the Contact Request
-/// screen is popped, preventing a "success" state leaking across sessions.
-final contactRequestNotifierProvider =
-    NotifierProvider.autoDispose<ContactRequestNotifier, ContactRequestState>(
-  ContactRequestNotifier.new,
-);
+class ContactSubmitting extends ContactSubmitState {
+  const ContactSubmitting();
+}
 
-class ContactRequestNotifier extends AutoDisposeNotifier<ContactRequestState> {
+class ContactSubmitted extends ContactSubmitState {
+  const ContactSubmitted(this.referenceCode);
+  final String referenceCode;
+}
+
+class ContactFailed extends ContactSubmitState {
+  const ContactFailed(this.message);
+  final String message;
+}
+
+/// One submission per screen instance. Success only on a real server
+/// reference code — never a fake success.
+final contactSubmitProvider =
+    NotifierProvider.autoDispose<ContactSubmitNotifier, ContactSubmitState>(ContactSubmitNotifier.new);
+
+class ContactSubmitNotifier extends AutoDisposeNotifier<ContactSubmitState> {
   @override
-  ContactRequestState build() => const ContactRequestState();
+  ContactSubmitState build() => const ContactIdle();
 
   Future<void> submit({
     required String providerId,
-    required String userName,
-    required String userContact,
-    String? note,
+    required String name,
+    required String contact,
+    String? message,
+    String? serviceId,
   }) async {
-    if (state.isSubmitting) return;
-    state = const ContactRequestState(isSubmitting: true);
-
+    if (state is ContactSubmitting) return;
+    state = const ContactSubmitting();
     try {
-      final request = ContactRequest(
-        providerId: providerId,
-        userName: userName.trim(),
-        userContact: userContact.trim(),
-        note: (note != null && note.trim().isNotEmpty) ? note.trim() : null,
-        createdAt: DateTime.now().toUtc(),
-      );
-      final repo = ref.read(contactRequestRepositoryProvider);
-      await repo.submit(request);
-      state = const ContactRequestState(isSuccess: true);
-    } catch (_) {
-      state = const ContactRequestState(
-        errorMessage: AppStrings.contactSubmitError,
-      );
-    }
-  }
-
-  void clearError() {
-    if (state.hasError) {
-      state = const ContactRequestState();
+      final r = await ref.read(requestsRepositoryProvider).submitContactRequest(
+            providerId: providerId,
+            name: name,
+            contact: contact,
+            message: message,
+            serviceId: serviceId,
+          );
+      state = ContactSubmitted(r.referenceCode);
+    } catch (e) {
+      state = ContactFailed(friendlyError(e));
     }
   }
 }

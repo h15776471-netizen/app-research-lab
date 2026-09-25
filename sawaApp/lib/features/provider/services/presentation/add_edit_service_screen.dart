@@ -2,172 +2,159 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/widgets/app_button.dart';
-import '../state/services_notifier.dart';
+import '../../../../core/utils/errors.dart';
+import '../../../../data/data_providers.dart';
+import '../../../../data/models/catalog_models.dart';
+import '../../state/portal_providers.dart';
+import 'editor_scaffold.dart';
 
-class AddEditServiceScreen extends ConsumerStatefulWidget {
+class AddEditServiceScreen extends StatelessWidget {
   const AddEditServiceScreen({super.key, this.serviceId});
 
   final String? serviceId;
 
   @override
-  ConsumerState<AddEditServiceScreen> createState() =>
-      _AddEditServiceScreenState();
+  Widget build(BuildContext context) {
+    return BusinessEditorGate(
+      title: serviceId == null ? 'خدمة جديدة' : 'تعديل الخدمة',
+      builder: (b) => _ServiceForm(
+        business: b,
+        existing: b.services.where((s) => s.id == serviceId).firstOrNull,
+      ),
+    );
+  }
 }
 
-class _AddEditServiceScreenState
-    extends ConsumerState<AddEditServiceScreen> {
-  final _titleCtrl = TextEditingController();
-  final _descCtrl = TextEditingController();
-  final _priceCtrl = TextEditingController();
+class _ServiceForm extends ConsumerStatefulWidget {
+  const _ServiceForm({required this.business, this.existing});
 
-  bool get _isEdit => widget.serviceId != null;
-
-  bool get _valid =>
-      _titleCtrl.text.trim().isNotEmpty &&
-      _descCtrl.text.trim().isNotEmpty;
+  final SawaProvider business;
+  final ProviderService? existing;
 
   @override
-  void initState() {
-    super.initState();
-    _titleCtrl.addListener(_rebuild);
-    _descCtrl.addListener(_rebuild);
-    if (_isEdit) _loadExisting();
+  ConsumerState<_ServiceForm> createState() => _ServiceFormState();
+}
+
+class _ServiceFormState extends ConsumerState<_ServiceForm> {
+  final _form = GlobalKey<FormState>();
+  late final _name = TextEditingController(text: widget.existing?.name ?? '');
+  late final _desc = TextEditingController(text: widget.existing?.description ?? '');
+  late final _from = TextEditingController(text: moneyText(widget.existing?.priceFrom));
+  late final _to = TextEditingController(text: moneyText(widget.existing?.priceTo));
+  late String? _unit = widget.existing?.unit;
+  late bool _active = widget.existing?.isActive ?? true;
+  bool _busy = false;
+  String? _error;
+
+  @override
+  void dispose() {
+    for (final c in [_name, _desc, _from, _to]) {
+      c.dispose();
+    }
+    super.dispose();
   }
 
-  void _rebuild() => setState(() {});
-
-  void _loadExisting() {
-    final services = ref.read(servicesNotifierProvider).services;
-    final service =
-        services.where((s) => s.id == widget.serviceId).firstOrNull;
-    if (service != null) {
-      _titleCtrl.text = service.title;
-      _descCtrl.text = service.description;
-      _priceCtrl.text = service.priceText ?? '';
+  Future<void> _save() async {
+    if (!_form.currentState!.validate()) return;
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    final from = parseMoney(_from.text);
+    final to = parseMoney(_to.text);
+    try {
+      await ref.read(providerPortalRepositoryProvider).saveService(
+            widget.business.id,
+            {
+              'name': _name.text.trim(),
+              'description': _desc.text.trim().isEmpty ? null : _desc.text.trim(),
+              'price_from': from,
+              'price_to': to,
+              'unit': from == null ? null : _unit,
+              'is_active': _active,
+              if (widget.existing == null) 'sort_order': widget.business.services.length,
+            },
+            id: widget.existing?.id,
+          );
+      ref.invalidate(myBusinessProvider);
+      if (mounted) context.pop();
+    } catch (e) {
+      setState(() {
+        _busy = false;
+        _error = friendlyError(e);
+      });
     }
   }
 
   @override
-  void dispose() {
-    _titleCtrl.dispose();
-    _descCtrl.dispose();
-    _priceCtrl.dispose();
-    super.dispose();
-  }
-
-  Future<void> _submit() async {
-    await ref.read(servicesNotifierProvider.notifier).addService(
-          title: _titleCtrl.text.trim(),
-          description: _descCtrl.text.trim(),
-          priceText: _priceCtrl.text.trim().isEmpty
-              ? null
-              : _priceCtrl.text.trim(),
-        );
-    if (mounted) context.pop();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final state = ref.watch(servicesNotifierProvider);
-
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: Text(_isEdit ? 'تعديل الخدمة' : 'إضافة خدمة'),
-      ),
-      body: Column(
-        children: [
+    return EditorBody(
+      formKey: _form,
+      busy: _busy,
+      error: _error,
+      onSave: _save,
+      children: [
+        TextFormField(
+          controller: _name,
+          decoration: const InputDecoration(labelText: 'اسم الخدمة *'),
+          validator: (v) {
+            final t = v?.trim() ?? '';
+            if (t.isEmpty) return 'الاسم مطلوب';
+            return t.length > 150 ? 'الاسم طويل جداً' : null;
+          },
+        ),
+        const SizedBox(height: 14),
+        TextFormField(
+          controller: _desc,
+          maxLength: 2000,
+          minLines: 2,
+          maxLines: 6,
+          decoration: const InputDecoration(labelText: 'الوصف', alignLabelWithHint: true),
+        ),
+        Row(children: [
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              children: [
-                Text(
-                  _isEdit
-                      ? 'عدّل تفاصيل الخدمة'
-                      : 'أضف خدمة جديدة لملفك الشخصي',
-                  style: AppTextStyles.body
-                      .copyWith(color: AppColors.textSecondary),
-                ),
-                const SizedBox(height: AppSpacing.xl),
-
-                TextField(
-                  controller: _titleCtrl,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    labelText: 'اسم الخدمة *',
-                    prefixIcon: Icon(Icons.design_services_outlined),
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.md),
-
-                TextField(
-                  controller: _descCtrl,
-                  maxLines: 4,
-                  decoration: const InputDecoration(
-                    labelText: 'وصف الخدمة *',
-                    hintText: 'اشرح ما تقدمه من خدمات...',
-                    alignLabelWithHint: true,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.md),
-
-                TextField(
-                  controller: _priceCtrl,
-                  decoration: const InputDecoration(
-                    labelText: 'نطاق السعر (اختياري)',
-                    hintText: 'مثال: ٣٠٠ - ٦٠٠ دولار',
-                    prefixIcon: Icon(Icons.attach_money_outlined),
-                  ),
-                ),
-
-                if (state.hasError) ...[
-                  const SizedBox(height: AppSpacing.md),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppColors.errorLight,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: AppColors.error.withValues(alpha: 0.3),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.error_outline,
-                            color: AppColors.error, size: 18),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            state.error!,
-                            style: AppTextStyles.bodySmall
-                                .copyWith(color: AppColors.error),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ],
+            child: TextFormField(
+              controller: _from,
+              keyboardType: TextInputType.number,
+              textDirection: TextDirection.ltr,
+              decoration: const InputDecoration(labelText: 'السعر من (د.ع)'),
+              validator: validateMoney,
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            decoration: const BoxDecoration(
-              color: AppColors.surface,
-              border: Border(top: BorderSide(color: AppColors.border)),
-            ),
-            child: AppPrimaryButton(
-              label: _isEdit ? 'حفظ التعديلات' : 'إضافة الخدمة',
-              isLoading: state.isLoading,
-              onPressed: _valid && !state.isLoading ? _submit : null,
+          const SizedBox(width: 12),
+          Expanded(
+            child: TextFormField(
+              controller: _to,
+              keyboardType: TextInputType.number,
+              textDirection: TextDirection.ltr,
+              decoration: const InputDecoration(labelText: 'إلى (اختياري)'),
+              validator: (v) {
+                final e = validateMoney(v);
+                if (e != null) return e;
+                final to = parseMoney(v ?? ''), from = parseMoney(_from.text);
+                return (to != null && from != null && to < from) ? 'أقل من سعر البداية' : null;
+              },
             ),
           ),
-        ],
-      ),
+        ]),
+        const SizedBox(height: 14),
+        DropdownButtonFormField<String?>(
+          initialValue: _unit,
+          decoration: const InputDecoration(labelText: 'وحدة السعر'),
+          items: [
+            const DropdownMenuItem(value: null, child: Text('بدون')),
+            for (final e in serviceUnits.entries) DropdownMenuItem(value: e.key, child: Text(e.value)),
+          ],
+          onChanged: (v) => setState(() => _unit = v),
+        ),
+        const SizedBox(height: 8),
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('ظاهرة للعملاء'),
+          value: _active,
+          onChanged: (v) => setState(() => _active = v),
+        ),
+      ],
     );
   }
 }

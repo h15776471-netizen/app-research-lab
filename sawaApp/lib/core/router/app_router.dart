@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/auth/auth_notifier.dart';
+import '../../features/auth/presentation/forgot_password_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/signup_screen.dart';
 import '../../features/auth/presentation/splash_screen.dart';
@@ -18,13 +18,14 @@ import '../../features/provider/dashboard/presentation/provider_dashboard_screen
 import '../../features/provider/onboarding/presentation/provider_onboarding_screen.dart';
 import '../../features/provider/profile/presentation/provider_profile_screen.dart';
 import '../../features/provider/requests/presentation/provider_requests_screen.dart';
+import '../../features/provider/services/presentation/add_edit_package_screen.dart';
 import '../../features/provider/services/presentation/add_edit_service_screen.dart';
 import '../../features/provider/services/presentation/provider_services_screen.dart';
 import '../../features/provider/shell/provider_shell.dart';
 import '../../features/provider_details/presentation/provider_details_screen.dart';
-import '../../features/providers_list/data/provider_category.dart';
 import '../../features/providers_list/presentation/category_screen.dart';
 import '../../features/providers_list/presentation/explore_screen.dart';
+import '../auth/auth_notifier.dart';
 
 abstract final class AppRoute {
   // Auth
@@ -32,6 +33,7 @@ abstract final class AppRoute {
   static const welcome = 'welcome';
   static const login = 'login';
   static const signup = 'signup';
+  static const forgotPassword = 'forgotPassword';
 
   // Customer shell tabs
   static const customerHome = 'customerHome';
@@ -56,180 +58,171 @@ abstract final class AppRoute {
   static const providerOnboarding = 'providerOnboarding';
   static const addService = 'addService';
   static const editService = 'editService';
+  static const addPackage = 'addPackage';
+  static const editPackage = 'editPackage';
+}
+
+const _authPaths = {'/welcome', '/login', '/signup', '/forgot-password'};
+
+/// Pure redirect rules (unit-tested). Role checks here only shape
+/// navigation; the database enforces every permission.
+String? resolveRedirect({required String path, required AuthState auth}) {
+  // While the session restores, stay put; the router re-runs when it settles.
+  if (auth.isLoading) return null;
+  final home = auth.isProvider ? '/p/dashboard' : '/c/home';
+  if (path == '/splash' || path == '/') {
+    return auth.isAuthenticated ? home : '/welcome';
+  }
+  if (auth.isAuthenticated && _authPaths.contains(path)) return home;
+  if (path.startsWith('/p/')) {
+    if (!auth.isAuthenticated) return '/login';
+    if (!auth.isProvider) return '/c/home';
+  }
+  if (path.startsWith('/c/') && auth.isProvider) return '/p/dashboard';
+  return null;
 }
 
 final appRouterProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authNotifierProvider);
+  final refresh = _AuthListenable(ref);
+  ref.onDispose(refresh.dispose);
 
-  return GoRouter(
+  final router = GoRouter(
     initialLocation: '/splash',
-    refreshListenable: _AuthListenable(ref),
-    redirect: (context, state) {
-      final loading = authState.isLoading;
-      final authenticated = authState.isAuthenticated;
-      final isProvider = authState.isProvider;
-      final path = state.uri.path;
-
-      if (loading && path != '/splash') return '/splash';
-
-      if (!loading) {
-        if (path == '/splash') {
-          return authenticated ? (isProvider ? '/p/dashboard' : '/c/home') : '/welcome';
-        }
-        if (authenticated) {
-          if (['/welcome', '/login', '/signup'].contains(path)) {
-            return isProvider ? '/p/dashboard' : '/c/home';
-          }
-          if (isProvider && path.startsWith('/c/')) {
-            return '/p/dashboard';
-          }
-          if (!isProvider && path.startsWith('/p/')) {
-            return '/c/home';
-          }
-        }
-        if (!authenticated && path.startsWith('/p/')) {
-          return '/welcome';
-        }
-      }
-
-      return null;
-    },
+    refreshListenable: refresh,
+    redirect: (context, state) => resolveRedirect(path: state.uri.path, auth: ref.read(authNotifierProvider)),
+    errorBuilder: (_, __) => const _NotFoundScreen(),
     routes: [
-      GoRoute(
-        path: '/splash',
-        name: AppRoute.splash,
-        builder: (_, __) => const SplashScreen(),
-      ),
-      GoRoute(
-        path: '/welcome',
-        name: AppRoute.welcome,
-        builder: (_, __) => const WelcomeScreen(),
-      ),
+      GoRoute(path: '/', redirect: (_, __) => '/splash'),
+      GoRoute(path: '/splash', name: AppRoute.splash, builder: (_, __) => const SplashScreen()),
+      GoRoute(path: '/welcome', name: AppRoute.welcome, builder: (_, __) => const WelcomeScreen()),
       GoRoute(
         path: '/login',
         name: AppRoute.login,
-        builder: (_, __) => const LoginScreen(),
+        builder: (_, s) => LoginScreen(returnTo: s.uri.queryParameters['from']),
       ),
       GoRoute(
         path: '/signup',
         name: AppRoute.signup,
-        builder: (_, __) => const SignupScreen(),
+        builder: (_, s) => SignupScreen(initialProvider: s.uri.queryParameters['role'] == 'provider'),
+      ),
+      GoRoute(
+        path: '/forgot-password',
+        name: AppRoute.forgotPassword,
+        builder: (_, __) => const ForgotPasswordScreen(),
       ),
 
-      // ── Customer shell (bottom nav) ───────────────────────────────────
+      // ── Customer shell ────────────────────────────────────────────────
       ShellRoute(
-        builder: (_, state, child) => CustomerShell(child: child),
+        builder: (_, __, child) => CustomerShell(child: child),
         routes: [
-          GoRoute(
-            path: '/c/home',
-            name: AppRoute.customerHome,
-            builder: (_, __) => const CustomerHomeScreen(),
-          ),
+          GoRoute(path: '/c/home', name: AppRoute.customerHome, builder: (_, __) => const CustomerHomeScreen()),
           GoRoute(
             path: '/c/explore',
             name: AppRoute.explore,
-            builder: (_, __) => const ExploreScreen(),
+            builder: (_, s) => ExploreScreen(initialQuery: s.uri.queryParameters['q']),
           ),
+          GoRoute(path: '/c/requests', name: AppRoute.myRequests, builder: (_, __) => const MyRequestsScreen()),
           GoRoute(
-            path: '/c/requests',
-            name: AppRoute.myRequests,
-            builder: (_, __) => const MyRequestsScreen(),
-          ),
-          GoRoute(
-            path: '/c/profile',
-            name: AppRoute.customerProfile,
-            builder: (_, __) => const CustomerProfileScreen(),
-          ),
+              path: '/c/profile', name: AppRoute.customerProfile, builder: (_, __) => const CustomerProfileScreen()),
         ],
       ),
 
-      // ── Customer full-screen (no bottom nav) ─────────────────────────
+      // ── Customer full-screen ─────────────────────────────────────────
       GoRoute(
         path: '/c/category/:categoryId',
         name: AppRoute.category,
-        builder: (_, state) => CategoryScreen(
-          category: ProviderCategory.fromId(
-            state.pathParameters['categoryId']!,
-          ),
-        ),
+        builder: (_, s) => CategoryScreen(categoryId: s.pathParameters['categoryId']!),
       ),
       GoRoute(
         path: '/c/provider/:providerId',
         name: AppRoute.providerDetails,
-        builder: (_, state) => ProviderDetailsScreen(
-          providerId: state.pathParameters['providerId']!,
-        ),
+        builder: (_, s) => ProviderDetailsScreen(providerId: s.pathParameters['providerId']!),
       ),
       GoRoute(
         path: '/c/contact/:providerId',
         name: AppRoute.contactRequest,
-        builder: (_, state) => ContactRequestScreen(
-          providerId: state.pathParameters['providerId']!,
+        builder: (_, s) => ContactRequestScreen(
+          providerId: s.pathParameters['providerId']!,
+          serviceId: s.uri.queryParameters['service'],
+          packageTitle: s.uri.queryParameters['package'],
         ),
       ),
       GoRoute(
         path: '/c/contact-success',
         name: AppRoute.contactSuccess,
-        builder: (_, __) => const ContactSuccessScreen(),
+        builder: (_, s) => ContactSuccessScreen(
+          reference: s.uri.queryParameters['ref'],
+          kind: s.uri.queryParameters['kind'] ?? 'contact',
+        ),
       ),
-      GoRoute(
-        path: '/c/event-planner',
-        name: AppRoute.eventPlanner,
-        builder: (_, __) => const EventPlannerScreen(),
-      ),
+      GoRoute(path: '/c/planner', name: AppRoute.eventPlanner, builder: (_, __) => const EventPlannerScreen()),
 
-      // ── Provider shell (bottom nav) ───────────────────────────────────
+      // ── Provider shell ────────────────────────────────────────────────
       ShellRoute(
-        builder: (_, state, child) => ProviderShell(child: child),
+        builder: (_, __, child) => ProviderShell(child: child),
         routes: [
           GoRoute(
-            path: '/p/dashboard',
-            name: AppRoute.providerDashboard,
-            builder: (_, __) => const ProviderDashboardScreen(),
-          ),
+              path: '/p/dashboard',
+              name: AppRoute.providerDashboard,
+              builder: (_, __) => const ProviderDashboardScreen()),
           GoRoute(
-            path: '/p/services',
-            name: AppRoute.providerServices,
-            builder: (_, __) => const ProviderServicesScreen(),
-          ),
+              path: '/p/services', name: AppRoute.providerServices, builder: (_, __) => const ProviderServicesScreen()),
           GoRoute(
-            path: '/p/requests',
-            name: AppRoute.providerRequests,
-            builder: (_, __) => const ProviderRequestsScreen(),
-          ),
+              path: '/p/requests', name: AppRoute.providerRequests, builder: (_, __) => const ProviderRequestsScreen()),
           GoRoute(
-            path: '/p/profile',
-            name: AppRoute.providerProfile,
-            builder: (_, __) => const ProviderProfileScreen(),
-          ),
+              path: '/p/profile', name: AppRoute.providerProfile, builder: (_, __) => const ProviderProfileScreen()),
         ],
       ),
 
       // ── Provider full-screen ──────────────────────────────────────────
       GoRoute(
-        path: '/p/onboarding',
-        name: AppRoute.providerOnboarding,
-        builder: (_, __) => const ProviderOnboardingScreen(),
-      ),
-      GoRoute(
-        path: '/p/service/new',
-        name: AppRoute.addService,
-        builder: (_, __) => const AddEditServiceScreen(),
-      ),
+          path: '/p/onboarding',
+          name: AppRoute.providerOnboarding,
+          builder: (_, __) => const ProviderOnboardingScreen()),
+      GoRoute(path: '/p/service/new', name: AppRoute.addService, builder: (_, __) => const AddEditServiceScreen()),
       GoRoute(
         path: '/p/service/:id/edit',
         name: AppRoute.editService,
-        builder: (_, state) => AddEditServiceScreen(
-          serviceId: state.pathParameters['id'],
-        ),
+        builder: (_, s) => AddEditServiceScreen(serviceId: s.pathParameters['id']),
+      ),
+      GoRoute(path: '/p/package/new', name: AppRoute.addPackage, builder: (_, __) => const AddEditPackageScreen()),
+      GoRoute(
+        path: '/p/package/:id/edit',
+        name: AppRoute.editPackage,
+        builder: (_, s) => AddEditPackageScreen(packageId: s.pathParameters['id']),
       ),
     ],
   );
+  ref.onDispose(router.dispose);
+  return router;
 });
 
-// Allows GoRouter to react to auth state changes
 class _AuthListenable extends ChangeNotifier {
   _AuthListenable(Ref ref) {
-    ref.listen(authNotifierProvider, (_, __) => notifyListeners());
+    ref.listen<AuthState>(authNotifierProvider, (prev, next) {
+      if (prev?.user?.id != next.user?.id || prev?.user?.role != next.user?.role || prev?.isLoading != next.isLoading) {
+        notifyListeners();
+      }
+    });
+  }
+}
+
+class _NotFoundScreen extends StatelessWidget {
+  const _NotFoundScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          const Icon(Icons.explore_off_outlined, size: 48),
+          const SizedBox(height: 12),
+          const Text('الصفحة غير موجودة'),
+          const SizedBox(height: 12),
+          FilledButton(onPressed: () => context.go('/c/home'), child: const Text('العودة للرئيسية')),
+        ]),
+      ),
+    );
   }
 }

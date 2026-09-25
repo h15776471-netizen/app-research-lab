@@ -5,214 +5,209 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/auth/auth_notifier.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/widgets/app_button.dart';
+import '../../../../core/utils/errors.dart';
+import '../../../../core/utils/formatters.dart';
+import '../../../../core/widgets/error_view.dart';
+import '../../../../core/widgets/ui.dart';
+import '../../../../data/data_providers.dart';
+import '../../../../data/models/catalog_models.dart';
+import '../../state/portal_providers.dart';
+import '../../widgets/portal_widgets.dart';
 
 class ProviderDashboardScreen extends ConsumerWidget {
   const ProviderDashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authNotifierProvider);
-
+    final user = ref.watch(authNotifierProvider).user;
+    if (!ref.watch(providerPortalRepositoryProvider).isAvailable) {
+      return const Scaffold(body: PortalOffline());
+    }
+    final business = ref.watch(myBusinessProvider);
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('لوحة التحكم'),
-        automaticallyImplyLeading: false,
+      appBar: AppBar(title: const Text('لوحة التحكم'), automaticallyImplyLeading: false),
+      body: business.when(
+        loading: () => const Padding(padding: EdgeInsets.all(16), child: Skeleton(height: 200)),
+        error: (e, _) => ErrorView(message: friendlyError(e), onRetry: () => ref.invalidate(myBusinessProvider)),
+        data: (b) => b == null
+            ? const NoBusinessYet()
+            : RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(myBusinessProvider);
+                  ref.invalidate(myStatsProvider);
+                  ref.invalidate(forwardedRequestsProvider);
+                },
+                child: _Content(business: b, ownerName: user?.displayName ?? ''),
+              ),
       ),
-      body: authState.isAuthenticated
-          ? _DashboardContent(
-              displayName: authState.user?.displayName ?? 'مزود الخدمة',
-            )
-          : _NotAuthenticatedState(),
     );
   }
 }
 
-class _NotAuthenticatedState extends StatelessWidget {
+class _Content extends ConsumerWidget {
+  const _Content({required this.business, required this.ownerName});
+
+  final SawaProvider business;
+  final String ownerName;
+
+  Future<void> _submitForReview(BuildContext context, WidgetRef ref) async {
+    try {
+      await ref.read(providerPortalRepositoryProvider).setStatus(business.id, ListingStatus.pending);
+      ref.invalidate(myBusinessProvider);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('أُرسل ملفك لمراجعة فريق SAWA')));
+      }
+    } catch (e) {
+      if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(friendlyError(e))));
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.xl),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.lock_outlined, size: 64, color: AppColors.textHint),
-            const SizedBox(height: AppSpacing.lg),
-            Text('تسجيل الدخول مطلوب', style: AppTextStyles.h2, textAlign: TextAlign.center),
-            const SizedBox(height: AppSpacing.xl),
-            SizedBox(
-              width: 220,
-              child: AppPrimaryButton(
-                label: 'تسجيل الدخول',
-                onPressed: () => context.goNamed(AppRoute.login),
-              ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final stats = ref.watch(myStatsProvider);
+    final requests = ref.watch(forwardedRequestsProvider);
+    final items = completeness(business);
+    final done = items.where((i) => i.done).length;
+    final pad = pagePadding(context);
+    final s = stats.valueOrNull;
+
+    Widget? statusAction;
+    if (business.status == ListingStatus.draft) {
+      statusAction = TextButton(
+        onPressed: readyForReview(business) ? () => _submitForReview(context, ref) : null,
+        child: const Text('إرسال للمراجعة'),
+      );
+    }
+
+    return ListView(padding: EdgeInsets.all(pad), children: [
+      ContentFrame(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Text('أهلاً $ownerName', style: AppTextStyles.h1),
+          Text(business.businessName, style: AppTextStyles.body.copyWith(color: AppColors.textSecondary)),
+          const SizedBox(height: 16),
+          ListingStatusBanner(status: business.status, action: statusAction),
+          if (business.status == ListingStatus.draft && !readyForReview(business)) ...[
+            const SizedBox(height: 6),
+            Text('للإرسال للمراجعة: أضف وصفاً، المنطقة، وخدمة واحدة على الأقل.', style: AppTextStyles.caption),
+          ],
+          const SizedBox(height: 20),
+          const SectionHeader(title: 'نشاطك', subtitle: 'أرقام حقيقية من قاعدة البيانات — لا تقديرات'),
+          const SizedBox(height: 12),
+          if (stats.hasError)
+            InfoBanner(message: friendlyError(stats.error!), color: AppColors.error)
+          else
+            LayoutBuilder(builder: (context, c) {
+              final cols = c.maxWidth >= 760 ? 4 : 2;
+              final w = (c.maxWidth - (cols - 1) * 12) / cols;
+              final tiles = [
+                StatTile(
+                    label: 'مشاهدات الملف (30 يوم)',
+                    value: s?.viewsLast30Days,
+                    icon: Icons.visibility_outlined,
+                    hint: s == null ? null : 'الإجمالي ${s.viewsTotal}'),
+                StatTile(
+                    label: 'طلبات وصلتك',
+                    value: s?.requestsTotal,
+                    icon: Icons.inbox_outlined,
+                    hint: s == null ? null : '${s.requestsNew} جديد'),
+                StatTile(
+                    label: 'خدمات نشطة',
+                    value: s?.servicesActive,
+                    icon: Icons.design_services_outlined,
+                    hint: s == null ? null : 'من ${s.servicesTotal}'),
+                StatTile(label: 'الصور', value: business.galleryImages.length, icon: Icons.photo_library_outlined),
+              ];
+              return Wrap(spacing: 12, runSpacing: 12, children: [for (final t in tiles) SizedBox(width: w, child: t)]);
+            }),
+          if (s != null && s.viewsTotal == 0 && s.requestsTotal == 0) ...[
+            const SizedBox(height: 8),
+            Text(
+              business.status == ListingStatus.published
+                  ? 'لا توجد بيانات كافية حالياً — ستظهر المشاهدات والطلبات هنا عند حدوثها.'
+                  : 'تبدأ المشاهدات والطلبات بعد نشر ملفك.',
+              style: AppTextStyles.caption,
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _DashboardContent extends StatelessWidget {
-  const _DashboardContent({required this.displayName});
-
-  final String displayName;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      children: [
-        // Greeting
-        Text(
-          'أهلاً، $displayName',
-          style: AppTextStyles.h1,
-        ),
-        const SizedBox(height: AppSpacing.xs),
-        Text(
-          'هذه لمحة عامة عن نشاطك',
-          style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
-        ),
-        const SizedBox(height: AppSpacing.xl),
-
-        // Stats row — no fake numbers, show 0 until real data exists
-        const Row(
-          children: [
-            Expanded(
-              child: _StatCard(
-                label: 'الطلبات',
-                value: '0',
-                icon: Icons.inbox_outlined,
-                hint: 'لا توجد طلبات بعد',
-              ),
-            ),
-            SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: _StatCard(
-                label: 'الخدمات',
-                value: '0',
-                icon: Icons.design_services_outlined,
-                hint: 'لم تُضف خدمات بعد',
-              ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: AppSpacing.xl),
-        const Divider(color: AppColors.border),
-        const SizedBox(height: AppSpacing.xl),
-
-        // Quick actions
-        Text('إجراءات سريعة', style: AppTextStyles.h3),
-        const SizedBox(height: AppSpacing.md),
-        AppPrimaryButton(
-          label: 'إضافة خدمة جديدة',
-          icon: Icons.add,
-          onPressed: () => context.goNamed(AppRoute.addService),
-        ),
-        const SizedBox(height: AppSpacing.md),
-        AppSecondaryButton(
-          label: 'تصفح الطلبات',
-          onPressed: () => context.goNamed(AppRoute.providerRequests),
-        ),
-
-        const SizedBox(height: AppSpacing.xl),
-
-        // Onboarding nudge if no services
-        _OnboardingNudge(
-          onTap: () => context.goNamed(AppRoute.providerOnboarding),
-        ),
-      ],
-    );
-  }
-}
-
-class _StatCard extends StatelessWidget {
-  const _StatCard({
-    required this.label,
-    required this.value,
-    required this.icon,
-    required this.hint,
-  });
-
-  final String label;
-  final String value;
-  final IconData icon;
-  final String hint;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icon, color: AppColors.primary, size: 20),
-              const Spacer(),
-              Text(
-                value,
-                style: AppTextStyles.h1.copyWith(color: AppColors.primary),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(label, style: AppTextStyles.h3),
-          const SizedBox(height: 2),
-          Text(hint, style: AppTextStyles.caption),
-        ],
-      ),
-    );
-  }
-}
-
-class _OnboardingNudge extends StatelessWidget {
-  const _OnboardingNudge({required this.onTap});
-
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        decoration: BoxDecoration(
-          color: AppColors.primaryLight,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.border),
-        ),
-        child: Row(
-          children: [
-            const Icon(Icons.tips_and_updates_outlined, color: AppColors.primary),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('أكمل ملفك الشخصي', style: AppTextStyles.h3),
-                  Text(
-                    'ستظهر للمزيد من العملاء عند اكتمال ملفك',
-                    style: AppTextStyles.caption,
+          const SizedBox(height: 24),
+          LayoutBuilder(builder: (context, c) {
+            final completenessCard = SurfaceCard(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Row(children: [
+                  Expanded(child: Text('اكتمال الملف', style: AppTextStyles.h3)),
+                  Text('$done/${items.length}', style: AppTextStyles.h3.copyWith(color: AppColors.primary)),
+                ]),
+                const SizedBox(height: 10),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: LinearProgressIndicator(
+                    value: done / items.length,
+                    minHeight: 6,
+                    color: AppColors.primary,
+                    backgroundColor: AppColors.borderLight,
                   ),
-                ],
-              ),
-            ),
-            const Icon(Icons.arrow_forward_ios, color: AppColors.primary, size: 14),
-          ],
-        ),
+                ),
+                const SizedBox(height: 12),
+                for (final i in items)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6),
+                    child: Row(children: [
+                      Icon(i.done ? Icons.check_circle_rounded : Icons.radio_button_unchecked,
+                          size: 18, color: i.done ? AppColors.success : AppColors.textHint),
+                      const SizedBox(width: 8),
+                      Text(i.label, style: AppTextStyles.bodySmall),
+                    ]),
+                  ),
+                const SizedBox(height: 6),
+                Wrap(spacing: 8, children: [
+                  OutlinedButton(
+                      onPressed: () => context.pushNamed(AppRoute.providerOnboarding),
+                      child: const Text('تعديل البيانات')),
+                  OutlinedButton(onPressed: () => context.go('/p/profile'), child: const Text('الصور')),
+                  OutlinedButton(onPressed: () => context.go('/p/services'), child: const Text('الخدمات')),
+                ]),
+              ]),
+            );
+            final requestsCard = SurfaceCard(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Row(children: [
+                  Expanded(child: Text('أحدث الطلبات', style: AppTextStyles.h3)),
+                  TextButton(onPressed: () => context.go('/p/requests'), child: const Text('الكل')),
+                ]),
+                Text('تصلك الطلبات بعد أن يراجعها فريق SAWA.', style: AppTextStyles.caption),
+                const SizedBox(height: 10),
+                ...requests.when(
+                  loading: () => [const Skeleton(height: 60)],
+                  error: (e, _) => [Text(friendlyError(e), style: AppTextStyles.caption)],
+                  data: (list) => list.isEmpty
+                      ? [Text('لا توجد طلبات بعد.', style: AppTextStyles.bodySmall)]
+                      : [
+                          for (final r in list.take(3))
+                            ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              leading: const CircleAvatar(
+                                backgroundColor: AppColors.primaryLight,
+                                child: Icon(Icons.person_outline, color: AppColors.primary),
+                              ),
+                              title: Text(r.userName, style: AppTextStyles.body),
+                              subtitle: Text('${r.status.labelAr} · ${formatDate(r.createdAt)}',
+                                  style: AppTextStyles.caption),
+                            ),
+                        ],
+                ),
+              ]),
+            );
+            return c.maxWidth >= 760
+                ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Expanded(child: completenessCard),
+                    const SizedBox(width: 16),
+                    Expanded(child: requestsCard),
+                  ])
+                : Column(children: [completenessCard, const SizedBox(height: 16), requestsCard]);
+          }),
+          const SizedBox(height: 24),
+        ]),
       ),
-    );
+    ]);
   }
 }

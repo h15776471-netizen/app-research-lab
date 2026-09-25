@@ -145,9 +145,7 @@ class AppSelectCard extends StatelessWidget {
                     Text(
                       label,
                       style: AppTextStyles.h3.copyWith(
-                        color: isSelected
-                            ? AppColors.primary
-                            : AppColors.textPrimary,
+                        color: isSelected ? AppColors.primary : AppColors.textPrimary,
                       ),
                     ),
                     if (subtitle != null) ...[

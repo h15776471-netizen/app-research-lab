@@ -3,186 +3,150 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/auth/auth_notifier.dart';
-import '../../../core/auth/auth_repository.dart';
 import '../../../core/router/app_router.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_spacing.dart';
-import '../../../core/theme/app_text_styles.dart';
+import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_button.dart';
+import '../../../data/models/account_models.dart';
+import 'auth_scaffold.dart';
 
+/// Sign-up with role selection. The role is sent as sign-up metadata and
+/// written by the database trigger (customer | provider only).
 class SignupScreen extends ConsumerStatefulWidget {
-  const SignupScreen({super.key});
+  const SignupScreen({super.key, this.initialProvider = false});
+
+  final bool initialProvider;
 
   @override
   ConsumerState<SignupScreen> createState() => _SignupScreenState();
 }
 
 class _SignupScreenState extends ConsumerState<SignupScreen> {
+  final _form = GlobalKey<FormState>();
   final _name = TextEditingController();
+  final _phone = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
+  late UserRole _role = widget.initialProvider ? UserRole.provider : UserRole.customer;
   bool _obscure = true;
-  UserRole _role = UserRole.customer;
-
-  bool get _valid =>
-      _name.text.trim().isNotEmpty &&
-      _email.text.trim().contains('@') &&
-      _password.text.trim().length >= 6;
 
   @override
   void initState() {
     super.initState();
-    _name.addListener(_rebuild);
-    _email.addListener(_rebuild);
-    _password.addListener(_rebuild);
+    Future.microtask(() => ref.read(authNotifierProvider.notifier).clearMessages());
   }
-
-  void _rebuild() => setState(() {});
 
   @override
   void dispose() {
-    _name.dispose();
-    _email.dispose();
-    _password.dispose();
+    for (final c in [_name, _phone, _email, _password]) {
+      c.dispose();
+    }
     super.dispose();
   }
 
   Future<void> _submit() async {
-    await ref.read(authNotifierProvider.notifier).signUp(
-          email: _email.text.trim(),
+    if (!_form.currentState!.validate()) return;
+    final ok = await ref.read(authNotifierProvider.notifier).signUp(
+          email: _email.text,
           password: _password.text,
-          displayName: _name.text.trim(),
+          fullName: _name.text,
           role: _role,
+          phone: _phone.text.trim().isEmpty ? null : normalizePhone(_phone.text),
         );
+    if (!ok || !mounted) return;
+    context.go(_role == UserRole.provider ? '/p/onboarding' : '/c/home');
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(authNotifierProvider);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('إنشاء حساب'),
-        leading: BackButton(onPressed: () => context.goNamed(AppRoute.welcome)),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: AppSpacing.lg),
-            Text('أهلاً بيك في sawa 🎉', style: AppTextStyles.h1),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              'اختر نوع حسابك وابدأ',
-              style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
+    final auth = ref.watch(authNotifierProvider);
+    return AuthScaffold(
+      title: 'إنشاء حساب جديد',
+      subtitle: 'اختر نوع حسابك — يمكنك التصفح وإرسال الطلبات بدون حساب أيضاً.',
+      child: Form(
+        key: _form,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          if (auth.error != null) FormMessage(text: auth.error!),
+          if (auth.info != null) FormMessage(text: auth.info!, isError: false),
+          Text('نوع الحساب', style: Theme.of(context).textTheme.titleLarge),
+          const SizedBox(height: 10),
+          AppSelectCard(
+            label: 'أبحث عن خدمات لمناسبتي',
+            subtitle: 'أتصفح المزودين وأخطط وأتابع طلباتي',
+            icon: Icons.celebration_outlined,
+            isSelected: _role == UserRole.customer,
+            onTap: () => setState(() => _role = UserRole.customer),
+          ),
+          const SizedBox(height: 10),
+          AppSelectCard(
+            label: 'أنا مزود خدمة',
+            subtitle: 'قاعة، تصوير، ورد وغيرها — أدير ملفي التجاري وخدماتي',
+            icon: Icons.storefront_outlined,
+            isSelected: _role == UserRole.provider,
+            onTap: () => setState(() => _role = UserRole.provider),
+          ),
+          const SizedBox(height: 20),
+          TextFormField(
+            controller: _name,
+            textInputAction: TextInputAction.next,
+            decoration: InputDecoration(
+              labelText: _role == UserRole.provider ? 'اسمك (صاحب الحساب)' : 'الاسم',
+              prefixIcon: const Icon(Icons.person_outline),
             ),
-            const SizedBox(height: AppSpacing.xl),
-
-            // Role selection
-            Text('أنت…', style: AppTextStyles.h3),
-            const SizedBox(height: AppSpacing.md),
-            AppSelectCard(
-              label: 'أبحث عن خدمات',
-              subtitle: 'أنظّم مناسبتي وأبحث عن مزودين',
-              emoji: '💍',
-              isSelected: _role == UserRole.customer,
-              onTap: () => setState(() => _role = UserRole.customer),
+            validator: (v) {
+              final t = v?.trim() ?? '';
+              if (t.isEmpty) return 'يرجى كتابة الاسم';
+              if (t.length > 120) return 'الاسم طويل جداً';
+              return null;
+            },
+          ),
+          const SizedBox(height: 14),
+          TextFormField(
+            controller: _phone,
+            keyboardType: TextInputType.phone,
+            textDirection: TextDirection.ltr,
+            decoration: const InputDecoration(
+              labelText: 'رقم الهاتف (اختياري)',
+              hintText: '07XXXXXXXXX',
+              prefixIcon: Icon(Icons.phone_outlined),
             ),
-            const SizedBox(height: AppSpacing.sm),
-            AppSelectCard(
-              label: 'أنا مزود خدمة',
-              subtitle: 'أعرض خدماتي وأتابع طلبات العملاء',
-              emoji: '🏛️',
-              isSelected: _role == UserRole.provider,
-              onTap: () => setState(() => _role = UserRole.provider),
-            ),
-
-            const SizedBox(height: AppSpacing.xl),
-            const Divider(color: AppColors.border),
-            const SizedBox(height: AppSpacing.xl),
-
-            // Form fields
-            TextField(
-              controller: _name,
-              keyboardType: TextInputType.name,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                labelText: 'الاسم',
-                prefixIcon: Icon(Icons.person_outlined),
+            validator: (v) => (v == null || v.trim().isEmpty || isValidPhone(v)) ? null : 'رقم الهاتف غير صحيح',
+          ),
+          const SizedBox(height: 14),
+          TextFormField(
+            controller: _email,
+            keyboardType: TextInputType.emailAddress,
+            textDirection: TextDirection.ltr,
+            decoration: const InputDecoration(labelText: 'البريد الإلكتروني', prefixIcon: Icon(Icons.mail_outline)),
+            validator: validateEmail,
+          ),
+          const SizedBox(height: 14),
+          TextFormField(
+            controller: _password,
+            obscureText: _obscure,
+            textDirection: TextDirection.ltr,
+            decoration: InputDecoration(
+              labelText: 'كلمة المرور',
+              helperText: '8 أحرف على الأقل',
+              prefixIcon: const Icon(Icons.lock_outline),
+              suffixIcon: IconButton(
+                icon: Icon(_obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                onPressed: () => setState(() => _obscure = !_obscure),
               ),
             ),
-            const SizedBox(height: AppSpacing.md),
-            TextField(
-              controller: _email,
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                labelText: 'البريد الإلكتروني',
-                prefixIcon: Icon(Icons.email_outlined),
-              ),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            TextField(
-              controller: _password,
-              obscureText: _obscure,
-              textInputAction: TextInputAction.done,
-              onSubmitted: (_) => _valid ? _submit() : null,
-              decoration: InputDecoration(
-                labelText: 'كلمة المرور (6 أحرف على الأقل)',
-                prefixIcon: const Icon(Icons.lock_outlined),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                  ),
-                  onPressed: () => setState(() => _obscure = !_obscure),
-                ),
-              ),
-            ),
-
-            if (state.hasError) ...[
-              const SizedBox(height: AppSpacing.md),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.errorLight,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.error_outline, color: AppColors.error, size: 18),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        state.error!,
-                        style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-
-            const SizedBox(height: AppSpacing.xl),
-            AppPrimaryButton(
-              label: 'إنشاء الحساب',
-              isLoading: state.isLoading,
-              onPressed: _valid && !state.isLoading ? _submit : null,
-            ),
-            const SizedBox(height: AppSpacing.xl),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('عندك حساب؟ ', style: AppTextStyles.bodySmall),
-                TextButton(
-                  onPressed: () => context.goNamed(AppRoute.login),
-                  child: const Text('تسجيل الدخول'),
-                ),
-              ],
-            ),
-          ],
-        ),
+            validator: (v) => (v == null || v.length < 8) ? 'كلمة المرور يجب أن تكون 8 أحرف على الأقل' : null,
+          ),
+          const SizedBox(height: 22),
+          AppPrimaryButton(
+            label: _role == UserRole.provider ? 'إنشاء حساب مزود' : 'إنشاء الحساب',
+            isLoading: auth.isLoading,
+            onPressed: _submit,
+          ),
+          const SizedBox(height: 10),
+          TextButton(
+            onPressed: () => context.pushReplacementNamed(AppRoute.login),
+            child: const Text('لديك حساب؟ سجّل الدخول'),
+          ),
+        ]),
       ),
     );
   }
