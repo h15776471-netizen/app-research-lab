@@ -24,8 +24,10 @@ void main() {
   testWidgets('boots to welcome; guest can browse without an account', (tester) async {
     await boot(tester);
     expect(find.text('تصفح بدون تسجيل'), findsOneWidget);
-    // Offline build: account actions are hidden and the reason is stated.
-    expect(find.text('إنشاء حساب'), findsNothing);
+    // Account actions are always offered; offline builds also state why
+    // they cannot complete yet.
+    expect(find.text('إنشاء حساب'), findsOneWidget);
+    expect(find.text('تسجيل الدخول'), findsOneWidget);
     expect(find.textContaining('غير متصلة بخادم SAWA'), findsOneWidget);
 
     await tester.tap(find.text('تصفح بدون تسجيل'));
@@ -35,6 +37,20 @@ void main() {
     expect(find.text('قاعات المناسبات'), findsWidgets);
     expect(find.text('6 مزود'), findsOneWidget);
     expect(find.text('خطّط مناسبتك'), findsOneWidget);
+  });
+
+  testWidgets('welcome opens the login screen', (tester) async {
+    await boot(tester);
+    await tester.tap(find.text('تسجيل الدخول'));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    expect(find.text('أهلاً بعودتك'), findsOneWidget);
+  });
+
+  testWidgets('welcome opens the sign-up screen', (tester) async {
+    await boot(tester);
+    await tester.tap(find.text('إنشاء حساب'));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    expect(find.text('إنشاء حساب جديد'), findsOneWidget);
   });
 
   testWidgets('category → provider details → contact form (offline shows honest state)', (tester) async {

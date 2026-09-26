@@ -52,17 +52,17 @@ class CustomerProfileScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             if (user == null) ...[
-              if (online) ...[
-                FilledButton(
-                  style: FilledButton.styleFrom(
-                      backgroundColor: AppColors.primary, minimumSize: const Size.fromHeight(52)),
-                  onPressed: () => context.pushNamed(AppRoute.login, queryParameters: {'from': '/c/profile'}),
-                  child: const Text('تسجيل الدخول'),
-                ),
+              FilledButton(
+                style: FilledButton.styleFrom(backgroundColor: AppColors.primary, minimumSize: const Size.fromHeight(52)),
+                onPressed: () => context.pushNamed(AppRoute.login, queryParameters: {'from': '/c/profile'}),
+                child: const Text('تسجيل الدخول'),
+              ),
+              const SizedBox(height: 10),
+              OutlinedButton(onPressed: () => context.pushNamed(AppRoute.signup), child: const Text('إنشاء حساب')),
+              if (!online) ...[
                 const SizedBox(height: 10),
-                OutlinedButton(onPressed: () => context.pushNamed(AppRoute.signup), child: const Text('إنشاء حساب')),
-              ] else
                 const InfoBanner(icon: Icons.cloud_off_outlined, color: AppColors.warning, message: offlineMessage),
+              ],
             ] else ...[
               _Tile(
                 icon: Icons.edit_outlined,

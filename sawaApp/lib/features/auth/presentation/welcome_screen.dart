@@ -47,33 +47,41 @@ class WelcomeScreen extends ConsumerWidget {
                       minimumSize: const Size.fromHeight(54),
                       textStyle: AppTextStyles.button,
                     ),
+                    onPressed: () => context.pushNamed(AppRoute.signup),
+                    child: const Text('إنشاء حساب'),
+                  ),
+                  const SizedBox(height: 12),
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size.fromHeight(54),
+                      side: BorderSide(color: Colors.white.withValues(alpha: 0.6)),
+                    ),
+                    onPressed: () => context.pushNamed(AppRoute.login),
+                    child: const Text('تسجيل الدخول'),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(children: [
+                    Expanded(child: Divider(color: Colors.white.withValues(alpha: 0.3))),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Text('أو', style: AppTextStyles.caption.copyWith(color: Colors.white70)),
+                    ),
+                    Expanded(child: Divider(color: Colors.white.withValues(alpha: 0.3))),
+                  ]),
+                  const SizedBox(height: 8),
+                  TextButton(
+                    style: TextButton.styleFrom(foregroundColor: AppColors.champagne),
                     onPressed: () => context.goNamed(AppRoute.customerHome),
                     child: const Text('تصفح بدون تسجيل'),
                   ),
-                  if (online) ...[
-                    const SizedBox(height: 12),
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        side: BorderSide(color: Colors.white.withValues(alpha: 0.6)),
-                      ),
-                      onPressed: () => context.pushNamed(AppRoute.signup),
-                      child: const Text('إنشاء حساب'),
-                    ),
-                    const SizedBox(height: 4),
-                    TextButton(
-                      style: TextButton.styleFrom(foregroundColor: AppColors.champagne),
-                      onPressed: () => context.pushNamed(AppRoute.login),
-                      child: const Text('تسجيل الدخول'),
-                    ),
-                    const SizedBox(height: 16),
-                    TextButton.icon(
-                      style: TextButton.styleFrom(foregroundColor: Colors.white70),
-                      onPressed: () => context.pushNamed(AppRoute.signup, queryParameters: {'role': 'provider'}),
-                      icon: const Icon(Icons.storefront_outlined, size: 18),
-                      label: const Text('صاحب قاعة أو مصور أو محل ورد؟ انضم كمزود خدمة'),
-                    ),
-                  ],
+                  const SizedBox(height: 8),
+                  TextButton.icon(
+                    style: TextButton.styleFrom(foregroundColor: Colors.white70),
+                    onPressed: () => context.pushNamed(AppRoute.signup, queryParameters: {'role': 'provider'}),
+                    icon: const Icon(Icons.storefront_outlined, size: 18),
+                    label: const Text('صاحب قاعة أو مصور أو محل ورد؟ انضم كمزود خدمة'),
+                  ),
                   if (!online) ...[
                     const SizedBox(height: 16),
                     Text(

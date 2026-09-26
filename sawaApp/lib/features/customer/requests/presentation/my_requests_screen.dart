@@ -42,8 +42,8 @@ class MyRequestsScreen extends ConsumerWidget {
           icon: Icons.inbox_outlined,
           title: 'تابع طلباتك في مكان واحد',
           message: online ? 'يمكنك إرسال طلبات بدون حساب. سجّل الدخول لترى طلباتك وحالتها هنا.' : offlineMessage,
-          actionLabel: online ? 'تسجيل الدخول' : null,
-          action: online ? () => context.pushNamed(AppRoute.login, queryParameters: {'from': '/c/requests'}) : null,
+          actionLabel: 'تسجيل الدخول',
+          action: () => context.pushNamed(AppRoute.login, queryParameters: {'from': '/c/requests'}),
         ),
       );
     }
